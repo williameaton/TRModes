@@ -1,2 +1,2 @@
 # TRModes
-Early collab repo for TRModes project
+This is our repo for TRModes project
