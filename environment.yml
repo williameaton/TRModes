@@ -1,0 +1,12 @@
+Versions: 
+
+Python:   3.8.8
+
+Matplotlib: 
+I need to work out the absolute version we will use for this but for full functionality it will definitely need to at least post-date these commits:
+https://github.com/matplotlib/matplotlib/pull/4699/commits
+https://github.com/matplotlib/matplotlib/pull/20725
+
+The first of these allows for polar plots with a variable x limit - this was implimented in 2017 so most people should be okay with this
+The second of these is a very recent PR that allows for better rendering of 3D surfaces and allows for plotting of null values on the surface - we need this for rendering the 3D volume plots with views of the internal layer motion...we might therefore need to require a very recent version of matplotlib
+
