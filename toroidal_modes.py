@@ -14,8 +14,10 @@ dr = (a - b) / (nr - 1) # radial step
 rr = b + np.dot((np.arange(0,nr)),dr) # vector for Earth's radii [m]
 
 # Mode parameters
-nmax = 9 # max radial order n
-lmax = 10 # max angular order l
+# nmin = ?
+nmax = 10 # max radial order n
+lmin = 1 # min angular order l (l >= 1)
+lmax = 2 # max angular order l
 fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
 fmax = 0.2 # max frequency for hunt [Hz]
 df = 0.00001 # frequency step for hunt [Hz]
@@ -38,9 +40,8 @@ mu.fill(mu0)
 ####################################################################
 
 # this will be a function
-# soemthing is wrong, only computing even n's, but all l's
 
-for l in range(1,lmax+1):
+for l in range(lmin,lmax+1):
     n = -1 # reset counter for radial degrees n
     f = fmin # we start looking for eigenfrequencies from fmin [Hz]
     wl = twopi*f # corresponding angular frequency [rad/s]
