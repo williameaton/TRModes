@@ -1,5 +1,6 @@
 import numpy as np
 from euler import euler
+from frequency_bisection import frequency_bisection
 
 # eventually all (most) of these constants will come from Page as input
 
@@ -20,6 +21,7 @@ fmax = 0.2 # max frequency for hunt [Hz]
 df = 0.00001 # frequency step for hunt [Hz]
 eigf = np.empty((nmax,lmax,)) # initialize nmax by lmax NaN matrix
 eigf[:] = np.nan              # which will contain eigenfrequencies
+Tmat = np.zeros((lmax,nmax))
 twopi = 2*np.pi # constant 2pi
 
 # Elastic parameters for a homogeneous spherical Earth model
@@ -36,6 +38,7 @@ mu.fill(mu0)
 ####################################################################
 
 # this will be a function
+# soemthing is wrong, only computing even n's, but all l's
 
 for l in range(1,lmax+1):
     n = -1 # reset counter for radial degrees n
@@ -46,4 +49,42 @@ for l in range(1,lmax+1):
     [W,T,count] = euler(wl,dr,rr,rho,mu,l)
     Twmin = T[-1]
 
-    # keep going...
+    # now iterate to hunt radial orders and their frequencies
+    while f < fmax:
+        # increase frequency (new candidate)
+        f = f + df
+        wr = twopi*f
+
+        # integrate for this frequency and get surface traction
+        [W,T,count] = euler(wr,dr,rr,rho,mu,l)
+        Twc = T[-1]
+
+        # check if we have changed sign (meaning we've bracketed a root)
+        if (Twc*Twmin) < 0: # then we have bracketed a root
+            # use bissection to get a precise estimate of the frequency
+            # and eigenfunctions and the radial order n
+            [wc,_,_,n] = frequency_bisection(wr,wl,dr,rr,rho,mu,l,Twmin)
+
+            # save radial order n (counted) and its eigenfrequency
+            eigf[n,l-1] = 1000*wc/twopi # eigenfrequency [mHz]
+
+            # print information
+            T0 = 1/(wc/twopi)/60 # eigenperiod [min]
+            Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
+            print('Found eigenperiod T =','%.2f'%T0,'min for n =',n,'l =',l)
+
+            # check a new frequency estimate and get surface traction
+            f = wc/twopi + df # update frequency [Hz]
+            [W,T,count] = euler(f*twopi,dr,rr,rho,mu,l)
+            wl = wc # set current frequency as left frequency
+            Twmin = T[-1] # set current surface traction as left surface traction
+
+        else: # then we havent bracketed a frequency
+            wl = wr # set current frequency as right frequency
+            Twini = Twc # set current surface traction as right surface traction
+
+        # stop search if we already have the requested number of radial orders n
+        if (n+1) >= nmax:
+            break
+
+####################################################################
