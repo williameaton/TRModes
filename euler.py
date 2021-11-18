@@ -15,15 +15,16 @@ def euler(w,dr,rr,rho,mu,l):
     T[0] = 0
 
     #integrate towards the surface using forward Euler method
-    for i in range(2,nr+1):
+    for i in range(1,nr):
         # call function toroidal_system
-        [dW_dr,dT_dr] = toroidal_system(W[i-2],T[i-2],w,rr[i-2],rho[i-2],mu[i-2],k2)
-        W[i-1] = W[i-2] + dr*dW_dr
-        T[i-1] = T[i-2] + dr*dT_dr
+        [dW_dr,dT_dr] = toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)
+        W[i] = W[i-1] + dr*dW_dr
+        T[i] = T[i-1] + dr*dT_dr
 
     # count zero crossings
-    # I think this works, we'll test more later
-    count = np.size(np.argwhere(np.absolute(np.diff(np.sign(W),axis=0))>0.1))
+    # must integer divide (//) by 2 at the end because np.where
+    # gives twice as many outputs as MATLAB's find() function
+    count = np.size(np.where(np.absolute(np.diff(np.sign(W),axis=0))>0.1))//2
     
     return W, T, count;
 
