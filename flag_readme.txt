@@ -26,8 +26,8 @@ List of flags:
      -int <string> 	Integration method type. Current options are 4th-order Runge-Kutta ("rk4"),
      	  		2nd-order Adams-Bashforth ("ab2"), and Forward Euler method ("euler").
 
-     -otype <string>	Output type. Options are 2-Dimensional visuals ("2D"), 3-Dimensional visuals ("3D"),
-     	    		and a dispersion curve ("disp").
+     -otype <string>	Output type. Options are 2-Dimensional visuals ("2D"), 3-Dimensional visuals
+     	    		("3D"), and a dispersion curve ("disp").
 
      -oname <string>	Optional output file prefix name.
 
