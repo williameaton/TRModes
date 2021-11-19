@@ -1,3 +1,8 @@
+# toroidal_modes.py
+#
+# Originally written by tschuh-at-princeton.edu, 11/15/2021
+# Last modified by tschuh-at-princeton.edu, 11/19/2021
+
 import numpy as np
 from euler import euler
 from frequency_bisection import frequency_bisection
@@ -66,13 +71,15 @@ for l in range(lmin,lmax+1):
             # and eigenfunctions and the radial order n
             [wc,_,_,n] = frequency_bisection(wr,wl,dr,rr,rho,mu,l,Twmin)
 
-            # save radial order n (counted) and its eigenfrequency
+            # save radial order n (counted), l, and its eigenfrequency
             eigf[n,l-1] = 1000*wc/twopi # eigenfrequency [mHz]
 
-            # print information
-            T0 = 1/(wc/twopi)/60 # eigenperiod [min]
+            # save eigenperiod
+            T0 = twopi/wc/60 # eigenperiod [min]
             Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
-            print('Found eigenperiod T =','%.2f'%T0,'min for n =',n,'l =',l)
+
+            # print information
+            print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
             # check a new frequency estimate and get surface traction
             f = wc/twopi + df # update frequency [Hz]
