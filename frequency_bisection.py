@@ -1,4 +1,7 @@
 # frequency_bisection.py
+#
+# Originally written by tschuh-at-princeton.edu, 11/15/2021
+# Last modified by tschuh-at-princeton.edu, 11/19/2021
 
 import numpy as np
 from euler import euler
