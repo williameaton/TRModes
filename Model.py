@@ -85,11 +85,11 @@ def extractfromfile(fname):
     Vs_pts = f[:,3]                                  # Shear (S) wave velocity               
     rho_pts = f[:,1]                                 # Density
 
-    R = f[:,0]                                       # Radius
+    R_pts = f[:,0]                                   # Radius
     r_max = R[-1]	      	      	     	     # Maximum radius
     r_min = R[0] 	      	      	     	     # Minimum radius
     
-    return Vp, Vs, rho, R, r_max, r_min
+    return Vp_pts, Vs_pts, rho_pts, R_pts, r_max, r_min
 
 # ----------------------------------------------------------------------------------------------------
 def get_bestfit_eq(R, data):
