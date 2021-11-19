@@ -19,16 +19,17 @@ dr = (a - b) / (nr - 1) # radial step
 rr = b + np.dot((np.arange(0,nr)),dr) # vector for Earth's radii [m]
 
 # Mode parameters
-# nmin = ?
-nmax = 10 # max radial order n
+# cant compute n=0, l=1 mode
+nmin = 0 # min radial order n (n >=0)
+nmax = 1 # max radial order n
 lmin = 1 # min angular order l (l >= 1)
 lmax = 2 # max angular order l
 fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
 fmax = 0.2 # max frequency for hunt [Hz]
 df = 0.00001 # frequency step for hunt [Hz]
-eigf = np.empty((nmax,lmax,)) # initialize nmax by lmax NaN matrix
+eigf = np.empty((nmax+1,lmax,)) # initialize nmax by lmax NaN matrix
 eigf[:] = np.nan              # which will contain eigenfrequencies
-Tmat = np.zeros((lmax,nmax))
+Tmat = np.zeros((lmax,nmax+1))
 twopi = 2*np.pi # constant 2pi
 
 # Elastic parameters for a homogeneous spherical Earth model
@@ -71,15 +72,18 @@ for l in range(lmin,lmax+1):
             # and eigenfunctions and the radial order n
             [wc,_,_,n] = frequency_bisection(wr,wl,dr,rr,rho,mu,l,Twmin)
 
-            # save radial order n (counted), l, and its eigenfrequency
-            eigf[n,l-1] = 1000*wc/twopi # eigenfrequency [mHz]
+            # only save eigenfrequency if n >= nmin
+            # too slow
+            if n >= nmin:
+                # save radial order n (counted), l, and its eigenfrequency
+                eigf[n,l-1] = 1000*wc/twopi # eigenfrequency [mHz]
 
-            # save eigenperiod
-            T0 = twopi/wc/60 # eigenperiod [min]
-            Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
+                # save eigenperiod
+                T0 = twopi/wc/60 # eigenperiod [min]
+                Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
 
-            # print information
-            print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
+                # print information
+                print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
             # check a new frequency estimate and get surface traction
             f = wc/twopi + df # update frequency [Hz]
@@ -92,7 +96,8 @@ for l in range(lmin,lmax+1):
             Twini = Twc # set current surface traction as right surface traction
 
         # stop search if we already have the requested number of radial orders n
-        if (n+1) >= nmax:
+        if (n+1) >= nmax+1:
             break
 
+#breakpoint()
 ####################################################################
