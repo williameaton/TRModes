@@ -6,12 +6,12 @@ class plot_specs():
     # the plotter factory to generate the correct type of plot
 
     # Methods:
-    def __init__(self, specs):
-        self.plot_type
-        self.in_fname
-        self.out_fname
-        self.radius
-        self.test
+    def __init__(self, inname):
+        self.plot_type = None
+        self.in_fname = inname
+        self.out_fname = None
+        self.radius = None
+        self.test = None
 
 
     def _assign_plottype(self, plot_str):
@@ -44,10 +44,10 @@ class gen_plot(ABC):
     # Attributes
     def __init__(self, plot_specs):
         self.out_fname = plot_specs.out_fname
-        self.data # [p x 3] matrix where p is up to the user. Each row has n, l, omega loaded from .txt file
-        self.mpl_figure
-        self.mpl_axis
-        self.integration_required # Bool - true or false depending on if integration needed
+        self.data = None        # [p x 3] matrix where p is up to the user. Each row has n, l, omega loaded from .txt file
+        self.mpl_figure= None
+        self.mpl_axis= None
+        self.integration_required= None   # Bool - true or false depending on if integration needed
 
 
 
@@ -60,28 +60,30 @@ class gen_plot(ABC):
         self.__make_plot()
         self.__output_plot()
 
-    @abstractmethod
-    def __make_plot(self):
+
+    def make_plot(self):
         # The actual plotting step - should return fig and axis to the plot function.
         pass
 
-    @abstractmethod
-    def __load_data(self):
-        # Should include all loading/re-arrangement of data/any integration etc
-        pass
 
-    def __prepare_plot(self):
+
+    def prepare_plot(self, plot_specs):
         # Should include all loading/re-arrangement of data/any integration etc
-        self.__load_data()
+        self.load_data(plot_specs)
         if self.integration_required:
-            self.__integrate_mode()
+            self.integrate_mode()
 
-    def __integrate_mode(self, n, l, omega):
+    def integrate_mode(self, n, l, omega):
         # I think this may be the same for each class type that requires the ability for integration. If not, then it
         # will need to be an abstract method.
         pass
 
-    @abstractmethod
-    def __output_plot(self):
+    def output_plot(self):
         # Some kind of generic function to save to a file
+        pass
+
+    @abstractmethod
+    def load_data(self):
+        # Should include all loading/re-arrangement of data/any integration etc
+        print("Hello")
         pass
