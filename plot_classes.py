@@ -6,12 +6,13 @@ class plot_specs():
     # the plotter factory to generate the correct type of plot
 
     # Methods:
-    def __init__(self, inname):
-        self.plot_type = None
+    def __init__(self, type, inname, outname, radius, fig, subaxis_pos=111):
+        self.plot_type = self._assign_plottype(type)
         self.in_fname = inname
-        self.out_fname = None
-        self.radius = None
-        self.test = None
+        self.out_fname = outname
+        self.radius = radius
+        self.figure = fig
+        self.subaxis_pos = subaxis_pos
 
 
     def _assign_plottype(self, plot_str):
@@ -37,18 +38,16 @@ class plot_specs():
 
 
 
+
+
+
+
+
+
+
 class gen_plot(ABC):
     # Abstract base class. Sub-classes of this are classes to generate different types of plots
     # E.g. a class called gen_dispersion
-
-    # Attributes
-    def __init__(self, plot_specs):
-        self.out_fname = plot_specs.out_fname
-        self.data = None        # [p x 3] matrix where p is up to the user. Each row has n, l, omega loaded from .txt file
-        self.mpl_figure= None
-        self.mpl_axis= None
-        self.integration_required= None   # Bool - true or false depending on if integration needed
-
 
 
     # Methods:
@@ -61,29 +60,30 @@ class gen_plot(ABC):
         self.__output_plot()
 
 
-    def make_plot(self):
+    def _make_plot(self):
         # The actual plotting step - should return fig and axis to the plot function.
         pass
 
 
 
-    def prepare_plot(self, plot_specs):
+    def _prepare_plot(self, plot_specs):
         # Should include all loading/re-arrangement of data/any integration etc
-        self.load_data(plot_specs)
+        self._load_radial_data(plot_specs)
         if self.integration_required:
             self.integrate_mode()
 
-    def integrate_mode(self, n, l, omega):
+    def _integrate_mode(self, n, l, omega):
         # I think this may be the same for each class type that requires the ability for integration. If not, then it
         # will need to be an abstract method.
         pass
 
-    def output_plot(self):
+    def _output_plot(self):
         # Some kind of generic function to save to a file
         pass
 
     @abstractmethod
-    def load_data(self):
+    def _load_radial_data(self):
         # Should include all loading/re-arrangement of data/any integration etc
         print("Hello")
         pass
+

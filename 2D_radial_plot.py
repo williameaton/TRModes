@@ -11,11 +11,13 @@ class radial_plot_2D(gen_plot):
         self.data_fname = plot_specs.in_fname
         self.data = None
         self.z = None
-        self.N= None
-        self.L= None
-        self.omega= None
-        self.mpl_figure= None
-        self.mpl_axis= None
+        self.N = None
+        self.L = None
+        self.radius = plot_specs.radius
+        self.omega = None
+        self.mpl_figure = plot_specs.figure
+        self.mpl_axis = self._make_polar_axis(plot_specs)
+        self.animation=None
         self.integration_required = False  # Bool - true or false depending on if integration needed
 
 
@@ -25,40 +27,35 @@ class radial_plot_2D(gen_plot):
         # Function is the driver for plotting - accessed by main codes. Will first prepare the plot. This incorporates
         # any loading of the data and processing (e.g. integration). Then runs the make_plot function to actually make
         # the plot
-        super().prepare_plot(plot_specs)
-        self.make_plot()
-        self.output_plot()
+        super()._prepare_plot(plot_specs)
+        self._make_plot()
+        self._output_plot()
 
-    def make_plot(self):
+
+
+    def _make_plot(self):
         W = self.data*0.5
-        self.z = np.linspace(0, 1, len(W))
+        W_max = np.amax(np.abs(W))
 
-        fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-        dispersion, = ax.plot(W, self.z, linewidth=2)
+        self.z = np.linspace(0, 1, len(W))*self.radius
+
+        plot, = self.mpl_axis.plot(W, self.z, linewidth=2)
 
         # Plot zero axis:
-        ax.plot([0, 0], [0, np.amax(self.z)], 'k-', linewidth=1, alpha=0.7)
+        self.mpl_axis.plot([0, 0], [0, np.amax(self.z)], 'k-', linewidth=1, alpha=0.7)
 
         def init():  # only required for blitting to give a clean slate.
             i = 0
-            dispersion.set_xdata(W * np.cos(i * 2 * np.pi / 100))
-            return dispersion,
+            plot.set_xdata(W * np.cos(i * 2 * np.pi / 100))
+            return plot,
 
         def animate(i):
-            dispersion.set_xdata(W * np.cos(i * 2 * np.pi / 100))  # update the data.
-            return dispersion,
+            plot.set_xdata(W * np.cos(i * 2 * np.pi / 100))  # update the data.
+            return plot,
 
-        ani = animation.FuncAnimation(
-            fig, animate, init_func=init, interval=20, blit=False, save_count=50)
+        self.animation = animation.FuncAnimation(self.mpl_figure, animate, init_func=init, interval=20, blit=False, save_count=200)
 
-        # Format the figure:
-        ax.set_theta_zero_location("N")
-        W_max = np.amax(np.abs(W))
-        ax.set_xlim([-W_max, W_max])
-        ax.set_ylabel("Relative Radius")
-        ax.set_xticklabels([])
-        ax.set_ylim(0, np.amax(self.z))
-        ax.grid(False)
+        self._format_figure_metadata(W_max)
 
         # Detect and add zero-crossings:
         zero_crossings = np.where(np.diff(np.sign(W)))[
@@ -70,14 +67,13 @@ class radial_plot_2D(gen_plot):
         theta = np.linspace(-W_max, W_max, 200)  # 200 is arbitrary
         for i in range(len(rad_0x)):
             line_rad = theta * 0 + rad_0x[i]
-            ax.plot(theta, line_rad, ":", color='r', linewidth=1)
+            self.mpl_axis.plot(theta, line_rad, ":", color='r', linewidth=1)
 
-        ax.set_title(r"Toroidal mode ${}_{8}T_{50}$")
-        plt.show()
+        self.mpl_axis.set_title(rf"Toroidal mode $ _{str(int(self.N))}T_{ str(int(self.L))}$")
 
-        pass
 
-    def load_data(self, plot_specs):
+
+    def _load_radial_data(self, plot_specs):
         # Expected file format is single column of data - first 3 lines are N, L, Omega. Next lines are displacement/
         # sensitivity at (increasing/decreasing) depth
         file_data = np.loadtxt(self.data_fname)
@@ -87,19 +83,56 @@ class radial_plot_2D(gen_plot):
         self.data = file_data[3:]
 
 
-    def integrate_mode(self, n, l, omega):
+    def _integrate_mode(self, n, l, omega):
         # I think this may be the same for each class type that requires the ability for integration. If not, then it
         # will need to be an abstract method.
         pass
 
-    def output_plot(self):
-        # Some kind of generic function to save to a file
-        pass
+    def _output_plot(self):
+        # Write output to mp4 and gif
+        writer = animation.FFMpegWriter(fps=60)
+        suffix = [".mp4", ".gif"]
+
+        for i in range(len(suffix)):
+            out_str = self.out_fname+suffix[i]
+            print(f"Writing to {out_str}...")
+            self.animation.save(out_str, writer=writer)
+
+
+
+    def _make_polar_axis(self, specs):
+        return self.mpl_figure.add_subplot(specs.subaxis_pos, projection='polar')
+
+    def _format_figure_metadata(self, W_max):
+        # Format the figure metadata e.g. titles etc:
+        self.mpl_axis.set_theta_zero_location("N")
+        self.mpl_axis.set_xlim([-W_max, W_max])
+        self.mpl_axis.set_ylabel("Radius")
+        self.mpl_axis.set_xticklabels([])
+        self.mpl_axis.set_ylim(0, np.amax(self.z))
+        self.mpl_axis.grid(False)
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
     # create dummy plot_specs object
-    specs = plot_specs(inname="example_2D_data.txt")
+    fig = plt.figure()
+    specs = plot_specs(type    = "2D_radial",
+                       inname  = "example_2D_data.txt",
+                       outname = "test",
+                       radius  = 6371,
+                       fig     = fig,
+                       subaxis_pos = 111)
+
+
     # Create gen_plot object
     r2D = radial_plot_2D(specs)
     r2D.plot(specs)
