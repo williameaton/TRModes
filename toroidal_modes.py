@@ -47,6 +47,8 @@ mu.fill(mu0)
 
 # this will be a function
 
+file = open("wnl.txt","w")
+
 for l in range(lmin,lmax+1):
     n = -1 # reset counter for radial degrees n
     f = fmin # we start looking for eigenfrequencies from fmin [Hz]
@@ -83,8 +85,14 @@ for l in range(lmin,lmax+1):
                 Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
 
                 # print information
-                print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
+                # print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
+                # save information (w,n,l) to txt file
+                freq = repr(eigf[n,l-1])
+                norder = repr(n)
+                lorder = repr(l)
+                file.write(freq + " " + norder + " " + lorder + "\n")
+                
             # check a new frequency estimate and get surface traction
             f = wc/twopi + df # update frequency [Hz]
             [W,T,count] = euler(f*twopi,dr,rr,rho,mu,l)
@@ -99,5 +107,5 @@ for l in range(lmin,lmax+1):
         if (n+1) >= nmax+1:
             break
 
-#breakpoint()
+file.close
 ####################################################################
