@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 11/28/21
+# Last modified by pdabney@princeton.edu, 11/30/21
 
 
 from Model import *
@@ -21,7 +21,11 @@ def process_flags(inputs):
     # INPUT:
     #    inputs         - Class containing information about the command line arguments
     # =====================================================================================
+
+    # Initialize classes
+    model_class = Model()
     
+    # Process the flags
     if bool(inputs.gui):
         # launch gui
         pass
@@ -29,38 +33,82 @@ def process_flags(inputs):
     else:
         # For the input model
         if hasattr(inputs, "model_file"):
-            # evaluate the data file
-            # -extractfromfile()
-            # -get_bestfit_eq()
-            # -get_dr()
-            # -eval_equation()
-            pass
-        elif hasattr(inputs,"eq_rho") and hasattr(inputs, "eq_vs"):
-            # -get_dr()
-            # -eval_equation
-            pass
-        elif hasattr(inputs,"eq_rho") and hasattr(inputs, "eq_vp"):
-            # -get_dr()                                                                                           
-            # -eval_equation
-            pass
-        else:
-            # Error
-            pass
+            # Evaluate the data file
+            Vp_pts, Vs_pts, rho_pts, R_pts, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
 
+            # Compute dr
+            model_class.dr = get_dr(model_class.r_max, model_class.r_min, inputs.Nr)
+
+            # Obtain equations for rho, Vs, Vp in order to resample
+            rho_eq = get_bestfit_eq(R_pts, rho_pts)
+            Vs_eq = get_bestfit_eq(R_pts, Vs_pts)
+            Vp_eq = get_bestfit_eq(R_pts, Vp_pts)
+
+            # Evaluate the equations
+            model_class.rho = eval_equation(rho_eq, model_class.r_min, model_class.r_max, model_class.dr)
+            model_class.Vs = eval_equation(Vs_eq, model_class.r_min, model_class.r_max, model_class.dr)
+            model_class.Vp = eval_equation(Vp_eq, model_class.r_min, model_class.r_max, model_class.dr)
+
+        else:
+            # Ensure a density equation has been inputed
+            assert hasattr(inputs,'eq_rho'), 'Requires density equation'
+                                   
+            # Compute dr                                                                                          
+            model_class.dr = get_dr(inputs.r_max, inputs.r_min, inputs.Nr)
+            # Obtain density
+            model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
+
+            if inputs.mtype == "Toroidal":
+                # Check the user has inputted a shear velocity equation
+                assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation'                        
+
+                # Obtain shear velocity
+                model_class.Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
+                                   
+            elif inputs.mtype == "Radial":
+      	        # Check the user has inputted a compressional velocity equation                                                  
+                assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation'
+
+            	# Obtain compressional velocity
+                model_class.Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
+
+            
         # Model parameters
         if hasattr(inputs,"nrange"):
-            # -get_range()
-            pass
+	    # Convert string to an array                                                                          
+	    n_values = str2array(inputs.nrange)
+            # Obtain n values
+            model_class.n = get_range(n_values[1], n_values[0])
+        else:
+            # Convert string to an array                                                       
+            model_class.n = str2array(inputs.n)
+
+        # Check the n values
+        assert all(isinstance(x, int) for x in model_class.n), 'n values must be integers'
+                                   
         if hasattr(inputs,"lrange"):
-            # -get_range
-            pass
+            # Convert string to an array
+	    l_values = str2array(inputs.lrange)
+	    # Obtain l values                                                                                     
+            model_class.l = get_range(l_values[1], l_values[0])            
+         else:
+	    # Convert string to an array                                                                          
+            model_class.l = str2array(inputs.l)
+
+        # Check l values                           
+        assert all(isinstance(x, int) for x in model_class.l), 'l values must be integers'
+        assert model_class.l < 0, 'l values mus zero or greater'
 
 
+                                   
+    return model_class
+                                   
+#------------------------------------------------------------------------------------------                       
+# Supplementry Functions                                   
 #------------------------------------------------------------------------------------------
-# Process the command line arguments
-
 def process_input_args(cml_arguments):
-
+    # Process the command line arguments
+                                   
     # Create object that will hold information needed to parse command line
     parser = argparse.ArgumentParser()
     
@@ -84,24 +132,29 @@ def process_input_args(cml_arguments):
     #parser.add_argument("-S","--Spheriodal",action="store_const",dest="mtype",const="Spheriodal")
 
     # Flags related to output
-    parser.add_argument("-otype", "--output_type", dest="output_type", nargs=1, help="Output type")
-    parser.add_argument("-oname", "--output_name", dest="output_name", help="Output filename")
-    
+    parser.add_argument("-fig", "--figure", dest="output_type", nargs=1, help="Figure output details")
     
     # Set class called inputs to store user input information
     inputs = user_inputs()
     
     # Pass in command line arguments and store values in input class
-    parser.parse_args(str(cml_argumentcs), namespace=inputs)
+    parser.parse_args(str(cml_arguments), namespace=inputs)
 
     return inputs
 
 #------------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------------------
+def str2array(str_in):
+    # Convert n string inputs to integers                                                                 
+    _list = str_in.split(",")
+    array_out = [eval(x) for x in _list]
+
+    return array_out
+
+
+#------------------------------------------------------------------------------------------                       
 def extractfromfile(fname):
     # Extracts compressional and shear velocity, density, and radial data points from a model text
     # file (e.g. PREM). Assumes the model file is isotropic.
-
     f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)  # Read in file (skips the header lines)
 
     # Extract Data Points
@@ -115,10 +168,17 @@ def extractfromfile(fname):
     return Vp_pts, Vs_pts, rho_pts, R_pts, r_max, r_min
 
 
+# ----------------------------------------------------------------------------------------------------            
+def get_dr(r_max, r_min, Nr):
+    # Computes the radial step
+    dr = (r_max - r_min) / Nr
+                                   
+    return dr
+
+                                   
 # ----------------------------------------------------------------------------------------------------
 def get_bestfit_eq(R, data):
     # Computes a fourth order polynomial best fit equation
-
     deg = 4  # Polynomial degree
 
     # Determine best fit curve to the data
@@ -131,9 +191,29 @@ def get_bestfit_eq(R, data):
 
 
 # ----------------------------------------------------------------------------------------------------
-def input_log(input_class):
-    # Creates a file "input_args.txt" containing the input arguments
+def eval_equation(str_input, start_value, end_value, dr):
+    # Evaluates a single variable equation at discrete points and produces an array containing the
+    # solutions
+    sol_array = []                                   # Initialize array
 
+    # Evaluate equation at each dr
+    for x in np.arange(start_value, end_value, dr):
+        sol_array += [eval(str_input)]
+
+    return sol_array
+
+
+# ----------------------------------------------------------------------------------------------------
+def get_range(v_max, v_min):
+    # Obtains the consecutive range of integer values between two values  
+    v_range = range(v_min, v_max)
+
+    return v_range                                   
+
+                                   
+# ----------------------------------------------------------------------------------------------------            
+def input_log(input_class):
+    # Creates a file "input_log.txt" containing the input arguments
     f = open("input_log.txt", "w")
 
     f.close()
