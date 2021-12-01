@@ -10,12 +10,12 @@ class Model:
 
         # Model parameters
         self.rho = inputs.rho
-        self.mu = self.get_mu(inputs.Vs, inputs.rho)
-        self.kappa = self.get_kappa(inputs.Vp, inputs.Vs, inputs.rho)
+        self.mu = inputs.mu
+        self.kappa = inputs.kappa
         
         self.r_min = inputs.r_min
         self.r_max = inputs.r_max
-        self.dr = inputs.Nr
+        self.dr = inputs.dr
 
         # Mode parameters
         self.n = inputs.n
@@ -24,15 +24,3 @@ class Model:
         self.mtype = inputs.mtype
 
 
-    # Functions
-    def get_mu(Vs, rho):
-        # Computes the shear modulus
-        mu = rho * (Vs ** 2)
-        return mu
-
-    def get_kappa(Vp, Vs, rho):
-        # Computes the bulk modulus
-        kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2))
-        return kappa
-
-    
