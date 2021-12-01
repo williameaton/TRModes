@@ -1,3 +1,5 @@
+Last updated by pdabney@princeton.edu, 11/30/21
+
 List of flags:
 
      -gui		Launches the GUI (any other flags implemented will be ignored).
@@ -19,16 +21,16 @@ List of flags:
 
 
      -n	<integer(s)>	Radial order value(s). For more than one value, must be comma separated.		
-     -l <integer(s)>	Angular	order value(s).	For more than one value must be comma separated.
+     -l <integer(s)>	Angular	order value(s), must be positive. For more than one value, must be comma
+     			separated.
      -nrange <integers> Range of radial order values, comma separated.
-     -lrange <integers> Range of angular order values, comma separated.
+     -lrange <integers> Range of angular order values, comma separated and positive.
 
      -int <string> 	Integration method type. Current options are 4th-order Runge-Kutta ("rk4"),
      	  		2nd-order Adams-Bashforth ("ab2"), and Forward Euler method ("euler").
 
-     -otype <string>	Output type. Options are 2-Dimensional visuals ("2D"), 3-Dimensional visuals
-     	    		("3D"), and a dispersion curve ("disp").
-
-     -oname <string>	Optional output file prefix name.
+     -fig <string>	Plotting information for output figures. Must include axis, figure type, angular order
+     	  		(l) and radial order (n), and optional name for figure file. Figure type options are "2D",
+			"3D", or "Disperion". n,l must be integers and l must be positive.
 
 
