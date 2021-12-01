@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 11/18/21
+# Last modified by pdabney@princeton.edu, 11/30/21
 
 # Imports
 import numpy as np
@@ -15,11 +15,11 @@ class Model:
         
         self.r_min = inputs.r_min
         self.r_max = inputs.r_max
-        self.dr = self.get_dr(inputs.Nr)
+        self.dr = inputs.Nr
 
         # Mode parameters
-        self.n = self.get_range(inputs.n)
-        self.l = self.get_range(inputs.l)
+        self.n = inputs.n
+        self.l = inputs.l
         self.method = inputs.int_method
         self.mtype = inputs.mtype
 
@@ -36,28 +36,3 @@ class Model:
         return kappa
 
     
-    def get_dr(r_max, r_min, Nr):
-        # Computes the radial step
-        dr = (r_max - r_min) / Nr
-        return dr
-
-    
-    def get_range(v_max, v_min):
-        # Obtains the consecutive range of integer values between two values
-        v_range = range(v_min, v_max)
-        return v_range
-
-    
-    def eval_equation(str_input, start_value, end_value, dr):
-        # Evaluates a single variable equation at discrete points and produces an array containing the
-        # solutions
-        sol_array = []                                   # Initialize array
-
-        # Evaluate equation at each dr
-        for x in np.arange(start_value, end_value, dr):
-            sol_array += [eval(str_input)]
-        return sol_array
-
-
-
-
