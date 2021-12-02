@@ -72,6 +72,8 @@ class ps_figure():
         print(f"Saving animated figure {out_str}")
         self.animation.save(out_str)
 
+
+
     # ------------------------------------------------------------------------------------------------------------------
 
     def _gen_animations(self):
@@ -81,7 +83,8 @@ class ps_figure():
         # Get all of the line objects that will be animated from all the NM_img_objs:
         lines = []
         for a in self.NM_img_objs:
-            lines.append(a.anim_line)
+            if a.specs.type !='dispersion':
+                lines.append(a.anim_line)
 
         # Define an initialisation function for the animation that updates the data for each line type
         # The way in which the data is updated is defined for each NM_image subclass separately in two functions:
@@ -89,13 +92,13 @@ class ps_figure():
 
         def init():
             # Loop through all the line objects
-            for i in range(len(self.NM_img_objs)):
+            for i in range(len(lines)):
                 # self.axes_objs[i].init_anim_data will return x_data, y_data to be updated
                 lines[i].set_data(self.NM_img_objs[i].init_anim_data())
             return lines
 
         def animate(iteration):
-            for i in range(len(self.NM_img_objs)):
+            for i in range(len(lines)):
                 # self.axes_objs[i].update_anim_data will return x_data, y_data to be updated
                 lines[i].set_data(self.NM_img_objs[i].update_anim_data(iteration))
             return lines

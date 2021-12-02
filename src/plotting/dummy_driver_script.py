@@ -8,17 +8,17 @@ from ps_axis import ps_axis
 
 # Create 2 dummy axes:
 ax1 = ps_axis(type="radial_2D_plot",
-              data_fname="../example_2D_data.txt",
+              data_fname="./example_2D_data.txt",
               int_required=False,
               N=5,
               L=5,
               radius=6371,
               axis_loc=121)
 
-ax2 = ps_axis(type="radial_2D_plot",
-              data_fname="../example_2D_data.txt",
+ax2 = ps_axis(type="dispersion",
+              data_fname="./example_2D_data.txt",
               int_required=False,
-              N=6,
+              N=3,
               L=6,
               radius=6371,
               axis_loc=122)
