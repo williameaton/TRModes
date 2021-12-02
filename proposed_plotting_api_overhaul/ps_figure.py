@@ -1,4 +1,5 @@
 from radial_2D_plot import radial_2D_plot
+from disp_curve import disp_curve
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -39,7 +40,7 @@ class ps_figure():
         if axis_obj.type == "radial_2D_plot":
             obj = radial_2D_plot(axis_obj)
         elif axis_obj.type == "dispersion":
-            #obj = dispersion(axis_obj)
+            obj = disp_curve(axis_obj)
             pass
 
         return obj
