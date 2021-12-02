@@ -70,7 +70,7 @@ class ps_figure():
         # Now save an animated version:
         out_str = "./" + self.fname_out + ".mp4"
         print(f"Saving animated figure {out_str}")
-        self.animation.save(out_str)
+        #self.animation.save(out_str)
 
 
 
