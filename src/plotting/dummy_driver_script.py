@@ -16,7 +16,7 @@ ax1 = ps_axis(type="radial_2D_plot",
               axis_loc=121)
 
 ax2 = ps_axis(type="dispersion",
-              data_fname="./example_2D_data.txt",
+              data_fname="./lnw.txt",
               int_required=False,
               N=3,
               L=6,
@@ -25,7 +25,7 @@ ax2 = ps_axis(type="dispersion",
 
 # Create 1 dummy figure:
 f = ps_figure(axes_list=[ax1, ax2],
-              fname_out="test")
+              fname_out="test2")
 
 f.plot()
 
