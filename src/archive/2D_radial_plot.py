@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from plot_classes import gen_plot
-from plot_specs import plot_specs
+from src.archive.plot_classes import gen_plot
+from src.archive.plot_specs import plot_specs
 import matplotlib.animation as animation
 
 

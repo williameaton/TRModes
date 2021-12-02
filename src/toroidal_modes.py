@@ -4,8 +4,8 @@
 # Last modified by tschuh-at-princeton.edu, 11/19/2021
 
 import numpy as np
-from euler import euler
-from frequency_bisection import frequency_bisection
+from src.euler import euler
+from src.frequency_bisection import frequency_bisection
 
 # eventually all (most) of these constants will come from Page as input
 
