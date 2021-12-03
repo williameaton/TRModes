@@ -4,13 +4,14 @@ import numpy as np
 class disp_curve(NM_image):
     # ATTRIBUTES
     def __init__(self, ps_axis):
-        self.specs = ps_axis                                # Data from ps_axis (N, L, and the figure are included)
-        self.index = np.array([])
+        self.specs = ps_axis                        # Data from ps_axis (the figure and N & L values that the user wants to plot are included)
         self.omega = None                           # Eigenfrequency, loaded from a file
-        self.n = None                              # These will hold the entire n & l values
-        self.l = None                              # listed in the file
-        self.ax = None                                      # The axis of the figure
-        self.anim_line = None
+        self.n = None                               # N values, loaded from a file
+        self.l = None                               # l values, loaded from a file
+        self.ax = None                              # The axis of the figure
+        self.data_flag = None                       # = 1 if the user choose to plot sequentially and
+                                                    # = 2 if randomly
+        self.anim_line = None                       # See if we still need to keep this...
         
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -22,6 +23,9 @@ class disp_curve(NM_image):
         self.l = file_data[:,0]
         self.n = file_data[:,1]
         self.omega = file_data[:,2]
+
+        # Sequential or random plotting?
+        self._determine_data_flag()
 
         # Know what values to plot based on the user-defined values of N & L
         self._data_to_plot()
@@ -37,6 +41,19 @@ class disp_curve(NM_image):
 
         # Add plot details
         self._add_labels()
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def _determine_data_flag(self):
+        # Couple user-defined N & L lists. L is first 'cause we need to sort according to its values
+        zipped_lists = zip(self.specs.L, self.specs.N)
+        sorted_lists = sorted(zipped_lists)
+        
+        # Decouple the sorted lists
+        tuples = zip(*sorted_lists)
+        L_val, N_val = [ list(tuple) for tuple in  tuples]
+
+        # Find the difference 
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -59,12 +76,15 @@ class disp_curve(NM_image):
                 ind = np.intersect1d(indl, indn)
                 # Append the final index to self.index
                 self.index = np.append(self.index, ind)
+
+            # Increase the count to move to the next set of N
             count = count+1
         
-        # Make sure they are integers
+        # Make sure the indices are integers 
         self.index = self.index.astype(int)
 
-
+    # ------------------------------------------------------------------------------------------------------------------
+    
     def _add_labels(self):
         self.ax.set_title("Dispersion Curve")
         self.ax.set_xlim(np.min(self.specs.L)-1, np.max(self.specs.L)+1)
