@@ -18,8 +18,8 @@ ax1 = ps_axis(type="radial_2D_plot",
 ax2 = ps_axis(type="dispersion",
               data_fname="./lnw.txt",
               int_required=False,
-              N=3,
-              L=6,
+              N=[[1,33], [1,35,60,90], [1,50]],
+              L=[55,56,60],
               radius=6371,
               axis_loc=122)
 
