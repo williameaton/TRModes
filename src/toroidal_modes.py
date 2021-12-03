@@ -26,8 +26,8 @@ class toroidal_modes():
         self.a = 6371000 # Earth radius [m]
         self.b = 2891000 # CMB radius [m]
         self.nr = 100 # number of nodes in the radial dimension
-        self.dr = (a - b) / (nr - 1) # radial step
-        self.rr = b + np.dot((np.arange(0,nr)),dr) # vector for Earth's radii [m]
+        self.dr = (self.a - self.b) / (self.nr - 1) # radial step
+        self.rr = self.b + np.dot((np.arange(0,self.nr)),self.dr) # vector for Earth's radii [m]
 
         # Mode parameters
         # cant compute n=0, l=1 mode
@@ -38,21 +38,21 @@ class toroidal_modes():
         self.fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
         self.fmax = 0.2 # max frequency for hunt [Hz]
         self.df = 0.00001 # frequency step for hunt [Hz]
-        self.eigf = np.empty((nmax+1,lmax,)) # initialize nmax by lmax NaN matrix
+        self.eigf = np.empty((self.nmax+1,self.lmax,)) # initialize nmax by lmax NaN matrix
         self.eigf[:] = np.nan              # which will contain eigenfrequencies
-        self.Tmat = np.zeros((lmax,nmax+1))
+        self.Tmat = np.zeros((self.lmax,self.nmax+1))
         self.twopi = 2*np.pi # constant 2pi
 
         # Elastic parameters for a homogeneous spherical Earth model
         self.rho0 = 4380 # mean density [kg/m^3]
         self.vs0 = 5930 # s-wave speed [m/s]
-        self.mu0 = rho0*vs0*vs0 # shear modulus [Pa]
+        self.mu0 = self.rho0*self.vs0*self.vs0 # shear modulus [Pa]
         
         # create earth's density and shear profile for homogeneous model
-        self.rho = np.empty((nr,1,))
-        self.rho.fill(rho0)
-        self.mu = np.empty((nr,1,))
-        self.mu.fill(mu0)
+        self.rho = np.empty((self.nr,1,))
+        self.rho.fill(self.rho0)
+        self.mu = np.empty((self.nr,1,))
+        self.mu.fill(self.mu0)
         
         # integration method
         self.method = 'euler'
@@ -60,13 +60,13 @@ class toroidal_modes():
 ####################################################################
 
     # integration factory
-    def get_integrator(self,w,dr,rr,rho,mu,l):
+    def get_integrator(self,w,l):
         if self.method == 'euler':
-            [W,T,count] = euler(w,dr,rr,rho,mu,l)
+            [W,T,count] = euler(w,self.dr,self.rr,self.rho,self.mu,l)
         elif self.method == 'rk4':
-            int_obj = int_method_rk4
+            pass
         elif self.method == 'ab2':
-            int_obj = int_method_ab2
+            pass
         else:
             raise ValueError(method)
 
@@ -77,15 +77,13 @@ class toroidal_modes():
     def Tmodes_calculation(self):
         file = open("lnw.txt","w")
 
-        int_obj = get_integrator(method)
-
         for l in range(self.lmin,self.lmax+1):
             n = -1 # reset counter for radial degrees n
             f = self.fmin # we start looking for eigenfrequencies from fmin [Hz]
             wl = self.twopi*f # corresponding angular frequency [rad/s]
 
             # integrate_toroidal_system using Euler method
-            [W,T,count] = euler(wl,self.dr,self.rr,self.rho,self.mu,l)
+            [W,T,count] = self.get_integrator(wl,l)
             Twmin = T[-1]
 
             # now iterate to hunt radial orders and their frequencies
@@ -95,7 +93,7 @@ class toroidal_modes():
                 wr = self.twopi*f
 
                 # integrate for this frequency and get surface traction
-                [W,T,count] = get_integrator(wr,self.dr,self.rr,self.rho,self.mu,l)
+                [W,T,count] = self.get_integrator(wr,l)
                 Twc = T[-1]
 
                 # check if we have changed sign (meaning we've bracketed a root)
@@ -108,11 +106,11 @@ class toroidal_modes():
                     # too slow
                     if n >= self.nmin:
                         # save radial order n (counted), l, and its eigenfrequency
-                        eigf[n,l-1] = 1000*wc/self.twopi # eigenfrequency [mHz]
+                        self.eigf[n,l-1] = 1000*wc/self.twopi # eigenfrequency [mHz]
 
                         # save eigenperiod
                         T0 = self.twopi/wc/60 # eigenperiod [min]
-                        Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
+                        self.Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
 
                         # print information
                         # print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
@@ -120,12 +118,12 @@ class toroidal_modes():
                         # save information (l,n,w) to txt file
                         lorder = repr(l)
                         norder = repr(n)
-                        freq = repr(eigf[n,l-1])
+                        freq = repr(self.eigf[n,l-1])
                         file.write(lorder + " " + norder + " " + freq + "\n")
 
                     # check a new frequency estimate and get surface traction
                     f = wc/self.twopi + self.df # update frequency [Hz]
-                    [W,T,count] = get_integrator(f*self.twopi,self.dr,self.rr,self.rho,self.mu,l)
+                    [W,T,count] = self.get_integrator(f*self.twopi,l)
                     wl = wc # set current frequency as left frequency
                     Twmin = T[-1] # set current surface traction as left surface traction
 
