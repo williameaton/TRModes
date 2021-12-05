@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 11/22/21
+# Last modified by pdabney@princeton.edu, 12/04/21
 
 
 from Model.py import *
@@ -13,7 +13,6 @@ def get_input(argv):
     #    Processes the user input and produces classes that will be used for computations
     #    and/or animations and plots
     #
-    #
     # INPUT:
     #    inputs         - Class containing information about the command line arguments
     # =====================================================================================
@@ -22,8 +21,10 @@ def get_input(argv):
     Inputs = process_input_args(sys.argv)
 
     # Process flags and store in proper classes
-    model_class, output_class, control_class = process_flags(Inputs)
+    model_class = process_flags(Inputs)
 
-    return model_class, ouput_class, control_class
+    # Include figure_class or axis_class here or in the driver?
+    
+    return model_class
 
 
