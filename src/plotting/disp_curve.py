@@ -9,9 +9,8 @@ class disp_curve(NM_image):
         self.n = None                               # N values, loaded from a file
         self.l = None                               # l values, loaded from a file
         self.ax = None                              # The axis of the figure
-        self.data_flag = None                       # = 1 if the user choose to plot sequentially and
-                                                    # = 2 if randomly
         self.anim_line = None                       # See if we still need to keep this...
+        self.index = np.array([])
         
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -23,9 +22,6 @@ class disp_curve(NM_image):
         self.l = file_data[:,0]
         self.n = file_data[:,1]
         self.omega = file_data[:,2]
-
-        # Sequential or random plotting?
-        self._determine_data_flag()
 
         # Know what values to plot based on the user-defined values of N & L
         self._data_to_plot()
@@ -44,24 +40,11 @@ class disp_curve(NM_image):
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def _determine_data_flag(self):
-        # Couple user-defined N & L lists. L is first 'cause we need to sort according to its values
-        zipped_lists = zip(self.specs.L, self.specs.N)
-        sorted_lists = sorted(zipped_lists)
-        
-        # Decouple the sorted lists
-        tuples = zip(*sorted_lists)
-        L_val, N_val = [ list(tuple) for tuple in  tuples]
-
-        # Find the difference 
-
-    # ------------------------------------------------------------------------------------------------------------------
-
     def _data_to_plot(self):
         # Find the data that the user wants to plot
         # Remember: self.specs.L is a list, and self.specs.N is a list of sublists 
         # (each sublist is corresponding to one value of l)
-        
+
         count = 0
 
         for i in self.specs.L:
@@ -74,8 +57,13 @@ class disp_curve(NM_image):
                 indn = indn[0]
                 # The common index
                 ind = np.intersect1d(indl, indn)
-                # Append the final index to self.index
-                self.index = np.append(self.index, ind)
+                # Check if the requested points are in the file
+                # For some reason, ind==0 is considered as an empty variable. Have to check for that 
+                if ind or ind==0:
+                    # Append the final index to self.index
+                    self.index = np.append(self.index, ind)
+                else:
+                    raise ValueError(f"Cannot find l =  {i}, n = {j} in the provided file")
 
             # Increase the count to move to the next set of N
             count = count+1
