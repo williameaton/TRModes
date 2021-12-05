@@ -1,4 +1,5 @@
 from radial_2D_plot import radial_2D_plot
+from disp_curve import disp_curve
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -39,7 +40,7 @@ class ps_figure():
         if axis_obj.type == "radial_2D_plot":
             obj = radial_2D_plot(axis_obj)
         elif axis_obj.type == "dispersion":
-            #obj = dispersion(axis_obj)
+            obj = disp_curve(axis_obj)
             pass
 
         return obj
@@ -69,7 +70,9 @@ class ps_figure():
         # Now save an animated version:
         out_str = "./" + self.fname_out + ".mp4"
         print(f"Saving animated figure {out_str}")
-        self.animation.save(out_str)
+        #self.animation.save(out_str)
+
+
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -80,7 +83,8 @@ class ps_figure():
         # Get all of the line objects that will be animated from all the NM_img_objs:
         lines = []
         for a in self.NM_img_objs:
-            lines.append(a.anim_line)
+            if a.specs.type !='dispersion':
+                lines.append(a.anim_line)
 
         # Define an initialisation function for the animation that updates the data for each line type
         # The way in which the data is updated is defined for each NM_image subclass separately in two functions:
@@ -88,13 +92,13 @@ class ps_figure():
 
         def init():
             # Loop through all the line objects
-            for i in range(len(self.NM_img_objs)):
+            for i in range(len(lines)):
                 # self.axes_objs[i].init_anim_data will return x_data, y_data to be updated
                 lines[i].set_data(self.NM_img_objs[i].init_anim_data())
             return lines
 
         def animate(iteration):
-            for i in range(len(self.NM_img_objs)):
+            for i in range(len(lines)):
                 # self.axes_objs[i].update_anim_data will return x_data, y_data to be updated
                 lines[i].set_data(self.NM_img_objs[i].update_anim_data(iteration))
             return lines
