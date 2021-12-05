@@ -1,4 +1,4 @@
-Last updated by pdabney@princeton.edu, 11/30/21
+Last updated by pdabney@princeton.edu, 12/04/21
 
 List of flags:
 
@@ -15,10 +15,7 @@ List of flags:
      -rmax <float>	Maximum radius.
      -Nr <float>	Number of radial steps.
 
-     -T			Computes Toroidal modes.
-     -R			Computes Radial modes.
-     -S			Computes Spheriodal modes.
-
+     -mtype		Mode type to compute. Options include 'spheriodal','toroidal', or 'radial'.
 
      -n	<integer(s)>	Radial order value(s). For more than one value, must be comma separated.		
      -l <integer(s)>	Angular	order value(s), must be positive. For more than one value, must be comma
@@ -33,4 +30,4 @@ List of flags:
      	  		(l) and radial order (n), and optional name for figure file. Figure type options are "2D",
 			"3D", or "Disperion". n,l must be integers and l must be positive.
 
-
+     -ofile <string>    File name of preexisting output data. If no file exists, must compute mode frequencies.
