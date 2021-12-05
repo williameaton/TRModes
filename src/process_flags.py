@@ -6,8 +6,6 @@
 
 
 from Model.py import *
-from ps_figure.py import *
-from ps_axis.py import *
 import sys, getopt, argparse
 from datetime import date
 from os.path import exists as file_exists
@@ -35,10 +33,8 @@ def process_flags(inputs):
     #    inputs         - Class containing information about the command line arguments
     # =======================================================================================
 
-    # Initialize classes
+    # Initialize class
     model_class = Model()
-    axis_class = ps_axis()
-    figure_class = ps_figure()
     
     # Process the flags
     if bool(inputs.gui):
