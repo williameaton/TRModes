@@ -8,10 +8,10 @@
 import numpy as np
 from euler import euler
 from rk4 import rk4
+from ab2 import ab2
 
 # To do:
 #
-# write other ab2 integration method
 # move all (most) of these constants to driver.py as inputs from Page
 # connect input and output to driver.py
 # speed up calculation for large n choice
@@ -24,9 +24,9 @@ from rk4 import rk4
 
 # Notes:
 #
-# rk4 is much slower than euler
-# rk4 solutions start to diverge from euler solutions at large n
-# large n --> slower, no issues with l
+# speed from fastest to slowest: euler, ab2, rk4
+# solutions from different methods diverge as n increases
+# larger n --> slower, no issues with l
 
 ####################################################################
 
@@ -43,7 +43,7 @@ class toroidal_modes():
         # Mode parameters
         # cant compute n=0, l=1 mode
         self.nmin = 0 # min radial order n (n >=0)
-        self.nmax = 2 # max radial order n
+        self.nmax = 5 # max radial order n
         self.lmin = 1 # min angular order l (l >= 1)
         self.lmax = 2 # max angular order l
         self.fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
@@ -76,7 +76,7 @@ class toroidal_modes():
         elif self.method == 'rk4':
             [W,T,count] = rk4(w,self.dr,self.rr,self.rho,self.mu,l)
         elif self.method == 'ab2':
-            pass
+            [W,T,count] = ab2(w,self.dr,self.rr,self.rho,self.mu,l)
         else:
             raise ValueError(method)
 
@@ -96,8 +96,9 @@ class toroidal_modes():
             wc = 0.5*(wmax + wmin)
 
             # integrate and compute surface traction T
-            #[W,T,_] = euler(wc,self.dr,self.rr,self.rho,self.mu,l)
-            [W,T,_] = self.get_integrator(wc,l)
+            # use Euler method for now b/c integrator factory isnt working here
+            [W,T,_] = euler(wc,self.dr,self.rr,self.rho,self.mu,l)
+            #[W,T,_] = self.get_integrator(wc,l)
             Twc = T[-1]
 
             # check on which subinterval has located the root
@@ -176,7 +177,7 @@ class toroidal_modes():
                     [W,T,count] = self.get_integrator(f*2*np.pi,l)
                     wl = wc # set current frequency as left frequency
                     Twmin = T[-1] # set current surface traction as left surface traction
-
+                    
                 else: # then we havent bracketed a frequency
                     wl = wr # set current frequency as right frequency
                     Twini = Twc # set current surface traction as right surface traction
