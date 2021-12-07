@@ -13,7 +13,6 @@ from ab2 import ab2
 # To do:
 #
 # change eigf and Tmat so they are size of lrange and nrange
-# add if statements to save specified n's
 # connect input and output to driver.py
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)
@@ -37,6 +36,15 @@ class toroidal_modes():
         # save data from Page's inputs to self.data
         self.data = data
 
+        # define variables that are not user input
+        # frequency-related variables
+        self.fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
+        self.fmax = 0.2 # max frequency for hunt [Hz]
+        self.df = 0.00001 # frequency step for hunt [Hz]
+        self.eigf = np.empty((self.data.nrange[-1]+1,self.data.lrange[-1],)) # initialize nmax by lmax NaN matrix
+        self.eigf[:] = np.nan              # which will contain eigenfrequencies
+        self.Tmat = np.zeros((self.data.lrange[-1],self.data.nrange[-1]+1))
+        
 ####################################################################
 
     # integration factory
@@ -100,7 +108,7 @@ class toroidal_modes():
 
         for l in self.data.lrange:
             n = -1 # reset counter for radial degrees n
-            f = self.data.fmin # we start looking for eigenfrequencies from fmin [Hz]
+            f = self.fmin # we start looking for eigenfrequencies from fmin [Hz]
             wl = 2*np.pi*f # corresponding angular frequency [rad/s]
 
             # integrate_toroidal_system using Euler method
@@ -108,9 +116,9 @@ class toroidal_modes():
             Twmin = T[-1]
 
             # now iterate to hunt radial orders and their frequencies
-            while f < self.data.fmax:
+            while f < self.fmax:
                 # increase frequency (new candidate)
-                f = f + self.data.df
+                f = f + self.df
                 wr = 2*np.pi*f
 
                 # integrate for this frequency and get surface traction
@@ -123,27 +131,29 @@ class toroidal_modes():
                     # and eigenfunctions and the radial order n
                     [wc,_,_,n] = self.frequency_bisection(wr,wl,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l,Twmin)
 
-                    # only save eigenfrequency if n >= nmin
+                    # only save eigenfrequency if n >= nrange[0]
                     # too slow
-                    if n >= self.data.nmin:
+                    if n >= self.data.nrange[0]:
                         # save radial order n (counted), l, and its eigenfrequency
-                        self.data.eigf[n,l-1] = 1000*wc/(2*np.pi) # eigenfrequency [mHz]
+                        self.eigf[n,l-1] = 1000*wc/(2*np.pi) # eigenfrequency [mHz]
 
                         # save eigenperiod
                         T0 = (2*np.pi)/wc/60 # eigenperiod [min]
-                        self.data.Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
+                        self.Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
 
                         # print information
                         # print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
                         # save information (l,n,w) to txt file
-                        lorder = repr(l)
-                        norder = repr(n)
-                        freq = repr(self.data.eigf[n,l-1])
-                        file.write(lorder + " " + norder + " " + freq + "\n")
+                        # only if it was requested by user
+                        if n in self.data.nrange:
+                            lorder = repr(l)
+                            norder = repr(n)
+                            freq = repr(self.eigf[n,l-1])
+                            file.write(lorder + " " + norder + " " + freq + "\n")
 
                     # check a new frequency estimate and get surface traction
-                    f = wc/(2*np.pi) + self.data.df # update frequency [Hz]
+                    f = wc/(2*np.pi) + self.df # update frequency [Hz]
                     [W,T,count] = self.get_integrator(f*2*np.pi,l)
                     wl = wc # set current frequency as left frequency
                     Twmin = T[-1] # set current surface traction as left surface traction
@@ -153,7 +163,7 @@ class toroidal_modes():
                     Twini = Twc # set current surface traction as right surface traction
 
                 # stop search if we already have the requested number of radial orders n
-                if (n+1) >= self.data.nmax+1:
+                if (n+1) >= self.data.nrange[-1]+1:
                     break
 
         file.close
