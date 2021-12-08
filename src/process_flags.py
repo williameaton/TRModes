@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 12/04/21
+# Last modified by pdabney@princeton.edu, 12/07/21
 
 #--------------------------------------------------------------------------------------------
 # Imports
@@ -35,72 +35,62 @@ def process_flags(inputs):
 
     # Initialize class
     model_class = Model()
-    
-    # Process the flags
-    if bool(inputs.gui):
-        # launch gui
-        pass
 
-    
-    # --------------------------------------------------------------------------------------- 
-    # USE EXISTING OUTPUT FILE TO OBTAIN VISUALS
-    elif hasattr(inputs, "output_filename"):
-        data_fname = inputs.output_filename
     
     # ---------------------------------------------------------------------------------------
     # SET UP INPUTS TO COMPUTE MODES
+
+    # For the input model
+    if hasattr(inputs, "model_file"):
+        # Make sure file exists
+        assert file_exists(inputs.model_file), 'Model file does not exist. \n'
+        
+        # Evaluate the data file
+        Vp_pts, Vs_pts, rho_pts, R_pts, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
+        
+        # Compute dr
+        model_class.dr = (model_class.r_max - model_class.r_min) / inputs.Nr
+        
+        # Obtain equations for rho, Vs, Vp in order to resample
+        rho_eq = get_bestfit_eq(R_pts, rho_pts)
+        Vs_eq = get_bestfit_eq(R_pts, Vs_pts)
+        Vp_eq = get_bestfit_eq(R_pts, Vp_pts)
+        
+        # Evaluate the equations
+        rho = eval_equation(rho_eq, model_class.r_min, model_class.r_max, model_class.dr)
+        Vs = eval_equation(Vs_eq, model_class.r_min, model_class.r_max, model_class.dr)
+        Vp = eval_equation(Vp_eq, model_class.r_min, model_class.r_max, model_class.dr)
+
+        # Compute the bulk and shear modulus
+        model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
+        model_class.mu = rho * (Vs ** 2);
+        
     else:
-        # For the input model
-        if hasattr(inputs, "model_file"):
-            # Make sure file exists
-            assert file_exists(inputs.model_file), 'Model file does not exist. \n'
+        # Ensure a density and shear velocity equations have been inputed
+        # (both are required regardless of mode type)
+        assert hasattr(inputs,'eq_rho'), 'Requires density equation. \n'
+        assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
+        
+        # Compute dr                                                                                          
+        model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
+        
+        # Obtain density and shear velocity (both are used for all computations
+        rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
+        Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
+        
+        # Compute the shear modulus
+        model_class.mu = rho * (Vs ** 2);
+
             
-            # Evaluate the data file
-            Vp_pts, Vs_pts, rho_pts, R_pts, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
-
-            # Compute dr
-            model_class.dr = (model_class.r_max - model_class.r_min) / inputs.Nr
-
-            # Obtain equations for rho, Vs, Vp in order to resample
-            rho_eq = get_bestfit_eq(R_pts, rho_pts)
-            Vs_eq = get_bestfit_eq(R_pts, Vs_pts)
-            Vp_eq = get_bestfit_eq(R_pts, Vp_pts)
-
-            # Evaluate the equations
-            rho = eval_equation(rho_eq, model_class.r_min, model_class.r_max, model_class.dr)
-            Vs = eval_equation(Vs_eq, model_class.r_min, model_class.r_max, model_class.dr)
-            Vp = eval_equation(Vp_eq, model_class.r_min, model_class.r_max, model_class.dr)
-
-            # Compute the bulk and shear modulus
+        if inputs.mtype == "Radial":
+      	    # Check the user has inputted a compressional velocity equation
+            assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
+            
+            # Obtain compressional velocity
+            Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
+            
+            # Compute the bulk modulus
             model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
-            model_class.mu = rho * (Vs ** 2);
-            
-        else:
-            # Ensure a density and shear velocity equations have been inputed
-            # (both are required regardless of mode type)
-            assert hasattr(inputs,'eq_rho'), 'Requires density equation. \n'
-            assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
-                
-            # Compute dr                                                                                          
-            model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
-            
-            # Obtain density and shear velocity (both are used for all computations
-            rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
-            Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
-
-            # Compute the shear modulus
-            model_class.mu = rho * (Vs ** 2);
-
-            
-            if inputs.mtype == "Radial":
-      	        # Check the user has inputted a compressional velocity equation
-                assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
-
-            	# Obtain compressional velocity
-                Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
-
-                # Compute the bulk modulus
-                model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
 
                 
         #----------------------------------------------------------------------------------------   
@@ -138,7 +128,7 @@ def process_flags(inputs):
 
         # Check mode type input values
         input_mtype = inputs.mode_type.lower()
-        assert input_mtype == 'radial' or input_mtype == 'spheriodal' or input_mtype == 'toroidal', \
+        assert input_mtype == 'radial' or input_mtype == 'toroidal', \
             'Mode type does not exist. See Readme for details. \n'
 
         # Check intergration method
@@ -147,24 +137,6 @@ def process_flags(inputs):
             'Integration method does not exist. See Readme for details. \n'
             
 
-    #------------------------------------------------------------------------------------
-    # OUTPUT PARAMETERS
-    if hasattr(inputs,"figure_outputs"):
-        for i in range(inputs.figure_outputs):
-            fname_out, ax_list, L, N, ptype = extract_fig_info(inputs.figure_outputs[i])
-            # Check for corresponding number n and l values                                                       
-            assert len(L) == len(N), \
-                'Error: Must have corresponding number of n and l values. See Readme for details. \n'
-            # Check all N and L values are zero or greater and integers   
-            assert all(isinstance(x, int) for x in N), 'N values must be integers. \n'
-            assert N >= 0, 'N values must be zero or greater. \n'
-            assert all(isinstance(x, int) for x in L), 'L values must be integers. \n'
-            assert L >= 0, 'L values must be zero or greater. \n'
-            # Check is plot type exists
-            assert ptype == 'dispersion' or ptype == 'radial_2d_plot', \
-                'Plot type does not exist. See Readme for details. \n'
-
-                        
     return model_class
 
 
@@ -201,7 +173,7 @@ def process_input_args(cml_arguments):
     parser.add_argument("-l", "--l_values", dest="l", nargs=1, help="Angular degree value(s)")
     parser.add_argument("-lrange", "--lrange", dest="lrange", nargs=1, help="Range of angular degree values")
     parser.add_argument("-int", "--integrator", dest="int_method", nargs=1, help="Integration method")
-    parser.add_argument("-mtype", "--mode_type", dest="mode_type", nargs=1, help="Type of mode: toroidal, spheriodal or radial")
+    parser.add_argument("-mtype", "--mode_type", dest="mode_type", nargs=1, help="Type of mode: toroidal or radial")
 
 
     # Flags related to output
@@ -219,7 +191,7 @@ def process_input_args(cml_arguments):
 
 
 #------------------------------------------------------------------------------------------                    
-def extract_fig_info(str_in):
+def process_input_fig(str_in):
     # =======================================================================================                         
     # DESCRIPTION:                                                                                                    
     #   Processes the users input regarding the output figure(s).
@@ -232,15 +204,16 @@ def extract_fig_info(str_in):
     #    ax_list        - List of figure axes. (e.g. ['121','122'])
     #    L              - Angular order value(s). (format: 'L4' or 'L1,2,3,4')
     #    N              - Radial order value(s). (format: 'N3' or 'N[1][3,4][1,2,3,4]')
-    #    ptype          - Plot type: 'radial','toroidal','spheriodal'
+    #    ptype          - Plot type: 'radial','toroidal'
     # =======================================================================================  
-
+ 
     if (str_in.find(":") != 1):
         # Separate the output file name and store
         fname_sep = str_in.split(":")
         fname_out = fname_sep[0]
         start = 1
     else:
+        fname_sep = str_in
         fname_out = None
         start = 0
 
@@ -254,41 +227,79 @@ def extract_fig_info(str_in):
         for k in range(0,len(fig_sep)):
             ax_sep = fig_sep[k].split(" ")
             # Removes empty strings
-            newlist = [j for j in ax_sep if j]
+            new_axsep = [j for j in ax_sep if j]
 
             # Store values
-            ax_list.append(ax_sep[0])
-            ptype.append(ax_sep[1].lower())
+            ax_list.append(new_axsep[0])
+            ptype.append(new_axsep[1].lower())
+
             # Remove N and L identifier
-            l = ax_sep[2].replace('L','')
-            n = ax_sep[3].replace('N','')
-            
+            l = new_axsep[2].replace('L','')
             if len(l) > 1:
-                # If there is more than one value
-                l_values = str2array(l,',')
+                # If there is more than one value                                                                                      
+                if '-' in l:
+                    l_array = str2array(l_temp,'-')
+                    l_values = range(l_array[0], l_array[1]+1)
+                else:
+                    l_values = str2array(l,',')
             else:
-                l_values = float(l)
+                l_values = float(l)        
 
-            if len(n) > 1:
-                # If there is more than a single value
-                n_rep = n.replace('[','').replace(']',' ').split(' ')
-                # Removes empty strings
-                new_n = [j for j in n_rep if j]
-                n_values = []
-                for i in range(len(new_n)):
-                    # Appends an empty sublist inside the list that can be filled later
-                    n_values.append([])
-                    n_list = str2array(new_n[i],',')
-                    for k in range(len(n_list)):
-                        # Fill list with sublists
-                        n_values[i].append(n_list[k])
+            # Apply the same n values for each l
+            if "n_all" in new_axsep[3].lower():
+                n = new_axsep[3].lower().replace('n_all','')
+                if len(n) > 1:
+                    # If there is more than a single value
+                    n_temp = n.replace('[','').replace(']','')
+                    if '-' in n:
+                        n_array = sorted(str2array(n_temp,'-'))
+                        n_val = range(n_array[0], n_array[1]+1)
+                    else:
+                        n_val = str2array(n_temp,',')
+                else:
+                    n_val = float(n)
+
+                # Create sublists with the same n values for each l
+                n_values = [[]] * len(l_values)
+                for i in range(0,len(l_values)):
+                    n_values[i] = n_val
+
+            # Apply different n values for each l
             else:
-                n_values = float(n)
+                n = new_axsep[3].replace('N','')
+                if len(n) > 1:
+                    # If there is more than a single value
+                    n_rep = n.replace('[','').replace(']',' ').split(' ')
+                    # Removes empty strings
+                    new_n = [j for j in n_rep if j]
+                    n_values = []
+                    for i in range(len(new_n)):
+                        # Appends an empty sublist inside the list that can be filled later
+                        n_values.append([])
+                        n_list = str2array(new_n[i],',')
+                        for k in range(len(n_list)):
+                            # Fill list with sublists
+                            n_values[i].append(n_list[k])
+                else:
+                    n_values = float(n)
 
-            # Store n and l values
-            L.append(l_values)
-            N.append(n_values)
- 
+        # Store n and l values
+        L.append(sorted(l_values))
+        N.append(sorted(n_values))
+
+
+    # Check if all inputs are valid
+    assert len(L) == len(N), \
+        'Error: Must have corresponding number of n and l values. See Readme for details. \n'
+    # Check all N and L values are zero or greater and integers                                             
+    assert all(isinstance(x, int) for x in N), 'N values must be integers. \n'
+    assert N >= 0, 'N values must be zero or greater. \n'
+    assert all(isinstance(x, int) for x in L), 'L values must be integers. \n'
+    assert L >= 0, 'L values must be zero or greater. \n'
+    # Check is plot type exists                                                                             
+    assert ptype == 'dispersion' or ptype == 'radial_2d_plot', \
+        'Plot type does not exist. See Readme for details. \n'
+
     return fname_out, ax_list, L, N, ptype
 
 
@@ -408,7 +419,7 @@ def input_log(cml_arguments):
     d = today.strftime("%m-%d-%Y")
 
     # Creates a file "input_log.txt" containing the input arguments
-    f = open("input_log.txt", "a")
+    f = open("input_log.txt", "w")
 
     # Write command line arguments 
     f.write("Date: " + d + "\n")
