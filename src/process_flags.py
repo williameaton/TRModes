@@ -339,8 +339,8 @@ def extractfromfile(fname):
     Vs_pts = f[:, 3]  # Shear wave velocity
     rho_pts = f[:, 1]  # Density
     R_pts = f[:, 0]  # Radius
-    r_max = R_pts[-1]  # Maximum radius
-    r_min = R_pts[0]  # Minimum radius
+    r_min = R_pts[-1]  # Minimum radius
+    r_max = R_pts[0]  # Maximum radius
 
     return Vp_pts, Vs_pts, rho_pts, R_pts, r_max, r_min
 
@@ -357,15 +357,15 @@ def get_bestfit_eq(R, data):
     # OUTPUT:                                                                                                         
     #    eq              - String of best fit equation
     # ================================================================================================  
-    
+
     deg = 4  # Polynomial degree
 
     # Determine best fit curve to the data
     coeff = np.polyfit(R, data, deg)
 
     # Returns the best fit equation as string
-    eq = "(r ** 4) * %d + (r ** 3) * %d + (r ** 2) * %d + r * %d + %d" % (coeff[0], coeff[1], coeff[2], \
-                                                                          coeff[3], coeff[4])
+    eq = "(r ** 4) * %d + (r ** 3) * %d + (r ** 2) * %d + r * %d + %d" % (coeff[0], coeff[1], coeff[2], coeff[3], coeff[4])
+
     return eq
 
 
@@ -388,8 +388,8 @@ def eval_equation(str_input, start_value, end_value, ds):
     sol_array = []                                   # Initialize array
 
     # Evaluate equation at each dr
-    for x in np.arange(start_value, end_value, dr):
-        sol_array += [eval(str_input)]
+    for r in np.arange(start_value, end_value, dr):
+        sol_array.append(eval(str_input))
 
     return sol_array
 
