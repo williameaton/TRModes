@@ -12,7 +12,7 @@ from ab2 import ab2
 
 # To do:
 #
-# move all (most) of these constants to driver.py as inputs from Page
+# change eigf and Tmat so they are size of lrange and nrange
 # connect input and output to driver.py
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)
@@ -32,51 +32,29 @@ from ab2 import ab2
 
 class toroidal_modes():
 
-    def __init__(self):
-        # Base parameters for discretization and radial integration
-        self.a = 6371000 # Earth radius [m]
-        self.b = 2891000 # CMB radius [m]
-        self.nr = 100 # number of nodes in the radial dimension
-        self.dr = (self.a - self.b) / (self.nr - 1) # radial step
-        self.rr = self.b + np.dot((np.arange(0,self.nr)),self.dr) # vector for Earth's radii [m]
+    def __init__(self, data):
+        # save data from Page's inputs to self.data
+        self.data = data
 
-        # Mode parameters
-        # cant compute n=0, l=1 mode
-        self.nmin = 0 # min radial order n (n >=0)
-        self.nmax = 5 # max radial order n
-        self.lmin = 1 # min angular order l (l >= 1)
-        self.lmax = 2 # max angular order l
+        # define variables that are not user input
+        # frequency-related variables
         self.fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
         self.fmax = 0.2 # max frequency for hunt [Hz]
         self.df = 0.00001 # frequency step for hunt [Hz]
-        self.eigf = np.empty((self.nmax+1,self.lmax,)) # initialize nmax by lmax NaN matrix
+        self.eigf = np.empty((self.data.nrange[-1]+1,self.data.lrange[-1],)) # initialize nmax by lmax NaN matrix
         self.eigf[:] = np.nan              # which will contain eigenfrequencies
-        self.Tmat = np.zeros((self.lmax,self.nmax+1))
-
-        # Elastic parameters for a homogeneous spherical Earth model
-        self.rho0 = 4380 # mean density [kg/m^3]
-        self.vs0 = 5930 # s-wave speed [m/s]
-        self.mu0 = self.rho0*self.vs0*self.vs0 # shear modulus [Pa]
+        self.Tmat = np.zeros((self.data.lrange[-1],self.data.nrange[-1]+1))
         
-        # create earth's density and shear profile for homogeneous model
-        self.rho = np.empty((self.nr,1,))
-        self.rho.fill(self.rho0)
-        self.mu = np.empty((self.nr,1,))
-        self.mu.fill(self.mu0)
-        
-        # integration method
-        self.method = 'euler'
-
 ####################################################################
 
     # integration factory
     def get_integrator(self,w,l):
-        if self.method == 'euler':
-            [W,T,count] = euler(w,self.dr,self.rr,self.rho,self.mu,l)
-        elif self.method == 'rk4':
-            [W,T,count] = rk4(w,self.dr,self.rr,self.rho,self.mu,l)
-        elif self.method == 'ab2':
-            [W,T,count] = ab2(w,self.dr,self.rr,self.rho,self.mu,l)
+        if self.data.method == 'euler':
+            [W,T,count] = euler(w,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l)
+        elif self.data.method == 'rk4':
+            [W,T,count] = rk4(w,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l)
+        elif self.data.method == 'ab2':
+            [W,T,count] = ab2(w,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l)
         else:
             raise ValueError(method)
 
@@ -97,7 +75,7 @@ class toroidal_modes():
 
             # integrate and compute surface traction T
             # use Euler method for now b/c integrator factory isnt working here
-            [W,T,_] = euler(wc,self.dr,self.rr,self.rho,self.mu,l)
+            [W,T,_] = euler(wc,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l)
             #[W,T,_] = self.get_integrator(wc,l)
             Twc = T[-1]
 
@@ -128,7 +106,7 @@ class toroidal_modes():
     def Tmodes_calculation(self):
         file = open("lnw.txt","w")
 
-        for l in range(self.lmin,self.lmax+1):
+        for l in self.data.lrange:
             n = -1 # reset counter for radial degrees n
             f = self.fmin # we start looking for eigenfrequencies from fmin [Hz]
             wl = 2*np.pi*f # corresponding angular frequency [rad/s]
@@ -151,11 +129,11 @@ class toroidal_modes():
                 if (Twc*Twmin) < 0: # then we have bracketed a root
                     # use bissection to get a precise estimate of the frequency
                     # and eigenfunctions and the radial order n
-                    [wc,_,_,n] = self.frequency_bisection(wr,wl,self.dr,self.rr,self.rho,self.mu,l,Twmin)
+                    [wc,_,_,n] = self.frequency_bisection(wr,wl,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l,Twmin)
 
-                    # only save eigenfrequency if n >= nmin
+                    # only save eigenfrequency if n >= nrange[0]
                     # too slow
-                    if n >= self.nmin:
+                    if n >= self.data.nrange[0]:
                         # save radial order n (counted), l, and its eigenfrequency
                         self.eigf[n,l-1] = 1000*wc/(2*np.pi) # eigenfrequency [mHz]
 
@@ -167,10 +145,12 @@ class toroidal_modes():
                         # print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
                         # save information (l,n,w) to txt file
-                        lorder = repr(l)
-                        norder = repr(n)
-                        freq = repr(self.eigf[n,l-1])
-                        file.write(lorder + " " + norder + " " + freq + "\n")
+                        # only if it was requested by user
+                        if n in self.data.nrange:
+                            lorder = repr(l)
+                            norder = repr(n)
+                            freq = repr(self.eigf[n,l-1])
+                            file.write(lorder + " " + norder + " " + freq + "\n")
 
                     # check a new frequency estimate and get surface traction
                     f = wc/(2*np.pi) + self.df # update frequency [Hz]
@@ -183,7 +163,7 @@ class toroidal_modes():
                     Twini = Twc # set current surface traction as right surface traction
 
                 # stop search if we already have the requested number of radial orders n
-                if (n+1) >= self.nmax+1:
+                if (n+1) >= self.data.nrange[-1]+1:
                     break
 
         file.close
