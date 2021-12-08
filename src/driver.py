@@ -51,7 +51,7 @@ def driver(sys.argv):
         # If there are multiple figures to produce
         for x in range(0,len(inputs.output_filename):
                 # Convert input string 
-                fname_out, ax_list, L, N, ptype = extract_fig_info(inputs.output_filename[x])
+                fname_out, ax_list, L, N, ptype = process_input_fig(inputs.output_filename[x])
 
                 # Create figure class
                 figure_class = ps_figure(ax_list, fname_out)
