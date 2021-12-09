@@ -1,7 +1,14 @@
 
 class ps_axis():
-
+    """ps_axis objects are created from the users input and pass information/specifications to the plotting scripts
+       for a single matplotlib axis as part of a figure. Data these objects hold include the type of plot, the normal
+       mode(s) that are to be plotted and any relevant model data, and the location of the axis on the figure."""
     def __init__(self, type, data_fname, int_required, N, L, radius, axis_loc=111):
+        """
+        :param type: Type of plot desired. Currently supports dispersion plots ("dispersion"), 3D volumetric animations
+        ("3D_animated") or 2D radial plots ("radial_2D_plot").
+        :type type: string
+        """
         self.type =  self._assign_plottype(type)    # type of NM_image subclass desired
         self.figure = None                          # MPL figure the NM_image will attach itself to
         self.axis_loc = axis_loc                    # Location of NM_image axis (e.g. 111)
@@ -13,20 +20,20 @@ class ps_axis():
 
 
     def _set_ps_axis_figure(self, f):
-        # ==============================================================================================================
-        # DESCRIPTION: Allows updating of the figure attribute
-        # INPUTS:   f [MPL figure]    - the new MPL figure to assign to attribute
-        # ==============================================================================================================
+        """Allows updating of the figure attribute for this class.
+            :param f: The matplotlib figure object
+            :type f: Matplotlib Figure object
+        """
         self.figure = f
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def _assign_plottype(self, plot_str):
-        # ==============================================================================================================
-        # DESCRIPTION: Checks inputted string is an acceptable string
-        # INPUTS:   plot_str [str]    - string holding desired plot_type
-        # OUTPUTS:  plot_str [str]    - string holding desired plot_type - now checked.
-        # ==============================================================================================================
+        """Checks inputted string is an acceptable string
+           :param plot_str: String holding desired plot_type
+           :type plot_str: string
+           :raises ValueError: if plt_str is not "dispersion", "radial_2D_plot" or "3D_animated"
+        """
 
         # Define possible plot_types
         plottype = {
