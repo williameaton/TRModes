@@ -26,45 +26,25 @@ def process_flags(inputs):
 
     # Initialize class
     model_class = Model()
-    
-    # Process the flags
-    if bool(inputs.gui):
-        # launch gui
-        pass
 
-    
-    # --------------------------------------------------------------------------------------- 
-    # USE EXISTING OUTPUT FILE TO OBTAIN VISUALS
-    elif hasattr(inputs, "output_filename"):
-        data_fname = inputs.output_filename
     
     # ---------------------------------------------------------------------------------------
-    # SET UP INPUTS TO COMPUTE MODES
-    else:
-        # For the input model
-        if hasattr(inputs, "model_file"):
-            # Make sure file exists
-            assert file_exists(inputs.model_file), 'Model file does not exist. \n'
-            
-            # Evaluate the data file
-            Vp_pts, Vs_pts, rho_pts, R_pts, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
+    # MODEL INPUT
 
-            # Compute dr
-            model_class.dr = (model_class.r_max - model_class.r_min) / inputs.Nr
-
-            # Obtain equations for rho, Vs, Vp in order to resample
-            rho_eq = get_bestfit_eq(R_pts, rho_pts)
-            Vs_eq = get_bestfit_eq(R_pts, Vs_pts)
-            Vp_eq = get_bestfit_eq(R_pts, Vp_pts)
-
-            # Evaluate the equations
-            rho = eval_equation(rho_eq, model_class.r_min, model_class.r_max, model_class.dr)
-            Vs = eval_equation(Vs_eq, model_class.r_min, model_class.r_max, model_class.dr)
-            Vp = eval_equation(Vp_eq, model_class.r_min, model_class.r_max, model_class.dr)
-
-            # Compute the bulk and shear modulus
-            model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
-            model_class.mu = rho * (Vs ** 2);
+    # For the input model
+    if hasattr(inputs, "model_file"):
+        # Make sure file exists
+        assert file_exists(inputs.model_file), 'Model file does not exist. \n'
+        
+        # Evaluate the data file
+        Vp, Vs, model_class.rho, rr, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
+        
+        # Compute a dr array (not evenly spaced)
+        model_class.dr = rr[1:len(rr)] - rr[0:len(rr)-1]
+        
+        # Compute the bulk and shear modulus
+        model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
+        model_class.mu = model_class.rho * (Vs ** 2);
             
         else:
             # Ensure a density and shear velocity equations have been inputed
@@ -139,21 +119,8 @@ def process_flags(inputs):
             
 
     #------------------------------------------------------------------------------------
-    # OUTPUT PARAMETERS
-    if hasattr(inputs,"figure_outputs"):
-        for i in range(inputs.figure_outputs):
-            fname_out, ax_list, L, N, ptype = extract_fig_info(inputs.figure_outputs[i])
-            # Check for corresponding number n and l values                                                       
-            assert len(L) == len(N), \
-                'Error: Must have corresponding number of n and l values. See Readme for details. \n'
-            # Check all N and L values are zero or greater and integers   
-            assert all(isinstance(x, int) for x in N), 'N values must be integers. \n'
-            assert N >= 0, 'N values must be zero or greater. \n'
-            assert all(isinstance(x, int) for x in L), 'L values must be integers. \n'
-            assert L >= 0, 'L values must be zero or greater. \n'
-            # Check is plot type exists
-            assert ptype == 'dispersion' or ptype == 'radial_2d_plot', \
-                'Plot type does not exist. See Readme for details. \n'
+    # Add input information to log
+    
 
                         
     return model_class
@@ -257,11 +224,40 @@ def input_log(cml_arguments):
     f = open("input_log.txt", "a")
 
     # Write command line arguments 
+    f.write("----------------------------------------------------------------------------------------")
     f.write("Date: " + d + "\n")
     f.write("\n" + str(cml_arguments) + "\n" + "\n")
-
+    f.write("----------------------------------------------------------------------------------------")
     # Close file
     f.close()
 
     
 # ----------------------------------------------------------------------------------------------------
+def add2log(string, variable):
+    # ================================================================================================  
+    # DESCRIPTION:                                                                                      
+    #    Add to input log 
+    #                                                                                                   
+    # INPUT:                                                                                            
+    #    string
+    #    variable
+    # ================================================================================================
+
+    # Add colon to string
+    added_c = string + ':'
+    # Ensure even spacing
+    _string = f"{added_c: <15}"
+
+    # Append to log
+    f = open("input_log.txt", "a")
+    f.write("\n" + _string + " " + str(variable))
+    f.close()
+
+    
+# ----------------------------------------------------------------------------------------------------  
+def add2log_line():
+    # Add break line to log
+    f = open("input_log.txt", "a")
+    f.write("\n")
+    f.write("----------------------------------------------------------------------------------------")
+    f.close()
