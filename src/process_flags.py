@@ -38,9 +38,9 @@ def process_flags(inputs):
 
     
     # ---------------------------------------------------------------------------------------
-    # SET UP INPUTS TO COMPUTE MODES
+    # MODEL INPUTS:
 
-    # For the input model
+    # For a model file
     if hasattr(inputs, "model_file"):
         # Make sure file exists
         assert file_exists(inputs.model_file), 'Model file does not exist. \n'
@@ -64,14 +64,15 @@ def process_flags(inputs):
         # Compute the bulk and shear modulus
         model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
         model_class.mu = rho * (Vs ** 2);
-        
+
+    # For model equations
     else:
         # Ensure a density and shear velocity equations have been inputed
         # (both are required regardless of mode type)
         assert hasattr(inputs,'eq_rho'), 'Requires density equation. \n'
         assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
         
-        # Compute dr                                                                                          
+        # Compute dr                                                                                    
         model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
         
         # Obtain density and shear velocity (both are used for all computations
@@ -95,9 +96,8 @@ def process_flags(inputs):
                 
         #----------------------------------------------------------------------------------------   
         # Model parameters
-        
         if hasattr(inputs,"nrange"):
-	    # Convert string to an array                                                                          
+	    # Convert string to an array
 	    n_values = str2array(inputs.nrange)
             
             # Obtain n values
@@ -115,11 +115,11 @@ def process_flags(inputs):
             # Convert string to an array
 	    l_values = str2array(inputs.lrange,",")
             
-	    # Obtain l values                                                                                     
+	    # Obtain l values
             model_class.l = range(l_values[1], l_values[0]) 
 
         else:
-	    # Convert string to an array                                                                          
+	    # Convert string to an array
             model_class.l = str2array(inputs.l,",")
 
         # Check l values                           
@@ -141,15 +141,15 @@ def process_flags(inputs):
 
 
 
-#--------------------------------------------------------------------------------------------                     
+#--------------------------------------------------------------------------------------------
 # Supplementry Functions                                   
 #--------------------------------------------------------------------------------------------
 def process_input_args(cml_arguments):
-    # =======================================================================================                    
-    # DESCRIPTION:                                                                                                    
+    # =======================================================================================          
+    # DESCRIPTION:                                                                                   
     #   Process the command line arguments and store values in a class
-    #                                                                                                                 
-    # INPUT:                                                                                                          
+    #                                                                                                 
+    # INPUT:                                                                                         
     #    cml_arguments         - Command line arguments (i.e. sys.argv)
     # OUTPUt:
     #    inputs                - Class containing user inputs from the command line
@@ -190,20 +190,21 @@ def process_input_args(cml_arguments):
 
 
 
-#------------------------------------------------------------------------------------------                    
+#------------------------------------------------------------------------------------------            
 def process_input_fig(str_in):
-    # =======================================================================================                         
-    # DESCRIPTION:                                                                                                    
+    # =======================================================================================           
+    # DESCRIPTION:                                                                                     
     #   Processes the users input regarding the output figure(s).
-    #                                                                                                                 
-    # INPUT:                                                                                                          
+    #                                                                                                 
+    # INPUT:                                                                                         
     #    str_in         - String of the figure output information. (e.g. "figure1: 121 2D_radial
     #                     L4 N2; 122 dispersion L1,2,3 N[1][1,2][1,2,3]")
     # OUTPUT:
     #    fname_out      - File name of figure(s). Variable is set to None if no name is specified.
     #    ax_list        - List of figure axes. (e.g. ['121','122'])
-    #    L              - Angular order value(s). (format: 'L4' or 'L1,2,3,4')
-    #    N              - Radial order value(s). (format: 'N3' or 'N[1][3,4][1,2,3,4]')
+    #    L              - Angular order value(s). (format: 'L4' or 'L1,2,3,4' or L1-5)
+    #    N              - Radial order value(s). (format: 'N3' or 'N[1][3,4][1,2,3,4]' or  'N[1-6]'
+    #                    N_all[5]')
     #    ptype          - Plot type: 'radial','toroidal'
     # =======================================================================================  
  
@@ -236,21 +237,21 @@ def process_input_fig(str_in):
             # Remove N and L identifier
             l = new_axsep[2].replace('L','')
             if len(l) > 1:
-                # If there is more than one value                                                                                      
+                # If there is more than one value                                                      
                 if '-' in l:
-                    l_array = str2array(l_temp,'-')
+                    l_array = str2array(l,'-')
                     l_values = range(l_array[0], l_array[1]+1)
                 else:
                     l_values = str2array(l,',')
             else:
-                l_values = float(l)        
+                l_values = [float(l)]  
 
             # Apply the same n values for each l
             if "n_all" in new_axsep[3].lower():
                 n = new_axsep[3].lower().replace('n_all','')
+                n_temp = n.replace('[','').replace(']','')
                 if len(n) > 1:
                     # If there is more than a single value
-                    n_temp = n.replace('[','').replace(']','')
                     if '-' in n:
                         n_array = sorted(str2array(n_temp,'-'))
                         n_val = range(n_array[0], n_array[1]+1)
@@ -262,7 +263,7 @@ def process_input_fig(str_in):
                 # Create sublists with the same n values for each l
                 n_values = [[]] * len(l_values)
                 for i in range(0,len(l_values)):
-                    n_values[i] = n_val
+                    n_values[i] =[* n_val]
 
             # Apply different n values for each l
             else:
@@ -281,11 +282,11 @@ def process_input_fig(str_in):
                             # Fill list with sublists
                             n_values[i].append(n_list[k])
                 else:
-                    n_values = float(n)
+                    n_values = [float(n)]
 
-        # Store n and l values
-        L.append(sorted(l_values))
-        N.append(sorted(n_values))
+            # Store n and l values
+            L.append(l_values)
+            N.append(n_values)
 
 
     # Check if all inputs are valid
@@ -303,18 +304,18 @@ def process_input_fig(str_in):
     return fname_out, ax_list, L, N, ptype
 
 
-#--------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 def str2array(str_in, delim):
-    # =======================================================================================                         
-    # DESCRIPTION:                                                                                                    
+    # ===============================================================================================
+    # DESCRIPTION:                                                                                     
     #   Converts a string of a list of numbers to an array.
-    #                                                                                                                 
-    # INPUT:                                                                                                          
+    #                                                                                                  
+    # INPUT:                                                                                            
     #    str_in           - Input string
     #    delim            - Delimiter separating the values
-    # OUTPUT:                                                                                                         
+    # OUTPUT:
     #    array_out        - Output array 
-    # ======================================================================================= 
+    # =============================================================================================== 
 
     # Separate each value in the string
     list = str_in.split(delim)
@@ -325,23 +326,23 @@ def str2array(str_in, delim):
     return array_out
 
 
-#------------------------------------------------------------------------------------------                       
+#----------------------------------------------------------------------------------------------------
 def extractfromfile(fname):
-    # =======================================================================================                         
-    # DESCRIPTION:                                                                                                    
-    #    Extracts compressional and shear velocity, density, and radial data points from a model text                 
+    # ===============================================================================================   
+    # DESCRIPTION:                                                                                      
+    #    Extracts compressional and shear velocity, density, and radial data points from a model text
     #    file (e.g. PREM). Assumes the model file is isotropic. 
-    #                                                                                                                 
-    # INPUT:                                                                                                          
+    #                                                                                                   
+    # INPUT:
     #    fname            - File name containing the input model.
-    # OUTPUT:                                                                                                         
+    # OUTPUT:
     #    Vp_pts           - Compressional velocity data point array 
     #    Vs_pts           - Shear velocity data point array
     #    rho_pts          - Density data point array
     #    R_pts            - Radial data point array
     #    r_max            - Maximum radius
     #    r_min            - Minimum radius
-    # ======================================================================================= 
+    # =============================================================================================== 
 
     f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)  # Read in file (skips the header lines)
 
@@ -358,14 +359,14 @@ def extractfromfile(fname):
                                    
 # ----------------------------------------------------------------------------------------------------
 def get_bestfit_eq(R, data):
-    # ================================================================================================               
-    # DESCRIPTION:                                                                                                    
+    # ================================================================================================  
+    # DESCRIPTION:
     #    Computes a fourth order polynomial best fit equation and returns it as a string.
     #
-    # INPUT:                                                                                                          
+    # INPUT:                                                                                            
     #    R               - Array of radial data
     #    data            - Array of radially dependent data
-    # OUTPUT:                                                                                                         
+    # OUTPUT:
     #    eq              - String of best fit equation
     # ================================================================================================  
 
@@ -382,19 +383,19 @@ def get_bestfit_eq(R, data):
 
 # ----------------------------------------------------------------------------------------------------
 def eval_equation(str_input, start_value, end_value, ds):
-    # ================================================================================================                
-    # DESCRIPTION:                                                                                                    
+    # ================================================================================================  
+    # DESCRIPTION:                                                                                      
     #    Evaluates a single variable equation at discrete points and produces an array containing the
     #    solutions at each point.
-    #                                                                                                                 
-    # INPUT:                                                                                                          
+    #
+    # INPUT:
     #    str_input        - String of a single variable equation
     #    start_value      - Start value to evaluate
     #    end_value        - End value to evaluate
     #    ds               - Step between each point
-    # OUTPUT:                                                                                                         
+    # OUTPUT:
     #    sol_array        - Array containing the solutions to the equation
-    # ================================================================================================     
+    # ================================================================================================  
 
     sol_array = []                                   # Initialize array
 
@@ -405,13 +406,13 @@ def eval_equation(str_input, start_value, end_value, ds):
     return sol_array
 
 
-# ----------------------------------------------------------------------------------------------------            
+# ----------------------------------------------------------------------------------------------------  
 def input_log(cml_arguments):
-    # ================================================================================================                
-    # DESCRIPTION:                                                                                                    
+    # ================================================================================================
+    # DESCRIPTION:                                                                                      
     #    Creates or adds to a log of the command line arguments used.
     #
-    # INPUT:                                                                                                          
+    # INPUT:
     #    cml_arguments     - Command line arguments (i.e. sys.argv)
     # ================================================================================================
 
