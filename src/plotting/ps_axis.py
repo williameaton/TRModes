@@ -11,7 +11,7 @@ class ps_axis():
         """
         self.type =  self._assign_plottype(type)    # type of NM_image subclass desired
         self.figure = None                          # MPL figure the NM_image will attach itself to
-        self.axis_loc = axis_loc                    # Location of NM_image axis (e.g. 111)
+        self.axis_loc = int(axis_loc)               # Location of NM_image axis (e.g. 111)
         self.data_fname = data_fname                # File holding relevant data for plot creation
         self.integration_required = int_required    # Does this data need to be integrated?
         self.N = N                                  # N value(s) to be plotted

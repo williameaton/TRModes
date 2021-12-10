@@ -8,6 +8,7 @@ This is a toolkit for understanding normal mode oscillations.
    :maxdepth: 2
    :caption: Contents:
 
+   installation
 
 Indices and tables
 ==================

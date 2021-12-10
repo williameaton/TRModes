@@ -9,11 +9,14 @@
 
 import numpy as np
 import sys
+import os
 from calculations.toroidal_modes import toroidal_modes
 from inputs.Model import Model
 from inputs.process_inputs import process_inputs
 from inputs.process_input_fig import process_input_fig
 from inputs.process_input_args import process_input_args
+from plotting.ps_figure import ps_figure
+from plotting.ps_axis import ps_axis
 
 # class dummy_inputs():
 #     def __init__(self):
@@ -53,7 +56,7 @@ from inputs.process_input_args import process_input_args
 # calculate.Tmodes_calculation()
 
 
-def driver(sys.argv):
+def driver(sys):
     
     # Store command line arguments in a class called inputs
     inputs = process_input_args(sys.argv)
@@ -71,7 +74,7 @@ def driver(sys.argv):
         calculate.Tmodes_calculation()
 
         # Returns output file name
-        inputs.output_filename = output_filename
+        inputs.output_filename = "lnw.txt"
 
 
     #--------------------------------------------------------------------------------------------
@@ -80,18 +83,26 @@ def driver(sys.argv):
     # To set up classes for plottting
     if hasattr(inputs, 'figure_output'):
         # Check that an output file exists
-        assert file_exists(inputs.output_filename), \
+        assert os.path.exists(inputs.output_filename), \
             'Output file does not exist. Must compute modes. \n'
 
+
+        fig_list = []
         # If there are multiple figures to produce
-        for x in range(0,len(inputs.output_filename):
-                # Convert input string 
-                fname_out, ax_list, L, N, ptype = process_input_fig(inputs.output_filename[x])
+        for x in range(0,len(inputs.output_filename)):
+            # Convert input string
+            fname_out, ax_locs, L, N, ptype = process_input_fig(inputs.output_filename[x])
 
-                # Create figure class
-                figure_class = ps_figure(ax_list, fname_out)
+            temp_axis_list = []
+            # Create axis class
+            for i in range(len(ax_locs)):
+                   temp_axis_list.append(ps_axis(ptype[i], inputs.output_filename, axis_loc=ax_locs[i],
+                                        int_required=False, N=N[i], L=L[i], radius=inputs.r_max))
 
-                # Create axis class
-                for k in ax_list:
-                       axis_class = ps_axis(inputs.mode_type, inputs.output_filename, int_required, N, L, radius, ax_list)
-            
+            # Create figure class
+            fig_list.append(ps_figure(temp_axis_list, fname_out))
+
+
+    # Run plotting commands for each figure:
+    for fig in fig_list:
+        fig.plot()

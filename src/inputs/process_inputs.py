@@ -5,10 +5,9 @@
 #--------------------------------------------------------------------------------------------
 
 
-from Model.py import *
-import sys, getopt, argparse
-from datetime import date
+from Model import *
 from os.path import exists as file_exists
+from datetime import date
 
 #--------------------------------------------------------------------------------------------
 # MAIN FUNCTION
@@ -39,7 +38,7 @@ def process_inputs(inputs):
         Vp, Vs, model_class.rho, model_class.rr, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
         
         # Compute a dr array (not evenly spaced)
-        model_class.dr = rr[1:len(rr)] - rr[0:len(rr)-1]
+        model_class.dr = model_class.rr[1:len(model_class.rr)] - model_class.rr[0:len(model_class.rr)-1]
 
         # Obtain Number of radial steps
         model_class.Nr = len(model_class.dr)
@@ -48,89 +47,92 @@ def process_inputs(inputs):
         # model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
         model_class.mu = model_class.rho * (Vs ** 2);
             
-        else:
-            # Ensure a density and shear velocity equations have been inputed
-            # (both are required regardless of mode type)
-            assert hasattr(inputs,'eq_rho'), 'Requires density equation. \n'
-            assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
-                
-            # Compute dr                                                                                          
-            model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
+    else:
+        # Ensure a density and shear velocity equations have been inputed
+        # (both are required regardless of mode type)
+        assert hasattr(inputs,'eq_rho'), 'Requires density equation. \n'
+        assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
 
-            # Compute vector for radius
-            model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),model_class.dr)
+        # Compute dr
+        model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
 
-            # Number of nodes in the radial dimension
-            model_class.Nr = inputs.Nr
-            
-            # Obtain density and shear velocity (both are used for all computations
-            model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
-            Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
+        # Compute vector for radius
+        model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),model_class.dr)
 
-            # Compute the shear modulus
-            model_class.mu = model_class.rho * (Vs ** 2);
+        # Number of nodes in the radial dimension
+        model_class.Nr = inputs.Nr
 
-            # Maximum and minimum radius
-            model_class.r_max = inputs.r_max
-            model_class.r_min = inputs.r_min
-            
-           # if inputs.mtype == "Radial":
-      	   #     # Check the user has inputted a compressional velocity equation
-           #     assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
+        # Obtain density and shear velocity (both are used for all computations
+        model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)
+        Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
 
-           # 	# Obtain compressional velocity
-           #     Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
+        # Compute the shear modulus
+        model_class.mu = model_class.rho * (Vs ** 2);
 
-           #     # Compute the bulk modulus
-           #     model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
+        # Maximum and minimum radius
+        model_class.r_max = inputs.r_max
+        model_class.r_min = inputs.r_min
+
+       # if inputs.mtype == "Radial":
+       #     # Check the user has inputted a compressional velocity equation
+       #     assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
+
+       # 	# Obtain compressional velocity
+       #     Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
+
+       #     # Compute the bulk modulus
+       #     model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
 
                 
         #----------------------------------------------------------------------------------------   
         # Calculation parameters
 
-        # Set node type and integration method
-        model_class.mtype = inputs.mode_type
-        model_class.method = inputs.int_method
-        
-        if hasattr(inputs,"nrange"):
-	    # Convert string to an array                                                                          
-	    n_values = str2array(inputs.nrange)
-            
-            # Obtain n values
-            model_class.n = range(n_values[1], n_values[0])
-            
-        else:
-            # Convert string to an array                                                       
-            model_class.n = str2array(inputs.n)
+    # Set node type and integration method
+    model_class.mtype = inputs.mode_type
+    model_class.method = inputs.int_method
 
-        # Check the n values
-        assert all(isinstance(x, int) for x in model_class.n), 'n values must be integers. \n'
-        assert model_class.n >= 0, 'n values must be zero or greater. \n'
-                                   
-        if hasattr(inputs,"lrange"):
-            # Convert string to an array
-	    l_values = str2array(inputs.lrange,",")
+    if hasattr(inputs,"nrange"):
+        # Convert string to an array
+        n_values = str2array(inputs.nrange)
+
+        # Obtain n values
+        model_class.n = range(n_values[1], n_values[0])
+
+    else:
+        # Convert string to an array
+        model_class.n = str2array(inputs.n)
+
+
+
+    # Check the n values
+    assert all(isinstance(x, int) for x in model_class.n), 'n values must be integers. \n'
+    assert model_class.n >= 0, 'n values must be zero or greater. \n'
+
+    if hasattr(inputs,"lrange"):
+        # Convert string to an array
+        l_values = str2array(inputs.lrange,",")
             
 	    # Obtain l values                                                                                     
-            model_class.l = range(l_values[1], l_values[0]) 
+        model_class.l = range(l_values[1], l_values[0])
 
-        else:
+    else:
 	    # Convert string to an array                                                                          
-            model_class.l = str2array(inputs.l,",")
+        model_class.l = str2array(inputs.l,",")
 
-        # Check l values                           
-        assert all(isinstance(x, int) for x in model_class.l), 'l values must be integers. \n'
-        assert model_class.l >= 0, 'l values must zero or greater. \n'
 
-        # Check mode type input values
-        input_mtype = model_class.mtype.lower()
-        assert input_mtype == 'radial' or input_mtype == 'toroidal', \
-            'Mode type does not exist. See Readme for details. \n'
+    # Check l values
+    assert all(isinstance(x, int) for x in model_class.l), 'l values must be integers. \n'
+    assert model_class.l >= 0, 'l values must zero or greater. \n'
 
-        # Check intergration method
-        input_int = model_class.method.lower()
-        assert input_int == 'rk4' or input_int == 'ab2', input_int == 'euler', \
-            'Integration method does not exist. See Readme for details. \n'
+    # Check mode type input values
+    input_mtype = model_class.mtype.lower()
+    assert input_mtype == 'radial' or input_mtype == 'toroidal', \
+        'Mode type does not exist. See Readme for details. \n'
+
+    # Check intergration method
+    input_int = model_class.method.lower()
+    assert input_int == 'rk4' or input_int == 'ab2' or input_int == 'euler', \
+        'Integration method does not exist. See Readme for details. \n'
             
 
     #------------------------------------------------------------------------------------
@@ -247,6 +249,7 @@ def input_log(cml_arguments):
     # ================================================================================================
 
     # Get the current date
+    today = date.today()
     d = today.strftime("%m-%d-%Y")
 
     # Creates a file "input_log.txt" containing the input arguments
@@ -255,7 +258,7 @@ def input_log(cml_arguments):
     # Write command line arguments 
     f.write("----------------------------------------------------------------------------------------")
     f.write("Date: " + d + "\n")
-    f.write("Command Line Input Arguments: \n"
+    f.write("Command Line Input Arguments: \n")
     f.write("\n" + str(cml_arguments) + "\n" + "\n")
     f.write("----------------------------------------------------------------------------------------")
 

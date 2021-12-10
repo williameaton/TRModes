@@ -25,7 +25,7 @@ class radial_2D_plot(NM_image):
         W = self.data                                           # Displacement/sensitivity
         W_max = np.amax(np.abs(W))                              # Max W
 
-        self.z = np.linspace(0, 1, len(W)) * self.specs.radius  # Create Z data for plotting against
+        self.z = np.linspace(0 , 1, len(W)) * self.specs.radius  # Create Z data for plotting against
 
         plot, = self.mpl_axis.plot(W, self.z, linewidth=2)      # Plot the displacement vs depth
         self.anim_line = plot                                   # Storing the 2D line object for animation
