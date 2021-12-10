@@ -36,7 +36,7 @@ def process_flags(inputs):
         assert file_exists(inputs.model_file), 'Model file does not exist. \n'
         
         # Evaluate the data file
-        Vp, Vs, model_class.rho, rr, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
+        Vp, Vs, model_class.rho, model_class.rr, model_class.r_max, model_class.r_min = extractfromfile(inputs.model_file)
         
         # Compute a dr array (not evenly spaced)
         model_class.dr = rr[1:len(rr)] - rr[0:len(rr)-1]
@@ -45,7 +45,7 @@ def process_flags(inputs):
         model_class.Nr = len(model_class.dr)
         
         # Compute the bulk and shear modulus
-        model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
+        # model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
         model_class.mu = model_class.rho * (Vs ** 2);
             
         else:
@@ -64,11 +64,11 @@ def process_flags(inputs):
             model_class.Nr = inputs.Nr
             
             # Obtain density and shear velocity (both are used for all computations
-            rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
+            model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
             Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
 
             # Compute the shear modulus
-            model_class.mu = rho * (Vs ** 2);
+            model_class.mu = model_class.rho * (Vs ** 2);
 
             # Maximum and minimum radius
             model_class.r_max = inputs.r_max
@@ -87,6 +87,10 @@ def process_flags(inputs):
                 
         #----------------------------------------------------------------------------------------   
         # Calculation parameters
+
+        # Set node type and integration method
+        model_class.mtype = inputs.mode_type
+        model_class.method = inputs.int_method
         
         if hasattr(inputs,"nrange"):
 	    # Convert string to an array                                                                          
@@ -119,12 +123,12 @@ def process_flags(inputs):
         assert model_class.l >= 0, 'l values must zero or greater. \n'
 
         # Check mode type input values
-        input_mtype = inputs.mode_type.lower()
+        input_mtype = model_class.mtype.lower()
         assert input_mtype == 'radial' or input_mtype == 'toroidal', \
             'Mode type does not exist. See Readme for details. \n'
 
         # Check intergration method
-        input_int = inputs.int_method.lower()
+        input_int = model_class.method.lower()
         assert input_int == 'rk4' or input_int == 'ab2', input_int == 'euler', \
             'Integration method does not exist. See Readme for details. \n'
             
@@ -136,16 +140,16 @@ def process_flags(inputs):
     add2log("r_min", model_class.r_min)
     add2log("dr", model_class.dr)
     add2log("Nr", model_class.Nr)
-    add2log("rho", model_class.rho)
-    add2log("Vs", model_class.Vs)
-    add2log_line()
-    add2log("Computation Parameters", "\n")
-    add2log("int_method", model_class.int_method)
-    add2log("l", model_class.l)
-    add2log("n", model_class.n)
+    add2log("rr", model_class.rr)
     add2log("rho", model_class.rho)
     add2log("mu", model_class.mu)
-    add2log("rr", model_class.rr)
+    add2log_line()
+    add2log("Mode Parameters", "\n")
+    add2log("mtype", model_class.mtype)
+    add2log("l", model_class.l)
+    add2log("n", model_class.n)
+    add2log("\n Integration Method", "\n")
+    add2log("int_method", model_class.int_method)
     add2log_line()
     
     return model_class
