@@ -26,7 +26,6 @@ def process_flags(inputs):
 
     # Initialize class
     model_class = Model()
-
     
     # ---------------------------------------------------------------------------------------
     # MODEL INPUT
@@ -41,6 +40,9 @@ def process_flags(inputs):
         
         # Compute a dr array (not evenly spaced)
         model_class.dr = rr[1:len(rr)] - rr[0:len(rr)-1]
+
+        # Obtain Number of radial steps
+        model_class.Nr = len(model_class.dr)
         
         # Compute the bulk and shear modulus
         model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
@@ -54,6 +56,12 @@ def process_flags(inputs):
                 
             # Compute dr                                                                                          
             model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
+
+            # Compute vector for radius
+            model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),model_class.dr)
+
+            # Number of nodes in the radial dimension
+            model_class.Nr = inputs.Nr
             
             # Obtain density and shear velocity (both are used for all computations
             rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)            
@@ -62,20 +70,23 @@ def process_flags(inputs):
             # Compute the shear modulus
             model_class.mu = rho * (Vs ** 2);
 
+            # Maximum and minimum radius
+            model_class.r_max = inputs.r_max
+            model_class.r_min = inputs.r_min
             
-            if inputs.mtype == "Radial":
-      	        # Check the user has inputted a compressional velocity equation
-                assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
+           # if inputs.mtype == "Radial":
+      	   #     # Check the user has inputted a compressional velocity equation
+           #     assert hasattr(inputs,'eq_vp'), 'Requires compressional velocity equation. \n'
 
-            	# Obtain compressional velocity
-                Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
+           # 	# Obtain compressional velocity
+           #     Vp = eval_equation(inputs.eq_vp, inputs.r_min, inputs.r_max, model_class.dr)
 
-                # Compute the bulk modulus
-                model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
+           #     # Compute the bulk modulus
+           #     model_class.kappa = rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
 
                 
         #----------------------------------------------------------------------------------------   
-        # Model parameters
+        # Calculation parameters
         
         if hasattr(inputs,"nrange"):
 	    # Convert string to an array                                                                          
@@ -120,9 +131,23 @@ def process_flags(inputs):
 
     #------------------------------------------------------------------------------------
     # Add input information to log
+    add2log("Model Parameters","\n")
+    add2log("r_max", model_class.r_max)
+    add2log("r_min", model_class.r_min)
+    add2log("dr", model_class.dr)
+    add2log("Nr", model_class.Nr)
+    add2log("rho", model_class.rho)
+    add2log("Vs", model_class.Vs)
+    add2log_line()
+    add2log("Computation Parameters", "\n")
+    add2log("int_method", model_class.int_method)
+    add2log("l", model_class.l)
+    add2log("n", model_class.n)
+    add2log("rho", model_class.rho)
+    add2log("mu", model_class.mu)
+    add2log("rr", model_class.rr)
+    add2log_line()
     
-
-                        
     return model_class
 
 
@@ -226,8 +251,10 @@ def input_log(cml_arguments):
     # Write command line arguments 
     f.write("----------------------------------------------------------------------------------------")
     f.write("Date: " + d + "\n")
+    f.write("Command Line Input Arguments: \n"
     f.write("\n" + str(cml_arguments) + "\n" + "\n")
     f.write("----------------------------------------------------------------------------------------")
+
     # Close file
     f.close()
 
@@ -248,15 +275,19 @@ def add2log(string, variable):
     # Ensure even spacing
     _string = f"{added_c: <15}"
 
-    # Append to log
+    # Open log
     f = open("input_log.txt", "a")
+
+    # Append to log
     f.write("\n" + _string + " " + str(variable))
+
+    # Close file
     f.close()
 
     
 # ----------------------------------------------------------------------------------------------------  
 def add2log_line():
-    # Add break line to log
+    # Adds a break line to log
     f = open("input_log.txt", "a")
     f.write("\n")
     f.write("----------------------------------------------------------------------------------------")
