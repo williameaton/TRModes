@@ -2,10 +2,15 @@ from NM_image import NM_image
 import numpy as np
 
 class radial_2D_plot(NM_image):
-    # Example of a concrete subclass of NM_image
+    """A concrete subclass of NM_image that produces displacement vs depth 2D plots for an individual mode. """
 
     # Attributes
     def __init__(self, ps_axis):
+        """
+        :param ps_axis: ps_axis object that holds specifications for the details of the plot
+        :type ps_axis: ps_axis object
+        """
+
         self.specs = ps_axis                                # All the data from the ps_axis including the figure
         self.mpl_axis = self._make_polar_axis(ps_axis)      # The MPL axes for this NM_image
         self.omega = None                                   # Eigenfrequency - loaded from data
@@ -16,6 +21,7 @@ class radial_2D_plot(NM_image):
 
     # METHODS:
     def _produce_plot(self):
+        """First-order function that produces the plot on the relevant Matplotlib axis."""
         W = self.data                                           # Displacement/sensitivity
         W_max = np.amax(np.abs(W))                              # Max W
 
@@ -29,6 +35,7 @@ class radial_2D_plot(NM_image):
 
 
     def init_anim_data(self):
+        """Initialises data values for first frame of an animation. """
         new_xdata = self.data * 0                               # Initially for animation, displacement = 0
         new_ydata = self.z                                      # Depth array unaffected
 
@@ -37,6 +44,12 @@ class radial_2D_plot(NM_image):
 
 
     def update_anim_data(self, iteration):
+        """Function is used to update MPL artists (e.g. a 2DLine object) as part of animations for given iteration value
+           see _gen_animations() in ps_figure.py
+
+           :type iteration: int
+           :param iteration: Iteration step for animations
+        """
         new_xdata = (self.data * np.cos(iteration * 2 * np.pi / 100))  # Rotation of displacement curve around 0 line
         new_ydata = self.z                                             # Depth array unaffected
 
@@ -44,8 +57,8 @@ class radial_2D_plot(NM_image):
     # ------------------------------------------------------------------------------------------------------------------
 
     def _load_data(self):
-        # Expected file format is single column of data - first 3 lines are N, L, Omega. Next lines are displacement/
-        # sensitivity at (increasing/decreasing) depth
+        """ Module called in _prepare_plot(). Expected file format is single column of data with first 3 lines are N, L,
+        Omega. Next lines are displacement/sensitivity at (increasing/decreasing) depth"""
         file_data = np.loadtxt(self.specs.data_fname)
         self.specs.N = file_data[0]
         self.specs.L = file_data[1]
@@ -55,20 +68,29 @@ class radial_2D_plot(NM_image):
     # ------------------------------------------------------------------------------------------------------------------
 
     def _integrate_mode(self, n, l, omega):
-        # Unsure whether this will just be defined in NM_image or whether it needs to be abstact in NM_image...TBC
+        """Not sure if we will use this function. TBC."""
         pass
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def _make_polar_axis(self, specs):
-        # Generate and add an MPL axes to the figure - type required is polar
+        """Generates and adds a matplotlib polar axes to the figure.
+
+        :type specs: ps_axis object
+        :param specs: Specifications for the plot type to know which location to generate the axis on matplotlib figure"""
         return self.specs.figure.add_subplot(specs.axis_loc, projection='polar')
 
     # ------------------------------------------------------------------------------------------------------------------
 
 
     def _add_figure_details(self, W, W_max):
-        # Adds all the bells and whistles to the figure like zerocrossing lines etc
+        """Adds all the bells and whistles to the figure like zerocrossing lines etc
+           :param W: Displacement values as a function of radius
+           :type W: 1D Numpy array
+
+           :param W_max: Maximum magnitude of displacement in array (must be positive).
+           :type W_max: float
+        """
         self._format_figure_metadata(W_max)
 
         # Adding grid lines at zero crossings:
@@ -89,11 +111,12 @@ class radial_2D_plot(NM_image):
 
 
     def _format_figure_metadata(self, W_max):
-        # ==============================================================================================================
-        # DESCRIPTION: Updates axes artists like the title/axes limits etc
-        # INPUTS: W_max [float] - max. displacement data value for determining x_lims of plot
-        # OUTPUTS: N/A
-        # ==============================================================================================================
+        """
+        Updates axes artists like the title/axes limits etc
+
+        :param W_max: Maximum magnitude of displacement in array (must be positive).
+        :type  W_max: float
+        """
 
         # Format the figure metadata e.g. titles etc:
         self.mpl_axis.set_theta_zero_location("N")

@@ -3,7 +3,7 @@
 # Originally written by tschuh-at-princeton.edu, 12/04/2021
 
 import numpy as np
-from toroidal_system import toroidal_system
+from calculations.toroidal_system import toroidal_system
 
 def rk4(w,dr,rr,rho,mu,l):
 

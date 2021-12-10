@@ -4,10 +4,11 @@
 # input, calculation, and output together
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
-# Last modified by tschuh-at-princeton.edu, 12/07/2021
+# Last modified by tschuh-at-princeton.edu, 12/09/2021
 
 import numpy as np
-from toroidal_modes import toroidal_modes
+from calculations.toroidal_modes import toroidal_modes
+
 #from Model import Model
 
 class dummy_inputs():

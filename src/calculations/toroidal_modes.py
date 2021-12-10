@@ -6,13 +6,13 @@
 # Last modified by tschuh-at-princeton.edu, 12/05/2021
 
 import numpy as np
-from euler import euler
-from rk4 import rk4
-from ab2 import ab2
+from calculations.euler import euler
+from calculations.rk4 import rk4
+from calculations.ab2 import ab2
 
 # To do:
 #
-# change eigf and Tmat so they are size of lrange and nrange
+# change eigf and Tmat so they are length of lrange and nrange
 # connect input and output to driver.py
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)

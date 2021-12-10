@@ -3,7 +3,7 @@
 # Originally written by tschuh-at-princeton.edu,12/05/2021
 
 import numpy as np
-from toroidal_system import toroidal_system
+from calculations.toroidal_system import toroidal_system
 
 def ab2(w,dr,rr,rho,mu,l):
 
