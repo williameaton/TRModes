@@ -117,9 +117,12 @@ def process_input_fig(str_in):
     # Add figure values to log
     add2log("Figure Name", fname_out)
     for j in range(0,ax_list):
-        add2log("    Axis", ax_list[j])
-        add2log("    Plot Type", ptype[j])
-        add2log("    L", L[j])
-        add2log("    N", N[j])
+        add2log("Axis", ax_list[j])
+        add2log("Plot Type", ptype[j])
+        add2log("L", L[j])
+        add2log("N", N[j])
+        add2log("\n", "")
+
+    add2log_line()
     
     return fname_out, ax_list, L, N, ptype
