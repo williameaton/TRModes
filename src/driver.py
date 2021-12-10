@@ -21,11 +21,11 @@ from plotting.ps_axis import ps_axis
 # class dummy_inputs():
 #     def __init__(self):
 #         # physical planet values
-#         self.a = 6371000  # Earth radius [m]
-#         self.b = 2891000 # CMB radius [m]
+#         self.r_max = 6371000  # Earth radius [m]
+#         self.r_min = 2891000 # CMB radius [m]
 #         self.nr = 100 # number of nodes in the radial dimension
-#         self.dr = (self.a - self.b) / (self.nr - 1) # radial step
-#         self.rr = self.b + np.dot((np.arange(0,self.nr)),self.dr) # vector for Earth's radii [m]
+#         self.dr = (self.r_max - self.r_min) / (self.nr - 1) # radial step
+#         self.rr = self.r_min + np.dot((np.arange(0,self.nr)),self.dr) # vector for Earth's radii [m]
 
 #         # mode parameters
 #         # cant compute n=0, l=1 mode
@@ -34,17 +34,12 @@ from plotting.ps_axis import ps_axis
 
 #         # integration method
 #         self.method = 'euler'
-        
-#         # elastic parameters for a homogeneous spherical Earth model
-#         self.rho0 = 4380 # mean density [kg/m^3]
-#         self.vs0 = 5930 # s-wave speed [m/s]
-#         self.mu0 = self.rho0*self.vs0*self.vs0 # shear modulus [Pa]
-        
-#         # create earth's density and shear profile for homogeneous model
+
+#         # create earth's density and shear profile for homogeneous spherical Earth model
 #         self.rho = np.empty((self.nr,1,))
-#         self.rho.fill(self.rho0)
+#         self.rho.fill(4380) # mean density [kg/m^3]
 #         self.mu = np.empty((self.nr,1,))
-#         self.mu.fill(self.mu0)
+#         self.mu.fill(4380*(5930**2)) # shear modulus [Pa] = rho0*(vs0)^2
 
 # # once Page and I sort out variables that I have and she doesnt
 # # and vice versa, uncomment this line
