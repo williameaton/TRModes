@@ -149,7 +149,7 @@ def process_flags(inputs):
     add2log("l", model_class.l)
     add2log("n", model_class.n)
     add2log("\n Integration Method", "\n")
-    add2log("int_method", model_class.int_method)
+    add2log("method", model_class.method)
     add2log_line()
     
     return model_class
