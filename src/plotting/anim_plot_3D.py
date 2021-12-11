@@ -104,8 +104,8 @@ def _sphere_of_points(r, r_arr, pts_arr, radial_amp, pts_den=1000, t=0):
     theta = np.array(THETA).flatten()
     phi = np.array(PHI).flatten()
 
-    l = 20
-    m = 13
+    l = 4
+    m = 0
 
     if npts!=0:
         ylm_phi, ylm_th = _calc_ylm(l=l, m=m, theta=theta, phi=phi)
