@@ -4,8 +4,7 @@
 # input, calculation, and output together
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
-# Last modified by tschuh-at-princeton.edu, 12/09/2021
-# Last modified by pdabney@princeton.edu, 12/09/21
+# Last modified by tschuh-at-princeton.edu, 12/11/2021
 
 import numpy as np
 import sys
@@ -24,8 +23,8 @@ from plotting.ps_axis import ps_axis
 #         self.r_max = 6371000  # Earth radius [m]
 #         self.r_min = 2891000 # CMB radius [m]
 #         self.nr = 100 # number of nodes in the radial dimension
-#         self.dr = (self.r_max - self.r_min) / (self.nr - 1) # radial step
-#         self.rr = self.r_min + np.dot((np.arange(0,self.nr)),self.dr) # vector for Earth's radii [m]
+#         self.dr = [(self.r_max - self.r_min)/(self.nr - 1)] # radial step
+#         self.rr = self.r_min + np.dot((np.arange(0,self.nr)),self.dr[0]) # vector for Earth's radii [m]
 
 #         # mode parameters
 #         # cant compute n=0, l=1 mode
@@ -41,12 +40,12 @@ from plotting.ps_axis import ps_axis
 #         self.mu = np.empty((self.nr,1,))
 #         self.mu.fill(4380*(5930**2)) # shear modulus [Pa] = rho0*(vs0)^2
 
-# # once Page and I sort out variables that I have and she doesnt
-# # and vice versa, uncomment this line
+# once Page and I sort out variables that I have and she doesnt
+# and vice versa, uncomment this line
 # inputs = dummy_inputs()
 # #m = Model(inputs)
 
-# # do calculations
+# do calculations
 # calculate = toroidal_modes(inputs)
 # calculate.Tmodes_calculation()
 
