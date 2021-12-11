@@ -12,8 +12,6 @@ from calculations.ab2 import ab2
 
 # To do:
 #
-# change eigf and Tmat so they are length of lrange and nrange
-# connect input and output to driver.py
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)
 
@@ -104,8 +102,8 @@ class toroidal_modes():
 
     # actual calculation
     def Tmodes_calculation(self):
-        file = open("lnw.txt","w")
-
+        lnwfile = open("lnw.txt","w")
+        
         for l in self.data.lrange:
             n = -1 # reset counter for radial degrees n
             f = self.fmin # we start looking for eigenfrequencies from fmin [Hz]
@@ -150,7 +148,16 @@ class toroidal_modes():
                             lorder = repr(l)
                             norder = repr(n)
                             freq = repr(self.eigf[n,l-1])
-                            file.write(lorder + " " + norder + " " + freq + "\n")
+                            lnwfile.write(lorder + " " + norder + " " + freq + "\n")
+
+                            # write W and r to a separate file Wr_l_n.txt
+                            # W and r written from inner --> outer
+                            fname = "Wr_%s_%s.txt" % (lorder,norder)
+                            Wrfile = open(fname,"w")
+                            Wrfile.write(lorder + " " + norder + " " + freq + "\n")
+                            for r in range(len(self.data.rr)):
+                                Wrfile.write(repr(W[r,0]) + " " + repr(self.data.rr[r]) + "\n")
+                            Wrfile.close
 
                     # check a new frequency estimate and get surface traction
                     f = wc/(2*np.pi) + self.df # update frequency [Hz]
@@ -166,6 +173,6 @@ class toroidal_modes():
                 if (n+1) >= self.data.nrange[-1]+1:
                     break
 
-        file.close
+        lnwfile.close
         
 ####################################################################
