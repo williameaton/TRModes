@@ -92,8 +92,6 @@ class ps_figure():
             #self.animation.save(out_str)
 
 
-
-
     # ------------------------------------------------------------------------------------------------------------------
 
     def _gen_animations(self):
@@ -147,4 +145,4 @@ class ps_figure():
 
         pv_obj = self.NM_img_objs[0]
         pv_obj.init_anim_data()
-        pv_obj.update_anim_data(iteration=dir_name)
+        pv_obj.update_anim_data(path=dir_name)

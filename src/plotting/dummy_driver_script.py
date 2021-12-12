@@ -9,9 +9,9 @@ from ps_axis import ps_axis
 # Create 2 dummy axes:
 ax1 = ps_axis(type="3D_animated",
               data_fname="./example_2D_data.txt",
-              int_required=False,
               N=5,
               L=5,
+              M=5,
               radius=6371,
               axis_loc=121)
 

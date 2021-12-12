@@ -23,4 +23,4 @@ will do the trick! Alternatively, you can edit the ``html_theme`` in ``docs/conf
 
 Once all the files and dependencies are downloaded, you can start running the program from your command line. In the
 absence of a GUI (under development) the syntax for command line arguments are quite specific and details can be found
-on the "Running TRModes" page.
+on the "Running the command line" page.

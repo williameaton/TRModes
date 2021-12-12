@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code documentation &mdash; TRModes 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> TRModes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TRModes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Code documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/classes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="code-documentation">
+<h1>Code documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline"></a></h1>
+<p>In general the code is split into three main operations:
+* Processing user inputs
+* Calculations of eigenfrequencies
+* Visualisation</p>
+<p>Modules and classes involved in each of these can be found on seperate pages.</p>
+<span class="target" id="module-NM_image"></span><dl class="py class">
+<dt class="sig sig-object py" id="NM_image.NM_image">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">NM_image.</span></span><span class="sig-name descname"><span class="pre">NM_image</span></span><a class="headerlink" href="#NM_image.NM_image" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract base class. Sub-classes of this are classes to generate different types of plots
+E.g. a class called gen_dispersion</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="NM_image.NM_image.init_anim_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NM_image.NM_image.init_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Initialises/creates matplotlib artists (e.g. a 2DLine object) as part of animations see - _gen_animations() in ps_figure.py</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NM_image.NM_image.make">
+<span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NM_image.NM_image.make" title="Permalink to this definition"></a></dt>
+<dd><p>Function is the driver for plotting - accessed by main codes. This incorporates any loading of the data and
+processing (e.g. integration). Then runs the make_plot function to actually make the plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NM_image.NM_image.update_anim_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_anim_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NM_image.NM_image.update_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function is used to update MPL artists (e.g. a 2DLine object) as part of animations for given iteration value
+see _gen_animations() in ps_figure.py</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>iteration</strong> (<em>int</em>) – Iteration step for animations</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-radial_2D_plot"></span><dl class="py class">
+<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">radial_2D_plot.</span></span><span class="sig-name descname"><span class="pre">radial_2D_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot" title="Permalink to this definition"></a></dt>
+<dd><p>A concrete subclass of NM_image that produces displacement vs depth 2D plots for an individual mode.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot.init_anim_data">
+<span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.init_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Initialises data values for first frame of an animation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot.update_anim_data">
+<span class="sig-name descname"><span class="pre">update_anim_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.update_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function is used to update MPL artists (e.g. a 2DLine object) as part of animations for given iteration value
+see _gen_animations() in ps_figure.py</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>iteration</strong> (<em>int</em>) – Iteration step for animations</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-disp_curve"></span><dl class="py class">
+<dt class="sig sig-object py" id="disp_curve.disp_curve">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">disp_curve.</span></span><span class="sig-name descname"><span class="pre">disp_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve" title="Permalink to this definition"></a></dt>
+<dd><p>A concrete subclass of NM_image that produces dispersion plots for multiple n, l, omega combinations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve.init_anim_data">
+<span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.init_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function defined in ABC but not used for this type of plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve.update_anim_data">
+<span class="sig-name descname"><span class="pre">update_anim_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.update_anim_data" title="Permalink to this definition"></a></dt>
+<dd><p>Function defined in ABC but not used for this type of plot.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-ps_axis"></span><dl class="py class">
+<dt class="sig sig-object py" id="ps_axis.ps_axis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ps_axis.</span></span><span class="sig-name descname"><span class="pre">ps_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_required</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">111</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_axis.ps_axis" title="Permalink to this definition"></a></dt>
+<dd><p>ps_axis objects are created from the users input and pass information/specifications to the plotting scripts
+for a single matplotlib axis as part of a figure. Data these objects hold include the type of plot, the normal
+mode(s) that are to be plotted and any relevant model data, and the location of the axis on the figure.</p>
+</dd></dl>
+
+<span class="target" id="module-ps_figure"></span><dl class="py class">
+<dt class="sig sig-object py" id="ps_figure.ps_figure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ps_figure.</span></span><span class="sig-name descname"><span class="pre">ps_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure" title="Permalink to this definition"></a></dt>
+<dd><p>ps_figure objects hold a matplotlib figure and data required to populate it with a number of axes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ps_figure.ps_figure.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure.plot" title="Permalink to this definition"></a></dt>
+<dd><p>Create the different NM_image subclass objects (e.g. dispersion, 2D_radial) from the inputted PS_axis objs
+This also adds the plots from each of these subclasses to the overall figure</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Huda Al Alawi, Page Dabney, Will Eaton and Terry Schuh.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
