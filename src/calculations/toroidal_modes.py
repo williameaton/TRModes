@@ -12,6 +12,9 @@ from calculations.ab2 import ab2
 
 # To do:
 #
+# be able to run dr array element by element (add for loop)
+# also change to run rho and mu array element by element
+# save files to new output directory
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)
 
