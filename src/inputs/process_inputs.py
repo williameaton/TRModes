@@ -5,7 +5,7 @@
 #--------------------------------------------------------------------------------------------
 
 
-from Model import *
+from Model import Model
 from os.path import exists as file_exists
 from datetime import date
 
