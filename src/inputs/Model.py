@@ -1,8 +1,4 @@
-# Last modified by pdabney@princeton.edu, 12/9/21
-
-# Imports
-import numpy as np
-
+# Last modified by pdabney@princeton.edu, 12/12/21
 
 class Model:
     # Attributes
@@ -11,7 +7,6 @@ class Model:
         # Model parameters
         self.rho = inputs.rho
         self.mu = inputs.mu
-        self.kappa = inputs.kappa
         
         self.r_min = inputs.r_min
         self.r_max = inputs.r_max
