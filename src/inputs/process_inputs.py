@@ -54,17 +54,20 @@ def process_inputs(inputs):
         assert hasattr(inputs,'eq_vs'), 'Requires shear velocity equation. \n'
 
         # Compute dr
-        model_class.dr = (inputs.r_max - inputs.r_min) / inputs.Nr
-
+        dr = (inputs.r_max - inputs.r_min) / inputs.Nr
+        
         # Compute vector for radius
-        model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),model_class.dr)
+        model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),dr)
 
+        # Store as an array                                                             
+	model_class.dr = [dr] * len(rr)
+        
         # Number of nodes in the radial dimension
         model_class.Nr = inputs.Nr
 
         # Obtain density and shear velocity (both are used for all computations
-        model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, model_class.dr)
-        Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, model_class.dr)
+        model_class.rho = eval_equation(inputs.rho_eq, inputs.r_min, inputs.r_max, dr)
+        Vs = eval_equation(inputs.eq_vs, inputs.r_min, inputs.r_max, dr)
 
         # Compute the shear modulus
         model_class.mu = model_class.rho * (Vs ** 2);
