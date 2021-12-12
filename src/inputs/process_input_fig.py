@@ -1,4 +1,4 @@
-# Last modified pdabney@princeton.edu, 12/9/21
+# Last modified pdabney@princeton.edu, 12/12/21
 
 from process_inputs import str2array, add2log, add2log_line
 
@@ -17,7 +17,7 @@ def process_input_fig(str_in):
     #    L              - Angular order value(s). (format: 'L4' or 'L1,2,3,4' or L1-5)
     #    N              - Radial order value(s). (format: 'N3' or 'N[1][3,4][1,2,3,4]' or  'N[1-6]'
     #                    N_all[5]')
-    #    ptype          - Plot type: 'radial','toroidal'
+    #    ptype          - Plot type: 'toroidal'
     # =======================================================================================  
  
     if (str_in.find(":") != 1):
@@ -110,7 +110,7 @@ def process_input_fig(str_in):
     assert all(isinstance(x, int) for x in L), 'L values must be integers. \n'
     assert L >= 0, 'L values must be zero or greater. \n'
     # Check is plot type exists                                                                             
-    assert ptype == 'dispersion' or ptype == 'radial_2d_plot', \
+    assert ptype == 'dispersion' or ptype == 'radial_2d_plot' or ptype == 'radial_2D_surface' or ptype == '3D_animated', \
         'Plot type does not exist. See Readme for details. \n'
 
 
