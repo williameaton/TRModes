@@ -53,7 +53,7 @@ class ps_axis():
         :param plot_str: String holding desired plot_type
         :type plot_str: string
 
-        :raises ValueError: if plt_str is not "dispersion", "radial_2D_plot" or "3D_animated"
+        :raises ValueError: if plt_str is not "dispersion", "radial_2D_plot", "radial_2D_surface" or "3D_animated"
 
         """
 
@@ -61,6 +61,7 @@ class ps_axis():
         plottype = {
             "dispersion": True,
             "radial_2D_plot": True,
+            "radial_2D_surface": True,
             "3D_animated": True,
         }
 
