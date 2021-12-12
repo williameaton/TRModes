@@ -1,6 +1,6 @@
 # Last modified pdabney@princeton.edu, 12/12/21
 
-from process_inputs import str2array, add2log, add2log_line
+from inputs.process_inputs import str2array, add2log, add2log_line
 
 
 def process_input_fig(str_in):
