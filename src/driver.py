@@ -3,8 +3,13 @@
 # this will be the main driver code that ties
 # input, calculation, and output together
 #
+# EXAMPLE:
+#
+# python driver.py -eqr -2.8471e-7*(r**3)+3.84976e-3*(r**2)-17.6479*r+32447.9 -eqs sqrt(mu/rho)
+# -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+#
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
-# Last modified by tschuh-at-princeton.edu, 12/11/2021
+# Last modified by tschuh-at-princeton.edu, 12/12/2021
 
 import numpy as np
 import sys
@@ -14,8 +19,8 @@ from inputs.Model import Model
 from inputs.process_inputs import process_inputs
 from inputs.process_input_fig import process_input_fig
 from inputs.process_input_args import process_input_args
-from plotting.ps_figure import ps_figure
-from plotting.ps_axis import ps_axis
+#from plotting.ps_figure import ps_figure
+#from plotting.ps_axis import ps_axis
 
 # class dummy_inputs():
 #     def __init__(self):
@@ -72,31 +77,31 @@ def driver(sys):
 
 
     #--------------------------------------------------------------------------------------------
-    # PLOTTING:
+    # # PLOTTING:
     
-    # To set up classes for plottting
-    if hasattr(inputs, 'figure_output'):
-        # Check that an output file exists
-        assert os.path.exists(inputs.output_filename), \
-            'Output file does not exist. Must compute modes. \n'
+    # # To set up classes for plottting
+    # if hasattr(inputs, 'figure_output'):
+    #     # Check that an output file exists
+    #     assert os.path.exists(inputs.output_filename), \
+    #         'Output file does not exist. Must compute modes. \n'
 
 
-        fig_list = []
-        # If there are multiple figures to produce
-        for x in range(0,len(inputs.output_filename)):
-            # Convert input string
-            fname_out, ax_locs, L, N, ptype = process_input_fig(inputs.output_filename[x])
+    #     fig_list = []
+    #     # If there are multiple figures to produce
+    #     for x in range(0,len(inputs.output_filename)):
+    #         # Convert input string
+    #         fname_out, ax_locs, L, N, ptype = process_input_fig(inputs.output_filename[x])
 
-            temp_axis_list = []
-            # Create axis class
-            for i in range(len(ax_locs)):
-                   temp_axis_list.append(ps_axis(ptype[i], inputs.output_filename, axis_loc=ax_locs[i],
-                                        int_required=False, N=N[i], L=L[i], radius=inputs.r_max))
+    #         temp_axis_list = []
+    #         # Create axis class
+    #         for i in range(len(ax_locs)):
+    #                temp_axis_list.append(ps_axis(ptype[i], inputs.output_filename, axis_loc=ax_locs[i],
+    #                                     int_required=False, N=N[i], L=L[i], radius=inputs.r_max))
 
-            # Create figure class
-            fig_list.append(ps_figure(temp_axis_list, fname_out))
+    #         # Create figure class
+    #         fig_list.append(ps_figure(temp_axis_list, fname_out))
 
 
-    # Run plotting commands for each figure:
-    for fig in fig_list:
-        fig.plot()
+    #     # Run plotting commands for each figure:
+    #     for fig in fig_list:
+    #         fig.plot()
