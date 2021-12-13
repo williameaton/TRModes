@@ -111,7 +111,7 @@ class toroidal_modes():
         # in your working directory called output_files
         # that will store Wr files
         current_directory = os.getcwd()
-        final_directory = os.path.join(current_directory,r'output_files')
+        final_directory = os.path.join(current_directory,r'output')
         if not os.path.exists(final_directory):
             os.makedirs(final_directory)
         
