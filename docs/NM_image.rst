@@ -5,7 +5,8 @@ NM_image class
 
 .. automodule:: NM_image
    :members:
-
+   :special-members:
+   :private-members:
 
 .. toctree::
    :maxdepth: 2

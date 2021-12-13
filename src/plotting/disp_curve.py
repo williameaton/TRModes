@@ -2,11 +2,13 @@ from NM_image import NM_image
 import numpy as np
 
 class disp_curve(NM_image):
-    """A concrete subclass of NM_image that produces dispersion plots for multiple n, l, omega combinations. """
+    """
+    A concrete subclass of NM_image that produces dispersion plots for multiple n, l, omega combinations.
+    """
     def __init__(self, ps_axis):
         """
-            :param ps_axis: ps_axis object that holds specifications for the details of the plot
-            :type ps_axis: ps_axis object
+        :param ps_axis: ps_axis object that holds specifications for the details of the plot
+        :type ps_axis: ps_axis object
         """
         self.specs = ps_axis                        # Data from ps_axis (the figure and N & L values that the user wants to plot are included)
         self.omega = None                           # Eigenfrequency, loaded from a file
@@ -20,8 +22,10 @@ class disp_curve(NM_image):
 
     # METHODS
     def _load_data(self):
-        """Data file is expected to be nx3 where the columns represent l, n, omega respectively
-        Load the data and assign the columns to the proper variables"""
+        """
+        Data file is expected to be nx3 where the columns represent l, n, omega respectively
+        Load the data and assign the columns to the proper variables
+        """
         file_data = np.loadtxt(self.specs.data_fname)
         self.l = file_data[:,0]
         self.n = file_data[:,1]
@@ -33,7 +37,9 @@ class disp_curve(NM_image):
     # ------------------------------------------------------------------------------------------------------------------
 
     def _produce_plot(self):
-        """First-order function that produces the plot on the relevant Matplotlib axis."""
+        """
+        First-order function that produces the plot on the relevant Matplotlib axis.
+        """
 
         # Set the axis and prepare the plot
         self.ax = self.specs.figure.add_subplot(self.specs.axis_loc)
@@ -81,7 +87,9 @@ class disp_curve(NM_image):
     # ------------------------------------------------------------------------------------------------------------------
     
     def _add_labels(self):
-        """Adds axis and plot title labels."""
+        """
+        Adds axis and plot title labels.
+        """
         self.ax.set_title("Dispersion Curve")
         self.ax.set_xlim(np.min(self.specs.L)-1, np.max(self.specs.L)+1)
         self.ax.set_xlabel("Angular degree (l)")
@@ -91,13 +99,20 @@ class disp_curve(NM_image):
 
     # Have to include these two
     def init_anim_data(self):
-        """ Function defined in ABC but not used for this type of plot."""
+        """
+        Function defined in ABC but not used for this type of plot.
+        """
         pass
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def update_anim_data(self, iteration):
-        """ Function defined in ABC but not used for this type of plot."""
+        """
+        Function defined in ABC but not used for this type of plot.
+
+        :param iteration: iteration for animation frame
+        :type iteration: integer
+        """
         pass
 
     # ------------------------------------------------------------------------------------------------------------------

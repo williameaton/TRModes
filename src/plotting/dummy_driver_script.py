@@ -11,7 +11,7 @@ ax1 = ps_axis(type="3D_animated",
               data_fname="./example_2D_data.txt",
               N=5,
               L=5,
-              M=5,
+              M=0,
               radius=6371,
               axis_loc=121)
 

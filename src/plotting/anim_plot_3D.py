@@ -47,8 +47,9 @@ class anim_plot_3D(NM_image):
         """
         Creates the next animation frame. Outputs a file to iteration
 
-        :param iteration:
-        :return:
+        :param path: The file directory for saving to. This, by default, is the name of the figure.
+        :type  path: string
+
         """
 
         # loop through time values
@@ -65,8 +66,10 @@ class anim_plot_3D(NM_image):
             self.mesh.points = self.p
             self.mesh["rad"] = self.r
 
-            print(f"Time = {t}")
+            print(f"Time = {np.round(t, decimals=2)}")
             counter += 1
+
+        print(f"VTK files saved to {path}/")
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -222,6 +225,7 @@ def _create_globe(l, m, time, radial_data):
 def deform_coords(theta, phi, npts, l, m, radial_disp, t):
     """
     Deforms the original coordinates based on an oscillation of a Ylm pattern over 2*pi
+
     :param theta: Array of theta coordinates
     :type theta: 1D array
 

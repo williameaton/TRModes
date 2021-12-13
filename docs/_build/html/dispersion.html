@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contact" href="contact.html" />
+    <link rel="next" title="3D Animation class" href="3d_anim.html" />
     <link rel="prev" title="Radial 2D plot class" href="radial_2D_plot.html" /> 
 </head>
 
@@ -44,11 +44,16 @@
 <li class="toctree-l2"><a class="reference internal" href="command_line.html">Running the command line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculations.html">Calculations</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="visualisation.html">Visualisation</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="visualisation.html#d-figures">2D Figures</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="visualisation.html#id1">3D Figures</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="NM_image.html">NM_image class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ps_figure.html">Ps_figure class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ps_axis.html">Ps_axis class</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="NM_image.html">NM_image class</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="radial_2D_plot.html">Radial 2D plot class</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Dispersion plot class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3d_anim.html">3D Animation class</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="visualisation.html#d-figures">2D Figures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="visualisation.html#d-figures-animated">3D Figures (animated)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +95,43 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">disp_curve.</span></span><span class="sig-name descname"><span class="pre">disp_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve" title="Permalink to this definition"></a></dt>
 <dd><p>A concrete subclass of NM_image that produces dispersion plots for multiple n, l, omega combinations.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ps_axis</strong> (<em>ps_axis object</em>) – ps_axis object that holds specifications for the details of the plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve._add_labels">
+<span class="sig-name descname"><span class="pre">_add_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._add_labels" title="Permalink to this definition"></a></dt>
+<dd><p>Adds axis and plot title labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve._data_to_plot">
+<span class="sig-name descname"><span class="pre">_data_to_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._data_to_plot" title="Permalink to this definition"></a></dt>
+<dd><p>Find the data that the user wants to plot
+Remember: self.specs.L is a list, and self.specs.N is a list of sublists
+(each sublist is corresponding to one value of l)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve._load_data">
+<span class="sig-name descname"><span class="pre">_load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._load_data" title="Permalink to this definition"></a></dt>
+<dd><p>Data file is expected to be nx3 where the columns represent l, n, omega respectively
+Load the data and assign the columns to the proper variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="disp_curve.disp_curve._produce_plot">
+<span class="sig-name descname"><span class="pre">_produce_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._produce_plot" title="Permalink to this definition"></a></dt>
+<dd><p>First-order function that produces the plot on the relevant Matplotlib axis.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="disp_curve.disp_curve.init_anim_data">
 <span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.init_anim_data" title="Permalink to this definition"></a></dt>
 <dd><p>Function defined in ABC but not used for this type of plot.</p>
@@ -110,7 +152,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="radial_2D_plot.html" class="btn btn-neutral float-left" title="Radial 2D plot class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="contact.html" class="btn btn-neutral float-right" title="Contact" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="3d_anim.html" class="btn btn-neutral float-right" title="3D Animation class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

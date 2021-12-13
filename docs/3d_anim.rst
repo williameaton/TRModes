@@ -6,3 +6,5 @@ We endeavor to update our plotting API to make more flexibility for these 3D ani
 
 .. automodule:: anim_plot_3D
    :members:
+   :special-members:
+   :private-members:
