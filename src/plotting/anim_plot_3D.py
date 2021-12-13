@@ -79,7 +79,7 @@ class anim_plot_3D(NM_image):
         """
 
         print("Loading radial displacement vs depth data...")
-        displacement = np.loadtxt(self.specs.data_fname, skiprows=3)
+        displacement = np.loadtxt(f"./output/Wr_l={self.specs.L}_n={self.specs.N}.txt", skiprows=3)
 
         # Instead of using a real radial value we normalise to a value of 1
         # This is because otherwise large, real radii require a number of points that scales with r^2 so the data gets
