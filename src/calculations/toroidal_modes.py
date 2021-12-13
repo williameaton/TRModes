@@ -5,6 +5,7 @@
 # Originally written by tschuh-at-princeton.edu, 11/15/2021
 # Last modified by tschuh-at-princeton.edu, 12/05/2021
 
+import os
 import numpy as np
 from calculations.euler import euler
 from calculations.rk4 import rk4
@@ -12,9 +13,6 @@ from calculations.ab2 import ab2
 
 # To do:
 #
-# be able to run dr array element by element (add for loop)
-# also change to run rho and mu array element by element
-# save files to new output directory
 # speed up calculation for large n choice
 # get_integrator causes a problem in frequency_bisection when using rk4 method (something with n)
 
@@ -64,7 +62,8 @@ class toroidal_modes():
 ####################################################################
 
     # frequency bisection method
-    def frequency_bisection(self,wmax,wmin,dr,rr,rho,mu,l,Twmin):
+    #def frequency_bisection(self,wmax,wmin,dr,rr,rho,mu,l,Twmin):
+    def frequency_bisection(self,wmax,wmin,l,Twmin):    
         # compute residuals (distance between left and right frequencies)
         res = np.absolute(wmax-wmin)
 
@@ -105,7 +104,16 @@ class toroidal_modes():
 
     # actual calculation
     def Tmodes_calculation(self):
+        # make an output file called lnw.txt
         lnwfile = open("lnw.txt","w")
+
+        # if it doesnt already exist, make a directory
+        # in your working directory called output_files
+        # that will store Wr files
+        current_directory = os.getcwd()
+        final_directory = os.path.join(current_directory,r'output_files')
+        if not os.path.exists(final_directory):
+            os.makedirs(final_directory)
         
         for l in self.data.lrange:
             n = -1 # reset counter for radial degrees n
@@ -130,7 +138,8 @@ class toroidal_modes():
                 if (Twc*Twmin) < 0: # then we have bracketed a root
                     # use bissection to get a precise estimate of the frequency
                     # and eigenfunctions and the radial order n
-                    [wc,_,_,n] = self.frequency_bisection(wr,wl,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l,Twmin)
+                    #[wc,_,_,n] = self.frequency_bisection(wr,wl,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l,Twmin)
+                    [wc,_,_,n] = self.frequency_bisection(wr,wl,l,Twmin)
 
                     # only save eigenfrequency if n >= nrange[0]
                     # too slow
@@ -155,8 +164,9 @@ class toroidal_modes():
 
                             # write W and r to a separate file Wr_l_n.txt
                             # W and r written from inner --> outer
-                            fname = "Wr_%s_%s.txt" % (lorder,norder)
-                            Wrfile = open(fname,"w")
+                            fname = "Wr_l=%s_n=%s.txt" % (lorder,norder)
+                            Wrfile = open(os.path.join(final_directory,fname),"w")
+                            #Wrfile = open(fname,"w")
                             Wrfile.write(lorder + " " + norder + " " + freq + "\n")
                             for r in range(len(self.data.rr)):
                                 Wrfile.write(repr(W[r,0]) + " " + repr(self.data.rr[r]) + "\n")
