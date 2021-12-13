@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 12/09/21
+# Last modified by pdabney@princeton.edu, 12/13/21
 
 #--------------------------------------------------------------------------------------------
 # Imports
@@ -39,13 +39,13 @@ def process_inputs(inputs):
         
         # Compute a dr array (not evenly spaced)
         model_class.dr = model_class.rr[1:len(model_class.rr)] - model_class.rr[0:len(model_class.rr)-1]
-
+        
         # Obtain Number of radial steps
         model_class.Nr = len(model_class.dr)
         
         # Compute the bulk and shear modulus
-        # model_class.kappa = model_class.rho * ((Vp ** 2) - (4 / 3) * (Vs ** 2));
         model_class.mu = model_class.rho * (Vs ** 2);
+
             
     else:
         # Ensure a density and shear velocity equations have been inputed
@@ -60,7 +60,7 @@ def process_inputs(inputs):
         model_class.rr = model_class.r_min + np.dot((np.arange(0,inputs.Nr)),dr)
 
         # Store as an array                                                             
-	model_class.dr = [dr] * len(rr)
+        model_class.dr = [dr] * len(rr)
         
         # Number of nodes in the radial dimension
         model_class.Nr = inputs.Nr
@@ -206,12 +206,14 @@ def extractfromfile(fname):
     f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)  # Read in file (skips the header lines)
 
     # Extract Data Points
-    Vp_pts = f[:, 2]  # Compressional wave velocity
-    Vs_pts = f[:, 3]  # Shear wave velocity
-    rho_pts = f[:, 1]  # Density
-    R_pts = f[:, 0]  # Radius
+    Vp_pts = f[:, 2].reverse()  # Compressional wave velocity
+    Vs_pts = f[:, 3].reverse()  # Shear wave velocity
+    rho_pts = f[:, 1].reverse()  # Density
+    d_pts = f[:, 0].reverse()  # Depth
     r_min = R_pts[-1]  # Minimum radius
     r_max = R_pts[0]  # Maximum radius
+
+    R_pts = r_max - d_pts
 
     return Vp_pts, Vs_pts, rho_pts, R_pts, r_max, r_min
 
