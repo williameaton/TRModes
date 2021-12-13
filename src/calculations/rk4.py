@@ -23,18 +23,18 @@ def rk4(w,dr,rr,rho,mu,l):
 
     # integrate towards the surface using Runge-Kutta 4th order method
     for i in range(1,nr):
-        Wk1 = dr * toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
-        Wk2 = dr * toroidal_system(W[i-1] + 0.5*dr,T[i-1] + 0.5*Wk1,w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
-        Wk3 = dr * toroidal_system(W[i-1] + 0.5*dr,T[i-1] + 0.5*Wk2,w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
-        Wk4 = dr * toroidal_system(W[i-1] + dr,T[i-1] + Wk3,w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+        Wk1 = dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+        Wk2 = dr[i-1]*toroidal_system(W[i-1] + 0.5*dr[i-1],T[i-1] + 0.5*float(Wk1),w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+        Wk3 = dr[i-1]*toroidal_system(W[i-1] + 0.5*dr[i-1],T[i-1] + 0.5*float(Wk2),w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+        Wk4 = dr[i-1]*toroidal_system(W[i-1] + dr[i-1],T[i-1] + float(Wk3),w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
 
-        Tk1 = dr * toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
-        Tk2 = dr * toroidal_system(W[i-1] + 0.5*dr,T[i-1] + 0.5*Tk1,w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
-        Tk3 = dr * toroidal_system(W[i-1] + 0.5*dr,T[i-1] + 0.5*Tk2,w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
-        Tk4 = dr * toroidal_system(W[i-1] + dr,T[i-1] + Tk3,w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
-        
-        W[i] = W[i-1] + (1/6)*(Wk1 + 2*Wk2 + 2*Wk3 + Wk4)
-        T[i] = T[i-1] + (1/6)*(Tk1 + 2*Tk2 + 2*Tk3 + Tk4)
+        Tk1 = dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+        Tk2 = dr[i-1]*toroidal_system(W[i-1] + 0.5*dr[i-1],T[i-1] + 0.5*float(Tk1),w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+        Tk3 = dr[i-1]*toroidal_system(W[i-1] + 0.5*dr[i-1],T[i-1] + 0.5*float(Tk2),w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+        Tk4 = dr[i-1]*toroidal_system(W[i-1] + dr[i-1],T[i-1] + float(Tk3),w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+
+        W[i] = W[i-1] + (1/6)*(float(Wk1) + 2*float(Wk2) + 2*float(Wk3) + float(Wk4))
+        T[i] = T[i-1] + (1/6)*(float(Tk1) + 2*float(Tk2) + 2*float(Tk3) + float(Tk4))
 
     # count zero crossings
     # must integer divide (//) by 2 at the end because np.where
