@@ -164,9 +164,8 @@ class toroidal_modes():
 
                             # write W and r to a separate file Wr_l_n.txt
                             # W and r written from inner --> outer
-                            fname = "Wr_l=%s_n=%s.txt" % (lorder,norder)
+                            fname = "Wr_l%s_n%s.txt" % (lorder,norder)
                             Wrfile = open(os.path.join(final_directory,fname),"w")
-                            #Wrfile = open(fname,"w")
                             Wrfile.write(lorder + " " + norder + " " + freq + "\n")
                             for r in range(len(self.data.rr)):
                                 Wrfile.write(repr(W[r,0]) + " " + repr(self.data.rr[r]) + "\n")
