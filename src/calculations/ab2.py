@@ -27,12 +27,12 @@ def ab2(w,dr,rr,rho,mu,l):
 
         if counter == 0:
             # use Euler method for 1st step
-            W[i] = W[i-1] + dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
-            T[i] = T[i-1] + dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+            W[i] = W[i-1] + dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+            T[i] = T[i-1] + dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
             counter = 1
         else:
-            W[i] = W[i-1] + (3/2)*dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0] - (1/2)*dr*toroidal_system(W[i-2],T[i-2],w,rr[i-2],rho[i-2],mu[i-2],k2)[0]
-            T[i] = T[i-1] + (3/2)*dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1] - (1/2)*dr*toroidal_system(W[i-2],T[i-2],w,rr[i-2],rho[i-2],mu[i-2],k2)[1]
+            W[i] = W[i-1] + (3/2)*dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0] - (1/2)*dr[i-2]*toroidal_system(W[i-2],T[i-2],w,rr[i-2],rho[i-2],mu[i-2],k2)[0]
+            T[i] = T[i-1] + (3/2)*dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1] - (1/2)*dr[i-2]*toroidal_system(W[i-2],T[i-2],w,rr[i-2],rho[i-2],mu[i-2],k2)[1]
             
     # count zero crossings
     # must integer divide (//) by 2 at the end because np.where

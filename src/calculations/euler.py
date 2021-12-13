@@ -25,9 +25,9 @@ def euler(w,dr,rr,rho,mu,l):
     # integrate towards the surface using forward Euler method
     for i in range(1,nr):
         # toroidal_system computes dW/dr and dT/dr
-        W[i] = W[i-1] + dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
-        T[i] = T[i-1] + dr*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
-
+        W[i] = W[i-1] + dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[0]
+        T[i] = T[i-1] + dr[i-1]*toroidal_system(W[i-1],T[i-1],w,rr[i-1],rho[i-1],mu[i-1],k2)[1]
+        
     # count zero crossings
     # must integer divide (//) by 2 at the end because np.where
     # gives twice as many outputs as MATLAB's find() function
