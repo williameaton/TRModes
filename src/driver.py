@@ -12,7 +12,7 @@
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
 # Last modified by tschuh-at-princeton.edu, 12/13/2021
-
+# Last modified by pdabney@princeton.edu, 12/13/2021
 
 import numpy as np
 import sys, argparse
@@ -61,6 +61,8 @@ from inputs.process_input_args import process_input_args
     
     # Store command line arguments in a class called inputs
     # inputs = process_input_args()
+#--------------------------------------------------------------------------------------------
+# INPUT ARGUMENTS:
 parser = argparse.ArgumentParser()
 
 # Include all command line flags
@@ -84,15 +86,13 @@ parser.add_argument("-mtype", "--mode_type", dest="mode_type", nargs=1, help="Ty
 parser.add_argument("-fig", "--figure", dest="figure_output", nargs="*", help="Figure output details")
 parser.add_argument("-ofile", "--output_file", dest="output_file", nargs=1, help="File containing the computation outputs")
     
-    # Set class called inputs to store user input information
-#    inputs = user_inputs()
 
 # Pass in command line arguments and store values in input class
 inputs = parser.parse_args()
-    #--------------------------------------------------------------------------------------------
-    # CALCULATIONS:
+#--------------------------------------------------------------------------------------------
+# CALCULATIONS:
     
-    # If this attribute exists (which is require for calculations), modes will be computed
+# If this attribute exists (which is require for calculations), modes will be computed
 if inputs.mode_type is not None:
             
     # Process the user inputs 
