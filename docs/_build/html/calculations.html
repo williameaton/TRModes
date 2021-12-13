@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculations &mdash; TRModes 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Calculations &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +36,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
@@ -74,10 +73,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="calculations">
-<h1>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline"></a></h1>
-<p>Terry to add some details.</p>
-</section>
+  <div class="section" id="calculations">
+<h1>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h1>
+<p>The displacement vector <strong>s</strong> corresponding to toroidal modes can be written as</p>
+<div class="math notranslate nohighlight">
+\[s^T(r,\theta,\phi,t) = \sum_{n} \sum_{l} \sum_{m} {}_{n}A_{l}^{m}\ {}_{n}W_{l}(r)\ C_{l}^{m}(\theta,\phi)\ e^{i {}_{n}\omega_{l}^{m} t}\]</div>
+<p>where <strong>n</strong> is the radial oder, <strong>l</strong> is the angular order, and <strong>m</strong> is the azimuthal order. This equation stipulates that toroidal oscillations are completely described horizontally by vector spherical harmonics <span class="math notranslate nohighlight">\(C_{l}^{m}(\theta,\phi)\)</span> which are known analytically. Their depth variations, on the other hand, are characterized by a radial differential equation satisfied by a set of toroidal eigenfunctions <span class="math notranslate nohighlight">\({}_{n}W_{l}(r)\)</span> and eigenfrequencies <span class="math notranslate nohighlight">\({}_{n}\omega_{l}\)</span> that are both dependent on the seismic properties of the Earth model under consideration.</p>
+<p>Toroidal eigenfunctions <span class="math notranslate nohighlight">\(W(r)\)</span> are completely decoupled from their spheroidal counterparts and they satisfy the following second-order ordinary differential equation (ODE):</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{r^2} \frac{d}{dr} \left[\mu r^2 \left(\frac{dW}{dr} - \frac{W}{r}\right)\right] + \frac{\mu}{r}\left(\frac{dW}{dr} - \frac{W}{r}\right) + \left[\omega^2 \rho - \frac{\mu \left(k^2 - 2\right)}{r^3}\right] W = 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(k^2 = l(l + 1)\)</span> and to which we can associate the radial toroidal traction defined as</p>
+<div class="math notranslate nohighlight">
+\[T = \mu \left(\frac{dW}{dr} - \frac{W}{r}\right)\]</div>
+<p>These two equations can be rearranged into a coupled system of first-order ODEs more suited for numerical computations</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{d}{dr} \begin{bmatrix} W(r)\\T(r) \end{bmatrix} = \begin{bmatrix} \frac{1}{r} &amp; \frac{1}{\mu(r)} \\ -\omega^2 \rho(r) + \frac{(k^2 - 2) \mu(r)}{r^2} &amp; -\frac{3}{r} \end{bmatrix} \begin{bmatrix} W(r)\\T(r) \end{bmatrix}\end{split}\]</div>
+<p>This is essentially an eigenvalue problem. Our goal therefore is to solve this system subject to some boundary conditions at the lower and upper ends of the region of interest to deduce its non-trivial solutions <span class="math notranslate nohighlight">\({}_{n}\omega_{l}\)</span> and <span class="math notranslate nohighlight">\({}_{n}W_{l}\)</span>.</p>
+</div>
 
 
            </div>
