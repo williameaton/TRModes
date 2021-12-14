@@ -1,22 +1,22 @@
-# Last modified by pdabney@princeton.edu, 12/12/21
+# Last modified by pdabney@princeton.edu, 12/13/21
 
 class Model:
     # Attributes
-    def __init__(self,inputs):
+    def __init__(self,rho, mu, r_min, r_max, rr, dr, n, l,method, mtype):
 
         # Model parameters
-        self.rho = inputs.rho
-        self.mu = inputs.mu
+        self.rho = rho
+        self.mu = mu
         
-        self.r_min = inputs.r_min
-        self.r_max = inputs.r_max
-        self.dr = inputs.dr
-        self.rr = inputs.rr
+        self.r_min = r_min
+        self.r_max = r_max
+        self.dr = dr
+        self.rr = rr
         
         # Mode parameters
-        self.n = inputs.n
-        self.l = inputs.l
-        self.mtype = inputs.mtype
+        self.n = n
+        self.l = l
+        self.mtype = mtype
 
         # Integration Method
-        self.method = inputs.int_method
+        self.method = method

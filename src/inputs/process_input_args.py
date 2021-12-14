@@ -1,4 +1,4 @@
-# Last modified by pdabney@princeton.edu, 12/9/21
+# Last modified by pdabney@princeton.edu, 12/13/21
 
 #--------------------------------------------------------------------------------------------
 # Imports
@@ -10,16 +10,14 @@ import argparse
 # Define Empty Class
 #--------------------------------------------------------------------------------------------
 
-class user_inputs:
+#class user_inputs:
     # Empty class to store input values
-    pass
-
+#    pass
 
 #--------------------------------------------------------------------------------------------
 # MAIN FUNCTION
 #--------------------------------------------------------------------------------------------
-
-def process_input_args(cml_arguments):
+def process_input_args():
     # =======================================================================================          
     # DESCRIPTION:                                                                                   
     #   Process the command line arguments and store values in a class
@@ -32,10 +30,10 @@ def process_input_args(cml_arguments):
     
     # Create object that will hold information needed to parse command line
     parser = argparse.ArgumentParser()
-    
+
     # Include all command line flags
     parser.add_argument("-gui", "--gui_launch", action="store_true", dest="gui", default=False, help="Launch GUI")
-
+    
     parser.add_argument("-eqr", "--equation_rho", dest="eq_rho", nargs=1, help="Equation for density")
     parser.add_argument("-eqs", "--equation_vs", dest="eq_vs", nargs=1, help="Equation for shear velocity")
     parser.add_argument("-eqp", "--equation_vp", dest="eq_vp", nargs=1, help="Equation for compressional velocity")
@@ -54,11 +52,24 @@ def process_input_args(cml_arguments):
     # Flags related to output
     parser.add_argument("-fig", "--figure", dest="figure_output", nargs="*", help="Figure output details")
     parser.add_argument("-ofile", "--output_file", dest="output_file", nargs=1, help="File containing the computation outputs")
-                        
-    # Set class called inputs to store user input information
-    inputs = user_inputs()
     
-    # Pass in command line arguments and store values in input class
-    parser.parse_args(str(cml_arguments), namespace=inputs)
+    # Set class called inputs to store user input information
+#    inputs = user_inputs()
 
+    # Pass in command line arguments and store values in input class
+    args = parser.parse_args()
+    
+    return args
+
+def process_args():
+    inputs = parse_args()
+    attrs = vars(inputs)
+    print(', '.join("%s: %s" % item for item in attrs.items()))
     return inputs
+
+if __name__ == '__process_args__':
+    process_args()
+
+    
+#attrs = vars(inputs)
+#print(', '.join("%s: %s" % item for item in attrs.items()))

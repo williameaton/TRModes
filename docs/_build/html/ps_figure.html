@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ps_figure class &mdash; TRModes 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Ps_figure class &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +36,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
@@ -82,70 +81,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-ps_figure">
-<span id="ps-figure-class"></span><h1>Ps_figure class<a class="headerlink" href="#module-ps_figure" title="Permalink to this headline"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ps_figure.ps_figure">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ps_figure.</span></span><span class="sig-name descname"><span class="pre">ps_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure" title="Permalink to this definition"></a></dt>
-<dd><p>ps_figure objects hold a matplotlib figure and data required to populate it with a number of axes.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ps_figure.ps_figure.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure.__init__" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>axes_list</strong> (<em>list</em>) – A list of ps_axis objects, each of which is used to generate an axis on the figure</p></li>
-<li><p><strong>fname_out</strong> (<em>string</em>) – Prefix for the output file of the figure. By default both a static (png) and moving (gif or mp4) image is generated</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ps_figure.ps_figure.__weakref__">
-<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#ps_figure.ps_figure.__weakref__" title="Permalink to this definition"></a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ps_figure.ps_figure._axis_factory">
-<span class="sig-name descname"><span class="pre">_axis_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_listlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._axis_factory" title="Permalink to this definition"></a></dt>
-<dd><p>Factory function that returns an object of the relevant subclass of NM_image, e.g. a 2D radial plot or a dispersion plot
-:param axis_obj: The ps_axis object dictates which subclass of NM_image object will be returned
-:type  axis_obj: ps_axis object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>_listlen</strong> (<em>int</em>) – Internal counter that helps produce warning if 3D plot is part of a list of plots for a figure.</p>
-</dd>
-<dt class="field-even">Returns obj</dt>
-<dd class="field-even"><p>An object of the relevant subclass of NM_image</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ps_figure.ps_figure._gen_NM_img_objects">
-<span class="sig-name descname"><span class="pre">_gen_NM_img_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._gen_NM_img_objects" title="Permalink to this definition"></a></dt>
-<dd><p>Iteratively generating a NM_image object and running obj.make(); this updates obj to its final form,i.e. actually creating the plot.
-Note that these objects are stored in self.NM_img_objs for use in producing animations</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ps_figure.ps_figure._gen_animations">
-<span class="sig-name descname"><span class="pre">_gen_animations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._gen_animations" title="Permalink to this definition"></a></dt>
-<dd><p>Takes all of the axis objects stored in NM_img_objs and animates them if that is feasible.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ps_figure.ps_figure.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure.plot" title="Permalink to this definition"></a></dt>
-<dd><p>Create the different NM_image subclass objects (e.g. dispersion, 2D_radial) from the inputted PS_axis objs
-This also adds the plots from each of these subclasses to the overall figure</p>
-</dd></dl>
-
-</dd></dl>
-
-</section>
+  <div class="section" id="ps-figure-class">
+<h1>Ps_figure class<a class="headerlink" href="#ps-figure-class" title="Permalink to this headline">¶</a></h1>
+</div>
 
 
            </div>

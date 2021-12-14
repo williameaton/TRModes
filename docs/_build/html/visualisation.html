@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visualisation &mdash; TRModes 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Visualisation &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +36,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
@@ -85,10 +84,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="visualisation">
-<h1>Visualisation<a class="headerlink" href="#visualisation" title="Permalink to this headline"></a></h1>
+  <div class="section" id="visualisation">
+<h1>Visualisation<a class="headerlink" href="#visualisation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<p class="caption"><span class="caption-text">Documentation:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ps_figure.html">Ps_figure class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ps_axis.html">Ps_axis class</a></li>
@@ -102,36 +101,36 @@
 </div>
 <p>We offer a number of different plotting options for visualising normal mode data, each of which are described below, which
 may be in 2D or 3D, and static or animated.</p>
-<section id="d-figures">
-<h2>2D Figures<a class="headerlink" href="#d-figures" title="Permalink to this headline"></a></h2>
+<div class="section" id="d-figures">
+<h2>2D Figures<a class="headerlink" href="#d-figures" title="Permalink to this headline">¶</a></h2>
 <p>2D plots harness the functionality of <code class="docutils literal notranslate"><span class="pre">Matplotlib</span></code> and therefore allows any number of different 2D plots to be combined
 in a single figure. By default, figures return both a static (.png) and animated (.gif) version of the figure.</p>
-<section id="dispersion-plot-static">
-<h3>Dispersion plot (static)<a class="headerlink" href="#dispersion-plot-static" title="Permalink to this headline"></a></h3>
+<div class="section" id="dispersion-plot-static">
+<h3>Dispersion plot (static)<a class="headerlink" href="#dispersion-plot-static" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>Simple dispersion plots may be produced for visualising the relationship between the azimuthal order and eigenfrequency
 of a series of normal modes. These are colour-coded such that modes of constant radial order (n) have consistent colour.</p>
 </div></blockquote>
-</section>
-<section id="d-radial-plots-animated">
-<h3>2D radial plots (animated)<a class="headerlink" href="#d-radial-plots-animated" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="d-radial-plots-animated">
+<h3>2D radial plots (animated)<a class="headerlink" href="#d-radial-plots-animated" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>Radial plots show the displacement of the normal mode as a function of depth, and highlight any zero-crossing points.
 A combination of 2D radial plots and surface plots can be used to get a good understanding of 3D motions, if you don’t
 want to deal with 3D plots!</p>
 </div></blockquote>
-</section>
-</section>
-<section id="d-figures-animated">
-<h2>3D Figures (animated)<a class="headerlink" href="#d-figures-animated" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+<div class="section" id="d-figures-animated">
+<h2>3D Figures (animated)<a class="headerlink" href="#d-figures-animated" title="Permalink to this headline">¶</a></h2>
 <p>Our 3D figures use a slightly different approach for visualising. We use <a class="reference external" href="https://www.pyvista.org/">PyVista</a> to generate a series of <em>.vtk</em> files
 which can then be used in conjuction with <a class="reference external" href="https://www.paraview.org/">Paraview</a> to produce 3D, interactive animations of normal mode oscillations.
 We consider the oscillations in a lagrangian perspective by tracking the motion of initially-unperturbed particles. These
 are not structured grids and so we reccommend choosing the <em>Point Gaussian</em> representation. In particular, we find the
 ‘black-edged circle’ shader preset with a radius of 0.02 to be a good representation of the particles.</p>
 <a class="reference internal image-reference" href="_images/Example_l4_m0_1.png"><img alt="Testing alt text" src="_images/Example_l4_m0_1.png" style="width: 800px;" /></a>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

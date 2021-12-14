@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dispersion plot class &mdash; TRModes 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Dispersion plot class &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +35,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
@@ -88,15 +86,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-disp_curve">
-<span id="dispersion-plot-class"></span><h1>Dispersion plot class<a class="headerlink" href="#module-disp_curve" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-disp_curve">
+<span id="dispersion-plot-class"></span><h1>Dispersion plot class<a class="headerlink" href="#module-disp_curve" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="disp_curve.disp_curve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">disp_curve.</span></span><span class="sig-name descname"><span class="pre">disp_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve">
+<em class="property">class </em><code class="sig-prename descclassname">disp_curve.</code><code class="sig-name descname">disp_curve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve" title="Permalink to this definition">¶</a></dt>
 <dd><p>A concrete subclass of NM_image that produces dispersion plots for multiple n, l, omega combinations.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.__init__" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>ps_axis</strong> (<em>ps_axis object</em>) – ps_axis object that holds specifications for the details of the plot</p>
@@ -105,47 +103,52 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve._add_labels">
-<span class="sig-name descname"><span class="pre">_add_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._add_labels" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve._add_labels">
+<code class="sig-name descname">_add_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._add_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds axis and plot title labels.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve._data_to_plot">
-<span class="sig-name descname"><span class="pre">_data_to_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._data_to_plot" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve._data_to_plot">
+<code class="sig-name descname">_data_to_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._data_to_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the data that the user wants to plot
 Remember: self.specs.L is a list, and self.specs.N is a list of sublists
 (each sublist is corresponding to one value of l)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve._load_data">
-<span class="sig-name descname"><span class="pre">_load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._load_data" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve._load_data">
+<code class="sig-name descname">_load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data file is expected to be nx3 where the columns represent l, n, omega respectively
 Load the data and assign the columns to the proper variables</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve._produce_plot">
-<span class="sig-name descname"><span class="pre">_produce_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._produce_plot" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve._produce_plot">
+<code class="sig-name descname">_produce_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve._produce_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>First-order function that produces the plot on the relevant Matplotlib axis.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve.init_anim_data">
-<span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.init_anim_data" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve.init_anim_data">
+<code class="sig-name descname">init_anim_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.init_anim_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function defined in ABC but not used for this type of plot.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="disp_curve.disp_curve.update_anim_data">
-<span class="sig-name descname"><span class="pre">update_anim_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.update_anim_data" title="Permalink to this definition"></a></dt>
+<dt id="disp_curve.disp_curve.update_anim_data">
+<code class="sig-name descname">update_anim_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iteration</span></em><span class="sig-paren">)</span><a class="headerlink" href="#disp_curve.disp_curve.update_anim_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function defined in ABC but not used for this type of plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>iteration</strong> (<em>integer</em>) – iteration for animation frame</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>
