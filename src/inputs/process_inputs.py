@@ -135,8 +135,8 @@ def process_inputs(inputs):
     #------------------------------------------------------------------------------------
     # Add input information to log
     add2log("Model Parameters","\n","1l")
-    add2log("r_max", model_class.r_max,"1l")
-    add2log("r_min", model_class.r_min,"1l")
+    add2log("r_max", model_class.r_max[0],"1l")
+    add2log("r_min", model_class.r_min[0],"1l")
     add2log("Nr", Nr,"1l")
     add2log_space()
     add2log("dr", model_class.dr,"2l")
@@ -146,6 +146,7 @@ def process_inputs(inputs):
     add2log("rho", model_class.rho,"2l")
     add2log_space()
     add2log("mu", model_class.mu,"2l")
+    add2log_space()
     add2log_line()
     add2log("Mode Parameters", "\n","1l")
     add2log("mtype", model_class.mtype,"1l")
@@ -153,6 +154,7 @@ def process_inputs(inputs):
     add2log("n", model_class.n,"1l")
     add2log("\nIntegration Method", "\n", "1l")
     add2log("method", model_class.method,"1l")
+    add2log_space()
     add2log_line()
     
     return model_class
@@ -280,32 +282,26 @@ def add2log(string, variable, lines):
     #    variable
     #    lines
     # ================================================================================================
-
     # Add colon to string
     added_c = string + ':'
     # Ensure even spacing
     _string = f"{added_c: <15}"
-
     # Open log
     f = open("input_log.txt", "a")
-
     if lines ==	"2l":
         f.write("\n" + _string + "\n" + str(variable))
     else:
         # Append to log
         f.write("\n" + _string + " " + str(variable))
-
     # Close file
     f.close()
 
-    
 # ----------------------------------------------------------------------------------------------------  
 def add2log_line():
     # Adds a break line to log
     f = open("input_log.txt", "a")
     f.write("\n")
     f.write("----------------------------------------------------------------------------------------")
-    f.write("\n")
     f.close()
 
 # ----------------------------------------------------------------------------------------------------                                              
