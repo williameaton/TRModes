@@ -1,6 +1,6 @@
-from radial_2D_plot import radial_2D_plot
-from disp_curve import disp_curve
-from anim_plot_3D import anim_plot_3D
+from plotting.radial_2D_plot import radial_2D_plot
+from plotting.disp_curve import disp_curve
+from plotting.anim_plot_3D import anim_plot_3D
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import os
@@ -89,7 +89,7 @@ class ps_figure():
             # Now save an animated version:
             out_str = "./" + self.fname_out + ".mp4"
             print(f"Saving animated figure {out_str}")
-            #self.animation.save(out_str)
+            self.animation.save(out_str)
 
 
     # ------------------------------------------------------------------------------------------------------------------

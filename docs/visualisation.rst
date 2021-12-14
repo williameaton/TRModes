@@ -39,7 +39,7 @@ are not structured grids and so we reccommend choosing the *Point Gaussian* repr
 
 .. image:: _static/Example_l4_m0_1.png
   :width: 800
-  :alt: Testing alt text
+  :alt: Blah
 
 
 .. _Paraview: https://www.paraview.org/

@@ -106,9 +106,9 @@ def process_input_fig(str_in):
         'Error: Must have corresponding number of n and l values. See Readme for details. \n'
     # Check all N and L values are zero or greater and integers                                             
     assert all(isinstance(x, int) for x in N), 'N values must be integers. \n'
-    assert N >= 0, 'N values must be zero or greater. \n'
+    assert all(n >= 0 for n in N), 'N values must be zero or greater. \n'
     assert all(isinstance(x, int) for x in L), 'L values must be integers. \n'
-    assert L >= 0, 'L values must be zero or greater. \n'
+    assert all(l >= 0 for l in L), 'L values must be zero or greater. \n'
     # Check is plot type exists                                                                             
     assert ptype == 'dispersion' or ptype == 'radial_2d_plot' or ptype == 'radial_2D_surface' or ptype == '3D_animated', \
         'Plot type does not exist. See Readme for details. \n'

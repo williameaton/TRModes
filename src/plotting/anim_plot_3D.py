@@ -1,4 +1,4 @@
-from NM_image import NM_image
+from plotting.NM_image import NM_image
 import numpy as np
 import pyvista as pv
 import scipy.special as ss
@@ -37,7 +37,7 @@ class anim_plot_3D(NM_image):
         """
 
         print("Initialising 3d model globe...")
-        self.p, self.r = _create_globe(l=self.specs.L, m=self.specs.M, time=0, radial_data=self.radial_data)
+        self.p, self.r = _create_globe(l=self.specs.L[0], m=self.specs.M[0], time=0, radial_data=self.radial_data)
         self.mesh = pv.PolyData(self.p)
         self.mesh["rad"] = self.r
     # ------------------------------------------------------------------------------------------------------------------
@@ -58,15 +58,17 @@ class anim_plot_3D(NM_image):
         counter = 0
         for t in np.arange(self.dt, 2 * np.pi, self.dt):
             # Save current state of mesh - here iteration is being used as a file directory (sorry gabe!)
-            out_dir = path +"/" + self.specs.data_fname + str(counter) + ".vtk"
+            out_dir = path +"/" + f"l{self.specs.L[0]}_m{self.specs.M[0]}_n{self.specs.N[0]}_" + str(counter) + ".vtk"
             self.mesh.save(out_dir)
 
             # Update frame
-            self.p, self.r = _create_globe(l=self.specs.L, m=self.specs.M, time=t, radial_data=self.radial_data)
+            self.p, self.r = _create_globe(l=self.specs.L[0], m=self.specs.M[0], time=t, radial_data=self.radial_data)
             self.mesh.points = self.p
             self.mesh["rad"] = self.r
 
-            print(f"Time = {np.round(t, decimals=2)}")
+            # Occassionally print progress
+            if counter%4==0:
+                print(f"Time = {np.round(t, decimals=2)}")
             counter += 1
 
         print(f"VTK files saved to {path}/")
@@ -75,19 +77,21 @@ class anim_plot_3D(NM_image):
 
     def _load_data(self):
         """
-        Loads the displacement vs depth data using the data_fname provided. First 3 rows of file are skipped.
+        Loads the displacement vs depth data using the data_fname provided. First 1 row of file is skipped.
         """
 
         print("Loading radial displacement vs depth data...")
-        displacement = np.loadtxt(f"./output/Wr_l={self.specs.L}_n={self.specs.N}.txt", skiprows=3)
+        file_data = np.loadtxt(f"./output/Wr_l{self.specs.L[0]}_n{self.specs.N[0]}.txt", skiprows=1)
+        file_data = file_data[:, ::-1]
 
-        # Instead of using a real radial value we normalise to a value of 1
-        # This is because otherwise large, real radii require a number of points that scales with r^2 so the data gets
-        # too large.
-        # Hence we use a unit sphere
-        r = np.linspace(0, 1, len(displacement))
+        # Need to normalise displacement data such that unit sphere globe is created for animations
+        # Also radial data is normalised so that the displacements in animations arent crazy!:
+        for i in range(2):
+            max = np.amax(np.abs(file_data[:,i]))
+            file_data[:,i] = file_data[:,i]/max
 
-        self.radial_data = np.transpose(np.array([r, displacement]))
+
+        self.radial_data = file_data
 
     # ----------------------------------------------------------------------------------------------------------------------
 
@@ -160,29 +164,35 @@ def _sphere_of_points(l, m, radius, colours, pts_arr, radial_disp, pts_den=1000,
     :type t: float
     """
 
-    # Get number of coordinate points in each dimension:
-    npts = int((4*np.pi*(radius**2)*pts_den)**0.5)
+    if radius==0:
+        x, y, z = 0
+        colours = np.array([0])
 
-    # Create theta and phi arrays. Currently hard coded to produce sphere with 2 octets missing for visualisation inside.
-    theta = np.linspace(0, np.pi, npts)
-    phi   = np.linspace(0, 1.5*np.pi , npts)
-    THETA, PHI = np.meshgrid(theta, phi)
+    else:
+        # Get number of coordinate points in each dimension:
+        npts = int((4*np.pi*(radius**2)*pts_den)**0.5)
 
-    theta = np.array(THETA).flatten()
-    phi = np.array(PHI).flatten()
+        # Create theta and phi arrays. Currently hard coded to produce sphere with 2 octets missing for visualisation inside.
+        theta = np.linspace(0, np.pi, npts)
+        phi   = np.linspace(0, 1.5*np.pi , npts)
+        THETA, PHI = np.meshgrid(theta, phi)
 
-    new_colours = _get_colours(radius, theta, phi, npts, l, m)
-    theta, phi = deform_coords(theta, phi, npts, l, m, radial_disp, t)
+        theta = np.array(THETA).flatten()
+        phi = np.array(PHI).flatten()
 
-    # Convert to cartesian coordinates for VTK file.
-    x = radius*np.cos(phi)*np.sin(theta)
-    y = radius*np.sin(phi)*np.sin(theta)
-    z = radius*np.cos(theta)
+        new_colours = _get_colours(radius, theta, phi, npts, l, m)
+        theta, phi = deform_coords(theta, phi, npts, l, m, radial_disp, t)
+
+        # Convert to cartesian coordinates for VTK file.
+        x = radius*np.cos(phi)*np.sin(theta)
+        y = radius*np.sin(phi)*np.sin(theta)
+        z = radius*np.cos(theta)
 
 
     # Append new colours and coordinates to present coordinates array.
     colours = np.append(colours, new_colours, axis=0)
     pts_arr = np.append(pts_arr, np.transpose(np.array([x, y, z])), axis=0)
+
     return pts_arr, colours
 
 
@@ -205,10 +215,8 @@ def _create_globe(l, m, time, radial_data):
     :return points: Updated array of points/coordinates
     :return colours: Updated array of colour values corresponding to each coordinate.
     """
-
-    # Add point at centre of sphere:
-    points = np.array([[0, 0, 0]])
-    colours = np.array([0])
+    colours = np.array([])
+    points = np.empty(shape=(0,3))
 
     # Loop through each radial data point to produce a shell of spheres.
     for i in range(len(radial_data[:,0])):
@@ -305,6 +313,5 @@ def _get_colours(r, theta, phi, npts, l, m):
             clr_add += np.sin(18 * phi)
         if m!=0:
             clr_add += np.sin(18 * theta)
-
 
     return clr_add
