@@ -41,7 +41,16 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="command_line.html">Running the command line</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Calculations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toroidal-modes">Toroidal Modes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numerical-integration">Numerical Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-for-eigenfrequencies">Searching for Eigenfrequencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#radial-modes">Radial Modes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
 </ul>
 </li>
@@ -75,6 +84,13 @@
              
   <div class="section" id="calculations">
 <h1>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Currently we offer 2 types of mode calculations: Toroidal and Radial</p>
+<div class="section" id="toroidal-modes">
+<h2>Toroidal Modes<a class="headerlink" href="#toroidal-modes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
 <p>The displacement vector <strong>s</strong> corresponding to toroidal modes can be written as</p>
 <div class="math notranslate nohighlight">
 \[s^T(r,\theta,\phi,t) = \sum_{n} \sum_{l} \sum_{m} {}_{n}A_{l}^{m}\ {}_{n}W_{l}(r)\ C_{l}^{m}(\theta,\phi)\ e^{i {}_{n}\omega_{l}^{m} t}\]</div>
@@ -89,6 +105,19 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}\frac{d}{dr} \begin{bmatrix} W(r)\\T(r) \end{bmatrix} = \begin{bmatrix} \frac{1}{r} &amp; \frac{1}{\mu(r)} \\ -\omega^2 \rho(r) + \frac{(k^2 - 2) \mu(r)}{r^2} &amp; -\frac{3}{r} \end{bmatrix} \begin{bmatrix} W(r)\\T(r) \end{bmatrix}\end{split}\]</div>
 <p>This is essentially an eigenvalue problem. Our goal therefore is to solve this system subject to some boundary conditions at the lower and upper ends of the region of interest to deduce its non-trivial solutions <span class="math notranslate nohighlight">\({}_{n}\omega_{l}\)</span> and <span class="math notranslate nohighlight">\({}_{n}W_{l}\)</span>.</p>
+</div>
+<div class="section" id="numerical-integration">
+<h3>Numerical Integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h3>
+<p>For low frequencies <strong>w</strong> and low angular degrees <strong>l</strong>, the system of ODEs above can be integrated numerically. With our TRModes software this can be performed using a simple forward Euler method, a fourth-order Runge-Kutta method, or a second-order Adams-Bashforth method. Regardless of user choice, we integrate the solution from known boundary condtions at the minimum r value up to the maximum r value. In an Earth model this would correspond to the Core-Mantle boundary (CMB) up to the surface.</p>
+</div>
+<div class="section" id="searching-for-eigenfrequencies">
+<h3>Searching for Eigenfrequencies<a class="headerlink" href="#searching-for-eigenfrequencies" title="Permalink to this headline">¶</a></h3>
+<p>In general, for each value of <strong>l</strong>, there are an infinite number <strong>n</strong> of frequencies <span class="math notranslate nohighlight">\({}_{n}\omega_{l}\)</span> that satisfy the above ODE system and the boundary conditions. Therefore, a systematic seearch must be performed to identify all the eigenfrequencies in a given frequency range and for a particular value of <strong>l</strong>. This then becomes a root finding problem that can be solved by first identifying regions containing the roots (bracketing an eigenfrequency), and then refining the value of the eigenfrequency once an interval is known. This is done repeatedly until we are confident about landing on an eigenfrequency.</p>
+</div>
+</div>
+<div class="section" id="radial-modes">
+<h2>Radial Modes<a class="headerlink" href="#radial-modes" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 
