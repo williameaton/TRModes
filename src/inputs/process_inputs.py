@@ -4,11 +4,11 @@
 # Imports
 #--------------------------------------------------------------------------------------------
 
-
 from inputs.Model import Model
 from os.path import exists as file_exists
 from datetime import date
 import numpy as np
+
 #--------------------------------------------------------------------------------------------
 # MAIN FUNCTION
 #--------------------------------------------------------------------------------------------
@@ -82,7 +82,6 @@ def process_inputs(inputs):
 
         # Obtain n values
         n = range(n_values[1], n_values[0])
-
     else:
         # Convert string to an array
         n = str2array(inputs.n[0],",")
@@ -94,14 +93,13 @@ def process_inputs(inputs):
             
 	# Obtain l values                                                                                  
         l = range(l_values[1], l_values[0])
-
     else:
 	# Convert string to an array                                                                       
         l = str2array(inputs.l[0],",")
 
 
     # Set the model class
-    model_class = Model(rho,mu,r_min,r_max,rr,dr,n,l,inputs.int_method,inputs.mode_type)
+    model_class = Model(rho,mu,r_min,r_max,rr,dr,n,l,inputs.int_method[0],inputs.mode_type[0])
         
     # Check that r_min is less than r_max
     assert model_class.r_min < model_class.r_max, \
@@ -116,33 +114,37 @@ def process_inputs(inputs):
     assert all(x >= 0 for x in model_class.l) >= 0, 'l values must zero or greater. \n'
 
     # Check mode type input values
-    input_mtype = model_class.mtype[0]
+    input_mtype = model_class.mtype
     assert input_mtype.lower() == 'toroidal', \
         'Mode type does not exist. See Readme for details. \n'
 
     # Check intergration method
-    input_int = model_class.method[0]
+    input_int = model_class.method
     assert input_int.lower() == 'rk4' or input_int.lower() == 'ab2' or input_int.lower() == 'euler', \
         'Integration method does not exist. See Readme for details. \n'
             
 
     #------------------------------------------------------------------------------------
     # Add input information to log
-    add2log("Model Parameters","\n")
-    add2log("r_max", model_class.r_max)
-    add2log("r_min", model_class.r_min)
-    add2log("dr", model_class.dr)
-    add2log("Nr", Nr)
-    add2log("rr", model_class.rr)
-    add2log("rho", model_class.rho)
-    add2log("mu", model_class.mu)
+    add2log("Model Parameters","\n","1l")
+    add2log("r_max", model_class.r_max,"1l")
+    add2log("r_min", model_class.r_min,"1l")
+    add2log("Nr", Nr,"1l")
+    add2log_space()
+    add2log("dr", model_class.dr,"2l")
+    add2log_space()
+    add2log("rr", model_class.rr,"2l")
+    add2log_space()
+    add2log("rho", model_class.rho,"2l")
+    add2log_space()
+    add2log("mu", model_class.mu,"2l")
     add2log_line()
-    add2log("Mode Parameters", "\n")
-    add2log("mtype", model_class.mtype)
-    add2log("l", model_class.l)
-    add2log("n", model_class.n)
-    add2log("\n Integration Method", "\n")
-    add2log("method", model_class.method)
+    add2log("Mode Parameters", "\n","1l")
+    add2log("mtype", model_class.mtype,"1l")
+    add2log("l", model_class.l,"1l")
+    add2log("n", model_class.n,"1l")
+    add2log("\n Integration Method", "\n", "1l")
+    add2log("method", model_class.method,"1l")
     add2log_line()
     
     return model_class
@@ -203,9 +205,8 @@ def extractfromfile(fname):
     d_pts = f[:, 0]   # Depth
     r_max = d_pts[-1]  # Maximum radius
     r_min = d_pts[0]  # Minimum radius
-
     R_pts = r_max - d_pts
-    rr = R_pts[::-1]
+    rr = R_pts[::-1]  
 
     return vp, vs, rho, rr, r_max, r_min
 
@@ -233,7 +234,7 @@ def eval_equation(str_input, start_value, end_value, ds):
 
 
 # ----------------------------------------------------------------------------------------------------            
-def input_log(cml_arguments):
+def input_log(inputs):
     # ================================================================================================                
     # DESCRIPTION:                                                                                                    
     #    Creates or adds to a log of the command line arguments used.
@@ -253,7 +254,7 @@ def input_log(cml_arguments):
     f.write("----------------------------------------------------------------------------------------")
     f.write("Date: " + d + "\n")
     f.write("Command Line Input Arguments: \n")
-    f.write("\n" + str(cml_arguments) + "\n" + "\n")
+    f.write("\n" + vars(inputs) + "\n" + "\n")
     f.write("----------------------------------------------------------------------------------------")
 
     # Close file
@@ -261,7 +262,7 @@ def input_log(cml_arguments):
 
     
 # ----------------------------------------------------------------------------------------------------
-def add2log(string, variable):
+def add2log(string, variable, lines):
     # ================================================================================================  
     # DESCRIPTION:                                                                                      
     #    Add to input log 
@@ -269,6 +270,7 @@ def add2log(string, variable):
     # INPUT:                                                                                            
     #    string
     #    variable
+    #    lines
     # ================================================================================================
 
     # Add colon to string
@@ -279,8 +281,11 @@ def add2log(string, variable):
     # Open log
     f = open("input_log.txt", "a")
 
-    # Append to log
-    f.write("\n" + _string + " " + str(variable))
+    if lines ==	"2l":
+        f.write("\n" + _string + "\n" + str(variable))
+    else:
+        # Append to log
+        f.write("\n" + _string + " " + str(variable))
 
     # Close file
     f.close()
@@ -292,4 +297,12 @@ def add2log_line():
     f = open("input_log.txt", "a")
     f.write("\n")
     f.write("----------------------------------------------------------------------------------------")
+    f.write("\n")
+    f.close()
+
+def add2log_space():
+    # Adds a break line to log                                                                                              
+    f = open("input_log.txt", "a")
+    f.write("\n")
+    f.write("\n")
     f.close()
