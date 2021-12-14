@@ -13,6 +13,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -105,12 +106,13 @@
 <dl class="py method">
 <dt id="radial_2D_plot.radial_2D_plot._add_figure_details">
 <code class="sig-name descname">_add_figure_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W</span></em>, <em class="sig-param"><span class="n">W_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._add_figure_details" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds all the bells and whistles to the figure like zerocrossing lines etc
-:param W: Displacement values as a function of radius
-:type W: 1D Numpy array</p>
+<dd><p>Adds all the bells and whistles to the figure like zerocrossing lines etc</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>W_max</strong> (<em>float</em>) – Maximum magnitude of displacement in array (must be positive).</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>W</strong> (<em>1D Numpy array</em>) – Displacement values as a function of radius</p></li>
+<li><p><strong>W_max</strong> (<em>float</em>) – Maximum magnitude of displacement in array (must be positive).</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -135,7 +137,7 @@
 <dl class="py method">
 <dt id="radial_2D_plot.radial_2D_plot._load_data">
 <code class="sig-name descname">_load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._load_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Module called in _prepare_plot(). Expected file format is single column of data with first 3 lines are N, L,
+<dd><p>Module called in _prepare_plot(). Expected file format is single column of data with first 1 line with L, N,
 Omega. Next lines are displacement/sensitivity at (increasing/decreasing) depth</p>
 </dd></dl>
 

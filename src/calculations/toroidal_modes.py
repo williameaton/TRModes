@@ -3,7 +3,7 @@
 # driver code for the Tmode calculations
 #
 # Originally written by tschuh-at-princeton.edu, 11/15/2021
-# Last modified by tschuh-at-princeton.edu, 12/05/2021
+# Last modified by tschuh-at-princeton.edu, 12/14/2021
 
 import os
 import numpy as np
@@ -31,8 +31,21 @@ from calculations.ab2 import ab2
 ####################################################################
 
 class toroidal_modes():
-
+    """
+    toroidal_modes objects are created from the user's input and
+    perform the actual calculation of the desired toroidal modes
+    outputting eigenfrequencies corresponding to specified l and n
+    pairs. These objects take in explictly what the user specifies at
+    the command line which includes the minimum and maximum radii of
+    interest,number of integration points between those two values,
+    method of integration, desired l and pairs, relationship between
+    density and depth, and relationship between shear velocity and
+    depth.
+    """
     def __init__(self, data):
+        """
+        
+        """
         # save data from Page's inputs to self.data
         self.data = data
 
@@ -63,7 +76,6 @@ class toroidal_modes():
 ####################################################################
 
     # frequency bisection method
-    #def frequency_bisection(self,wmax,wmin,dr,rr,rho,mu,l,Twmin):
     def frequency_bisection(self,wmax,wmin,l,Twmin):    
         # compute residuals (distance between left and right frequencies)
         res = np.absolute(wmax-wmin)
