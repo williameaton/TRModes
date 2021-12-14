@@ -1,18 +1,10 @@
-# Last modified by pdabney@princeton.edu, 12/13/21
+# Last modified by pdabney@princeton.edu, 12/15/21
 
 #--------------------------------------------------------------------------------------------
 # Imports
 #--------------------------------------------------------------------------------------------
 
 import argparse
-
-#--------------------------------------------------------------------------------------------
-# Define Empty Class
-#--------------------------------------------------------------------------------------------
-
-#class user_inputs:
-    # Empty class to store input values
-#    pass
 
 #--------------------------------------------------------------------------------------------
 # MAIN FUNCTION
@@ -53,23 +45,5 @@ def process_input_args():
     parser.add_argument("-fig", "--figure", dest="figure_output", nargs="*", help="Figure output details")
     parser.add_argument("-ofile", "--output_file", dest="output_file", nargs=1, help="File containing the computation outputs")
     
-    # Set class called inputs to store user input information
-#    inputs = user_inputs()
+    return(parser.parse_args())
 
-    # Pass in command line arguments and store values in input class
-    args = parser.parse_args()
-    
-    return args
-
-def process_args():
-    inputs = parse_args()
-    attrs = vars(inputs)
-    print(', '.join("%s: %s" % item for item in attrs.items()))
-    return inputs
-
-if __name__ == '__process_args__':
-    process_args()
-
-    
-#attrs = vars(inputs)
-#print(', '.join("%s: %s" % item for item in attrs.items()))
