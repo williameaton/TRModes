@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radial 2D plot class &mdash; TRModes 1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Radial 2D plot class &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +35,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
@@ -88,15 +86,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-radial_2D_plot">
-<span id="radial-2d-plot-class"></span><h1>Radial 2D plot class<a class="headerlink" href="#module-radial_2D_plot" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-radial_2D_plot">
+<span id="radial-2d-plot-class"></span><h1>Radial 2D plot class<a class="headerlink" href="#module-radial_2D_plot" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">radial_2D_plot.</span></span><span class="sig-name descname"><span class="pre">radial_2D_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot">
+<em class="property">class </em><code class="sig-prename descclassname">radial_2D_plot.</code><code class="sig-name descname">radial_2D_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>A concrete subclass of NM_image that produces displacement vs depth 2D plots for an individual mode.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ps_axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.__init__" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>ps_axis</strong> (<em>ps_axis object</em>) – ps_axis object that holds specifications for the details of the plot</p>
@@ -105,8 +103,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._add_figure_details">
-<span class="sig-name descname"><span class="pre">_add_figure_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._add_figure_details" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._add_figure_details">
+<code class="sig-name descname">_add_figure_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W</span></em>, <em class="sig-param"><span class="n">W_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._add_figure_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds all the bells and whistles to the figure like zerocrossing lines etc
 :param W: Displacement values as a function of radius
 :type W: 1D Numpy array</p>
@@ -118,8 +116,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._format_figure_metadata">
-<span class="sig-name descname"><span class="pre">_format_figure_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._format_figure_metadata" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._format_figure_metadata">
+<code class="sig-name descname">_format_figure_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">W_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._format_figure_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates axes artists like the title/axes limits etc</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -129,21 +127,21 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._integrate_mode">
-<span class="sig-name descname"><span class="pre">_integrate_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._integrate_mode" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._integrate_mode">
+<code class="sig-name descname">_integrate_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">omega</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._integrate_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Not sure if we will use this function. TBC.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._load_data">
-<span class="sig-name descname"><span class="pre">_load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._load_data" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._load_data">
+<code class="sig-name descname">_load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Module called in _prepare_plot(). Expected file format is single column of data with first 3 lines are N, L,
 Omega. Next lines are displacement/sensitivity at (increasing/decreasing) depth</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._make_polar_axis">
-<span class="sig-name descname"><span class="pre">_make_polar_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._make_polar_axis" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._make_polar_axis">
+<code class="sig-name descname">_make_polar_axis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">specs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._make_polar_axis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates and adds a matplotlib polar axes to the figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -153,20 +151,20 @@ Omega. Next lines are displacement/sensitivity at (increasing/decreasing) depth<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot._produce_plot">
-<span class="sig-name descname"><span class="pre">_produce_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._produce_plot" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot._produce_plot">
+<code class="sig-name descname">_produce_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot._produce_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>First-order function that produces the plot on the relevant Matplotlib axis.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot.init_anim_data">
-<span class="sig-name descname"><span class="pre">init_anim_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.init_anim_data" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot.init_anim_data">
+<code class="sig-name descname">init_anim_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.init_anim_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialises data values for first frame of an animation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="radial_2D_plot.radial_2D_plot.update_anim_data">
-<span class="sig-name descname"><span class="pre">update_anim_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.update_anim_data" title="Permalink to this definition"></a></dt>
+<dt id="radial_2D_plot.radial_2D_plot.update_anim_data">
+<code class="sig-name descname">update_anim_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iteration</span></em><span class="sig-paren">)</span><a class="headerlink" href="#radial_2D_plot.radial_2D_plot.update_anim_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function is used to update MPL artists (e.g. a 2DLine object) as part of animations for given iteration value
 see _gen_animations() in ps_figure.py</p>
 <dl class="field-list simple">
@@ -178,7 +176,7 @@ see _gen_animations() in ps_figure.py</p>
 
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>
