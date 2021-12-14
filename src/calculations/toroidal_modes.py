@@ -23,6 +23,7 @@ from calculations.ab2 import ab2
 
 # Notes:
 #
+# tell Page to take user Nr and add 1?
 # speed from fastest to slowest: euler, ab2, rk4
 # solutions from different methods diverge as n increases
 # larger n --> slower, no issues with l
@@ -40,9 +41,9 @@ class toroidal_modes():
         self.fmin = 0.00001 # starting frequency for eigenfrequency hunt [Hz]
         self.fmax = 0.2 # max frequency for hunt [Hz]
         self.df = 0.00001 # frequency step for hunt [Hz]
-        self.eigf = np.empty((self.data.nrange[-1]+1,self.data.lrange[-1],)) # initialize nmax by lmax NaN matrix
+        self.eigf = np.empty((self.data.n[-1]+1,self.data.l[-1],)) # initialize nmax by lmax NaN matrix
         self.eigf[:] = np.nan              # which will contain eigenfrequencies
-        self.Tmat = np.zeros((self.data.lrange[-1],self.data.nrange[-1]+1))
+        self.Tmat = np.zeros((self.data.l[-1],self.data.n[-1]+1))
         
 ####################################################################
 
@@ -55,7 +56,7 @@ class toroidal_modes():
         elif self.data.method == 'ab2':
             [W,T,count] = ab2(w,self.data.dr,self.data.rr,self.data.rho,self.data.mu,l)
         else:
-            raise ValueError(method)
+            raise ValueError(self.data.method)
 
         return W, T, count;
 
@@ -115,7 +116,7 @@ class toroidal_modes():
         if not os.path.exists(final_directory):
             os.makedirs(final_directory)
         
-        for l in self.data.lrange:
+        for l in self.data.l:
             n = -1 # reset counter for radial degrees n
             f = self.fmin # we start looking for eigenfrequencies from fmin [Hz]
             wl = 2*np.pi*f # corresponding angular frequency [rad/s]
@@ -143,7 +144,7 @@ class toroidal_modes():
 
                     # only save eigenfrequency if n >= nrange[0]
                     # too slow
-                    if n >= self.data.nrange[0]:
+                    if n >= self.data.n[0]:
                         # save radial order n (counted), l, and its eigenfrequency
                         self.eigf[n,l-1] = 1000*wc/(2*np.pi) # eigenfrequency [mHz]
 
@@ -156,7 +157,7 @@ class toroidal_modes():
 
                         # save information (l,n,w) to txt file
                         # only if it was requested by user
-                        if n in self.data.nrange:
+                        if n in self.data.n:
                             lorder = repr(l)
                             norder = repr(n)
                             freq = repr(self.eigf[n,l-1])
@@ -182,7 +183,7 @@ class toroidal_modes():
                     Twini = Twc # set current surface traction as right surface traction
 
                 # stop search if we already have the requested number of radial orders n
-                if (n+1) >= self.data.nrange[-1]+1:
+                if (n+1) >= self.data.n[-1]+1:
                     break
 
         lnwfile.close
