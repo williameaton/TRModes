@@ -22,8 +22,16 @@ def process_inputs(inputs):
     # INPUT:
     #    inputs         - Class containing information about the command line arguments
     # =======================================================================================
-    # MODEL INPUT
 
+    # INPUT LOG
+    attrs = vars(inputs)
+    attrs_str = ', '.join("%s: %s " % item for item in attrs.items())
+    # Begin log
+    input_log(attrs_str)
+
+    # --------------------------------------------------------------------------------------
+    # MODEL INPUT
+    
     # For the input model
     if inputs.model_file is not None:
         # Make sure file exists
@@ -143,7 +151,7 @@ def process_inputs(inputs):
     add2log("mtype", model_class.mtype,"1l")
     add2log("l", model_class.l,"1l")
     add2log("n", model_class.n,"1l")
-    add2log("\n Integration Method", "\n", "1l")
+    add2log("\nIntegration Method", "\n", "1l")
     add2log("method", model_class.method,"1l")
     add2log_line()
     
@@ -252,9 +260,9 @@ def input_log(inputs):
 
     # Write command line arguments 
     f.write("----------------------------------------------------------------------------------------")
-    f.write("Date: " + d + "\n")
-    f.write("Command Line Input Arguments: \n")
-    f.write("\n" + vars(inputs) + "\n" + "\n")
+    f.write("\n" + "Date: " + d + "\n")
+    f.write("\n" + "Command Line Input Arguments: \n")
+    f.write("\n" + str(inputs) + "\n" + "\n")
     f.write("----------------------------------------------------------------------------------------")
 
     # Close file
@@ -300,9 +308,9 @@ def add2log_line():
     f.write("\n")
     f.close()
 
+# ----------------------------------------------------------------------------------------------------                                              
 def add2log_space():
     # Adds a break line to log                                                                                              
     f = open("input_log.txt", "a")
-    f.write("\n")
     f.write("\n")
     f.close()
