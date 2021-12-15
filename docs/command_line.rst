@@ -24,7 +24,7 @@ List of Flags
 | -gui           |           | Launches the GUI (any other flags implemented  |
 |                |           | will be ignored)                               |
 +----------------+-----------+------------------------------------------------+
-| -mf            | string    | File name of input model    	      	      |
+| -mf            | string    | File name of input model, full path included.  |   
 +----------------+-----------+------------------------------------------------+
 | -eqr           | string    | Density equation           	      	      |
 +----------------+-----------+------------------------------------------------+
