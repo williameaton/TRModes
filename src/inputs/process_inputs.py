@@ -1,4 +1,5 @@
 from inputs.Model import Model
+import os
 from os.path import exists as file_exists
 from datetime import date
 import numpy as np
@@ -30,12 +31,33 @@ def process_inputs(inputs):
     
     # For the input model
     if inputs.model_file is not None:
+
         # Make sure file exists
-        assert file_exists(inputs.model_file), 'Model file does not exist. \n'
+        assert file_exists(inputs.model_file[0]), 'Model file does not exist. \n'
         
         # Evaluate the data file
-        Vp, Vs, rho, rr, r_max, r_min = extractfromfile(inputs.model_file)
-        
+        Vpf, Vsf, rhof, rrf, r_maxf, r_minf = extractfromfile(inputs.model_file[0])
+
+        # Finds the closes value to the user specified maximum and minimum radius
+        r_min, min_idx = nearest(rrf,float(inputs.r_min[0]))
+        r_max, max_idx = nearest(rrf,float(inputs.r_max[0]))
+
+        # Remove values outside of min and max radius range
+        rr = rrf[min_idx:max_idx]
+        Vs = Vsf[min_idx:max_idx]
+        Vp = Vpf[min_idx:max_idx]
+        rho = rhof[min_idx:max_idx]
+
+        # Check for any zero values
+        if not np.all(Vs):
+            res = np.max(np.where(Vs == 0)[0])
+            print('Minimum radius changed')
+            rr = rr[res+1:len(rr)]
+            Vs = Vs[res+1:len(Vs)]
+            Vp = Vp[res+1:len(Vp)]
+            rho = rho[res+1:len(rho)]
+            r_min = rr[0]
+
         # Compute a dr array (not evenly spaced)
         dr = rr[1:len(rr)] - rr[0:len(rr)-1]
         
@@ -63,7 +85,7 @@ def process_inputs(inputs):
         rr = r_min + np.dot((np.arange(0,Nr)),ds)
 
         # Store as an array                                                             
-        dr = [ds] * len(rr)
+        dr = [ds] * len(rr)-1
         
         # Obtain density and shear velocity (both are used for all computations
         rho = eval_equation(inputs.eq_rho[0], r_min, r_max, ds)
@@ -138,8 +160,8 @@ def process_inputs(inputs):
     #--------------------------------------------------------------------------------------------
     # Add input information to log
     add2log("Model Parameters","\n",1)
-    add2log("r_max", model_class.r_max[0],1)
-    add2log("r_min", model_class.r_min[0],1)
+    add2log("r_max", model_class.r_max,1)
+    add2log("r_min", model_class.r_min,1)
     add2log("Nr", Nr,1)
     add2log_break("s")
     add2log("dr", model_class.dr,2)
@@ -190,12 +212,34 @@ def str2array(str_in, delim):
     return array_out
 
 
+#------------------------------------------------------------------------------------------  
+def nearest(lst,k):
+
+    """
+    Finds the nearest value in an array and its index.
+
+
+    :param lst: Array of numbers
+    :type lst: 1D array
+
+    :param k: Value to find
+    :type k: float
+
+    """
+
+    lst = np.asarray(lst)
+    ind = (np.abs(lst - k)).argmin()
+        
+    return lst[ind], ind
+
+
 #------------------------------------------------------------------------------------------                       
 def extractfromfile(fname):
 
     """
     Extracts compressional and shear velocity, density, maximum and minimum raduis and radial
     data points from a model text file (e.g. PREM). Assumes the model file is isotropic. 
+
 
     :param fname: File name containing the input model.
     :type fname: string
