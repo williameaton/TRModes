@@ -60,8 +60,8 @@ List of Flags
 |                |    	     | axis, figure type, angular order (L), radial   |
 |                |    	     | order (N), and azimuthal order (M). Optional   |
 |                |    	     | figure name for output. Available options for  |
-|                |           | figure type include "dispersion","3D_anim",    |
-|                |           | "radial_2D_plot" pr "radial_2D_surface".       |
+|                |           | figure type include "dispersion", "3D_anim",   |
+|                |           | "radial_2D_plot" or "radial_2D_surface".       |
 +----------------+-----------+------------------------------------------------+
 | -ofile         | string    | File name of preexisting output data. If no    |
 |                |           | file exists, must compute mode frequencies.    |
@@ -77,3 +77,6 @@ If the user wants to use model equations:
 - Torodial: Requires density and shear velocity equations.
 - Radial: Required density and compressional velocity equations.
 
+
+Example Inputs
+--------------
