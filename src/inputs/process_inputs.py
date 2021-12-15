@@ -1,36 +1,32 @@
-# Last modified by pdabney@princeton.edu, 12/13/21
-
-#--------------------------------------------------------------------------------------------
-# Imports
-#--------------------------------------------------------------------------------------------
-
 from inputs.Model import Model
 from os.path import exists as file_exists
 from datetime import date
 import numpy as np
 
-#--------------------------------------------------------------------------------------------
-# MAIN FUNCTION
-#--------------------------------------------------------------------------------------------
 
 def process_inputs(inputs):
-    # =======================================================================================
-    # DESCRIPTION:
-    #   Processes the flags. If called specified by the user, will launch the GUI. Otherwise,
-    #   will prepare inputs for the computations and/or animations.
-    #
-    # INPUT:
-    #    inputs         - Class containing information about the command line arguments
-    # =======================================================================================
 
-    # INPUT LOG
+    """
+    Takes oject storing the user inputs and returns an model object with specifications for
+    mode calculations.
+
+
+    :param inputs: Users command line inputs
+    :type inputs: object
+
+    """
+
+    # -------------------------------------------------------------------------------------- 
+    # INPUT LOG:
+    
     attrs = vars(inputs)
     attrs_str = ', '.join("%s: %s " % item for item in attrs.items())
     # Begin log
     input_log(attrs_str)
 
+    
     # --------------------------------------------------------------------------------------
-    # MODEL INPUT
+    # MODEL INPUT:
     
     # For the input model
     if inputs.model_file is not None:
@@ -81,9 +77,11 @@ def process_inputs(inputs):
         # Maximum and minimum radius
         r_max = inputs.r_max
         r_min = inputs.r_min
-                
+
+        
     #----------------------------------------------------------------------------------------   
-    # Calculation parameters
+    # MODE INPUTS:
+    
     if inputs.nrange is not None:
         # Convert string to an array
         n_values = str2array(inputs.nrange[0], ",")
@@ -105,10 +103,15 @@ def process_inputs(inputs):
 	# Convert string to an array                                                                       
         l = str2array(inputs.l[0],",")
 
-
+        
+    #-------------------------------------------------------------------------------------------
     # Set the model class
     model_class = Model(rho,mu,r_min,r_max,rr,dr,n,l,inputs.int_method[0],inputs.mode_type[0])
-        
+
+    
+    #-------------------------------------------------------------------------------------------
+    # CHECK INPUTS:
+    
     # Check that r_min is less than r_max
     assert model_class.r_min < model_class.r_max, \
     'The minimum radius must be smaller than the maximum radius'
@@ -132,50 +135,52 @@ def process_inputs(inputs):
         'Integration method does not exist. See Readme for details. \n'
             
 
-    #------------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------------------------
     # Add input information to log
-    add2log("Model Parameters","\n","1l")
-    add2log("r_max", model_class.r_max[0],"1l")
-    add2log("r_min", model_class.r_min[0],"1l")
-    add2log("Nr", Nr,"1l")
-    add2log_space()
-    add2log("dr", model_class.dr,"2l")
-    add2log_space()
-    add2log("rr", model_class.rr,"2l")
-    add2log_space()
-    add2log("rho", model_class.rho,"2l")
-    add2log_space()
-    add2log("mu", model_class.mu,"2l")
-    add2log_space()
-    add2log_line()
-    add2log("Mode Parameters", "\n","1l")
-    add2log("mtype", model_class.mtype,"1l")
-    add2log("l", model_class.l,"1l")
-    add2log("n", model_class.n,"1l")
-    add2log("\nIntegration Method", "\n", "1l")
-    add2log("method", model_class.method,"1l")
-    add2log_space()
-    add2log_line()
+    add2log("Model Parameters","\n",1)
+    add2log("r_max", model_class.r_max[0],1)
+    add2log("r_min", model_class.r_min[0],1)
+    add2log("Nr", Nr,1)
+    add2log_break("s")
+    add2log("dr", model_class.dr,2)
+    add2log_break("s")
+    add2log("rr", model_class.rr,2)
+    add2log_break("s")
+    add2log("rho", model_class.rho,2)
+    add2log_break("s")
+    add2log("mu", model_class.mu,2)
+    add2log_break("s")
+    add2log_break("l")
+    add2log("Mode Parameters", "\n",1)
+    add2log("mtype", model_class.mtype,1)
+    add2log("l", model_class.l,1)
+    add2log("n", model_class.n,1)
+    add2log("\nIntegration Method", "\n", 1)
+    add2log("method", model_class.method,1)
+    add2log_break("s")
+    add2log_break("l")
     
+
     return model_class
 
 
 
-#--------------------------------------------------------------------------------------------                     
+#-------------------------------------------------------------------------------------------------                 
 # Supplementry Functions                                   
-#--------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------
 def str2array(str_in, delim):
-    # =======================================================================================                         
-    # DESCRIPTION:                                                                                                    
-    #   Converts a string of a list of numbers to an array.
-    #                                                                                                                 
-    # INPUT:                                                                                                          
-    #    str_in           - Input string
-    #    delim            - Delimiter separating the values
-    # OUTPUT:                                                                                                         
-    #    array_out        - Output array 
-    # ======================================================================================= 
 
+    """
+    Converts a list of strings to 1D array.
+    
+    :params str_in: String list (e.g. '1,2,3,4')
+    :type str_in: string
+
+    :params delim: Delimiter separating the values
+    :type delim: string
+
+    """
+    
     # Separate each value in the string
     list = str_in.split(delim)
     
@@ -187,23 +192,18 @@ def str2array(str_in, delim):
 
 #------------------------------------------------------------------------------------------                       
 def extractfromfile(fname):
-    # =======================================================================================                         
-    # DESCRIPTION:                                                                                                    
-    #    Extracts compressional and shear velocity, density, and radial data points from a model text                 
-    #    file (e.g. PREM). Assumes the model file is isotropic. 
-    #                                                                                                                 
-    # INPUT:                                                                                                          
-    #    fname            - File name containing the input model.
-    # OUTPUT:                                                                                                         
-    #    vp               - Compressional velocity data point array 
-    #    vs               - Shear velocity data point array
-    #    rho              - Density data point array
-    #    rr               - Radial data point array
-    #    r_max            - Maximum radius
-    #    r_min            - Minimum radius
-    # ======================================================================================= 
 
-    f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)  # Read in file (skips the header lines)
+    """
+    Extracts compressional and shear velocity, density, maximum and minimum raduis and radial
+    data points from a model text file (e.g. PREM). Assumes the model file is isotropic. 
+
+    :param fname: File name containing the input model.
+    :type fname: string
+
+    """
+
+    # Read in file (skips the header lines) 
+    f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)
 
     # Extract Data Points
     vp_pts = f[:, 2]  # Compressional wave velocity
@@ -223,20 +223,28 @@ def extractfromfile(fname):
                                    
 # ----------------------------------------------------------------------------------------------------
 def eval_equation(str_input, start_value, end_value, ds):
-    # ================================================================================================                
-    # DESCRIPTION:                                                                                         
-    #    Evaluates a single variable equation at discrete points and produces an array containing the
-    #    solutions at each point.
-    #                                                                                                                 
-    # INPUT:                                                                                                          
-    #    str_input        - String of a single variable equation
-    #    start_value      - Start value to evaluate
-    #    end_value        - End value to evaluate
-    #    ds               - Step between each point
-    # OUTPUT:                                                                                                         
-    #    sol_array        - Array containing the solutions to the equation
-    # ================================================================================================     
+
+    """
+    Evaluates a single variable equation at discrete points and produces an array containing the                                                                         
+    solutions at each point. 
+    
+
+    :param str_input: Single variable equation - variable must be r.
+    :type str_input: string
+
+    :param start_value: Starting value
+    :type start_value: float
+
+    :param end_value: Ending value
+    :type end_value: float
+
+    :param ds: Step between each point
+    :type ds: float
+
+    """
+
     sol_array = []                                   # Initialize array
+
     # Evaluate equation at each dr
     for r in np.arange(start_value, end_value, ds):
         sol_array.append(eval(str_input))
@@ -245,13 +253,15 @@ def eval_equation(str_input, start_value, end_value, ds):
 
 # ----------------------------------------------------------------------------------------------------            
 def input_log(inputs):
-    # ================================================================================================                
-    # DESCRIPTION:                                                                                                    
-    #    Creates or adds to a log of the command line arguments used.
-    #
-    # INPUT:                                                                                                          
-    #    cml_arguments     - Command line arguments (i.e. sys.argv)
-    # ================================================================================================
+
+    """
+    Initalizes a log file to store the user inputs and other parameters used for calculations or
+    plotting.
+
+    :param inputs: Users command line inputs.
+    :type inputs: object
+
+    """
 
     # Get the current date
     today = date.today()
@@ -273,40 +283,58 @@ def input_log(inputs):
     
 # ----------------------------------------------------------------------------------------------------
 def add2log(string, variable, lines):
-    # ================================================================================================  
-    # DESCRIPTION:                                                                                      
-    #    Add to input log 
-    #                                                                                                   
-    # INPUT:                                                                                            
-    #    string
-    #    variable
-    #    lines
-    # ================================================================================================
+
+    """
+    Adds variables to log.
+
+    
+    :param string: Variable name.
+    :type string: string
+
+    :param variable: Value of the variable.
+    :type variable: float, string or 1D array
+
+    :param lines: Number of lines to write the log. Current options are in one line (1) or two lines (2).
+    :type lines: int
+
+    """
+    
     # Add colon to string
     added_c = string + ':'
     # Ensure even spacing
     _string = f"{added_c: <15}"
+
     # Open log
     f = open("input_log.txt", "a")
-    if lines ==	"2l":
+    # Append to log
+    if lines ==	2:
         f.write("\n" + _string + "\n" + str(variable))
-    else:
-        # Append to log
+    elif lines == 1:
         f.write("\n" + _string + " " + str(variable))
+
     # Close file
     f.close()
 
 # ----------------------------------------------------------------------------------------------------  
-def add2log_line():
+def add2log_break(btype):
+
+    """
+    Adds a break line or space to the input log.
+
+
+    :param btype: Break type. Currently takes a line break ("l") or space break ("s").
+    :type btype: string
+
+    """
+    
     # Adds a break line to log
     f = open("input_log.txt", "a")
-    f.write("\n")
-    f.write("----------------------------------------------------------------------------------------")
-    f.close()
+    # Append to log
+    if btype == "s":
+        f.write("\n")
+    elif btype == "l":
+        f.write("\n")
+        f.write("----------------------------------------------------------------------------------------")
 
-# ----------------------------------------------------------------------------------------------------                                              
-def add2log_space():
-    # Adds a break line to log                                                                                              
-    f = open("input_log.txt", "a")
-    f.write("\n")
+    # Close file
     f.close()
