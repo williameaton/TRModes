@@ -4,3 +4,9 @@ Processes_inputs Module
    :members:
    :special-members:
    :private-members:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Class:
+
+   Model
