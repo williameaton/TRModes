@@ -1,24 +1,11 @@
-# Last modified by pdabney@princeton.edu, 12/15/21
-
-#--------------------------------------------------------------------------------------------
-# Imports
-#--------------------------------------------------------------------------------------------
-
 import argparse
 
-#--------------------------------------------------------------------------------------------
-# MAIN FUNCTION
-#--------------------------------------------------------------------------------------------
 def process_input_args():
-    # =======================================================================================          
-    # DESCRIPTION:                                                                                   
-    #   Process the command line arguments and store values in a class
-    #                                                                                                 
-    # INPUT:                                                                                         
-    #    cml_arguments         - Command line arguments (i.e. sys.argv)
-    # OUTPUt:
-    #    inputs                - Class containing user inputs from the command line
-    # =======================================================================================
+
+    """
+    Takes the users' inputs and returns an object that stores all the command line arguments.
+    
+    """
     
     # Create object that will hold information needed to parse command line
     parser = argparse.ArgumentParser()
