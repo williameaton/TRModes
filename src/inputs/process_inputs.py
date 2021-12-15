@@ -51,13 +51,13 @@ def process_inputs(inputs):
         # Check for any zero values
         if not np.all(Vs):
             res = np.max(np.where(Vs == 0)[0])
-            print('Minimum radius changed')
             rr = rr[res+1:len(rr)]
             Vs = Vs[res+1:len(Vs)]
             Vp = Vp[res+1:len(Vp)]
             rho = rho[res+1:len(rho)]
             r_min = rr[0]
-
+            print('Minimum radius changed: %f', r_min)
+            
         # Compute a dr array (not evenly spaced)
         dr = rr[1:len(rr)] - rr[0:len(rr)-1]
         
