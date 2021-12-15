@@ -5,9 +5,13 @@
 #
 # EXAMPLE:
 #
-# python driver.py -eqr -2.8471e-7*(r**3)+3.84976e-3*(r**2)-17.6479*r+32447.9 -eqs sqrt(mu/rho) rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# python driver.py -eqr '-2.8471e-7*(r**3)+3.84976e-3*(r**2)-17.6479*r+32447.9' -eqs sqrt(mu/rho) rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
 # python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+#
+# python driver.py -mf '/home/pdabney/APC524/Final_Project/TRModes/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# Note: change path as needed
+#
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
 # Last modified by tschuh-at-princeton.edu, 12/13/2021
@@ -86,6 +90,7 @@ def driver():
             assert os.path.exists(inputs.output_filename), \
                 'Output file does not exist. Must compute modes. \n'
 
+            #"test1we: 121 2D_radial_plot L[[ N2; 122 dispersion L1,2,3 N[1][1,2][1,2,3]"
 
 
             # SOME DUMMY EXAMPLE CASES:
