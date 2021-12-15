@@ -69,17 +69,12 @@ List of Flags
 
 
 If the user wants to use a model file:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------
 - Model equations (density, shear and compressional velocity) are not require and will be
 ignored if inputted.
 
 If the user wants to use model equations:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------
 - Torodial: Requires density and shear velocity equations.
 - Radial: Required density and compressional velocity equations.
 
-
-Example Inputs
---------------
-::
-   python driver.py -gui
