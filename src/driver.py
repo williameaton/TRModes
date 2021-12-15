@@ -52,12 +52,14 @@ class dummy_inputs():
           self.rho.fill(4380) # mean density [kg/m^3]
           self.mu = np.empty((self.nr))
           self.mu.fill(4380*(5930**2)) # shear modulus [Pa] = rho0*(vs0)^2
+          self.kappa = np.empty((self.nr))
+          self.kappa.fill(4380*(6000**2) - ((4/3)*(4380*(5930**2)))) # bulk modulus [Pa] = rho*(vp)^2 - (4/3)*mu
 '''
  #inputs = dummy_inputs()
 
-# # do calculations
-# calculate = toroidal_modes(inputs)
-# calculate.Tmodes_calculation()
+# do calculations
+# calculate = mode_driver(inputs)
+# calculate.get_modes()
 # inputs = process_input_args()                                                                            
 
 
@@ -76,8 +78,8 @@ def driver():
         model_class = process_inputs(inputs);
 
         # Compute modes
-        calculate = toroidal_modes(model_class)
-        calculate.Tmodes_calculation()
+        calculate = mode_driver(model_class)
+        calculate.get_modes()
 
         # Returns output file name
         inputs.output_filename = "lnw.txt"
