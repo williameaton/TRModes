@@ -19,7 +19,12 @@ def process_inputs(inputs):
 
     # -------------------------------------------------------------------------------------- 
     # INPUT LOG:
-    
+
+    # remove lnw.txt if the file exists
+    if file_exists('input_log.txt'):
+        os.remove('input_log.txt')
+
+    # Get string for command line inputs
     attrs = vars(inputs)
     attrs_str = ', '.join("%s: %s " % item for item in attrs.items())
     # Begin log
@@ -56,7 +61,7 @@ def process_inputs(inputs):
             Vp = Vp[res+1:len(Vp)]
             rho = rho[res+1:len(rho)]
             r_min = rr[0]
-            print('Minimum radius changed: %f', r_min)
+            print('**Minimum radius changed: ', r_min)
             
         # Compute a dr array (not evenly spaced)
         dr = rr[1:len(rr)] - rr[0:len(rr)-1]
@@ -74,6 +79,7 @@ def process_inputs(inputs):
         assert (inputs.eq_rho is not None), 'Requires density equation. \n'
         assert (inputs.eq_vs is not None), 'Requires shear velocity equation. \n'
 
+        # Convert string to number value
         r_min = [eval(x) for x in inputs.r_min][0]
         r_max =	[eval(x) for x in inputs.r_max][0]
         Nr = [eval(x) for x in inputs.Nr][0]
@@ -95,11 +101,6 @@ def process_inputs(inputs):
         mu=[]
         for i in range(len(rho)):
             mu.append(rho[i] * (Vs[i] ** 2))
-
-        # Maximum and minimum radius
-        r_max = inputs.r_max
-        r_min = inputs.r_min
-
         
     #----------------------------------------------------------------------------------------   
     # MODE INPUTS:
