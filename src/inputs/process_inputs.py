@@ -85,7 +85,7 @@ def process_inputs(inputs):
         rr = r_min + np.dot((np.arange(0,Nr)),ds)
 
         # Store as an array                                                             
-        dr = [ds] * len(rr)-1
+        dr = [ds] * (len(rr)-1)
         
         # Obtain density and shear velocity (both are used for all computations
         rho = eval_equation(inputs.eq_rho[0], r_min, r_max, ds)
