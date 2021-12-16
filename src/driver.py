@@ -9,18 +9,17 @@
 #
 # python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
-# python driver.py -mf '/home/pdabney/APC524/Final_Project/TRModes/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# python driver.py -mf '/path/to/TRModes/src/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 # Note: change path as needed
 #
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
-# Last modified by tschuh-at-princeton.edu, 12/13/2021
-# Last modified by pdabney@princeton.edu, 12/14/2021
+# Last modified by tschuh-at-princeton.edu, 12/15/2021
 
 import numpy as np
 import sys, argparse
 import os
-from calculations.toroidal_modes import toroidal_modes
+from calculations.mode_driver import mode_driver
 from inputs.Model import Model
 from inputs.process_inputs import process_inputs
 from inputs.process_input_fig import process_input_fig
@@ -41,9 +40,12 @@ class dummy_inputs():
 
           # mode parameters
           # cant compute n=0, l=1 mode
-          self.nrange = [0, 5] # n >= 0
-          self.lrange = [1, 3, 5] # l >= 1
+          self.n = [0, 5] # n >= 0
+          self.l = [1, 3, 5] # l >= 1
 
+          # mode type
+          self.mtype = 'toroidal'
+          
           # integration method
           self.method = 'euler'
 
@@ -52,12 +54,14 @@ class dummy_inputs():
           self.rho.fill(4380) # mean density [kg/m^3]
           self.mu = np.empty((self.nr))
           self.mu.fill(4380*(5930**2)) # shear modulus [Pa] = rho0*(vs0)^2
+          self.kappa = np.empty((self.nr))
+          self.kappa.fill(4380*(6000**2) - ((4/3)*(4380*(5930**2)))) # bulk modulus [Pa] = rho*(vp)^2 - (4/3)*mu
 '''
- #inputs = dummy_inputs()
+#inputs = dummy_inputs()
 
-# # do calculations
-# calculate = toroidal_modes(inputs)
-# calculate.Tmodes_calculation()
+# do calculations
+#calculate = mode_driver(inputs)
+#calculate.get_modes()
 # inputs = process_input_args()                                                                            
 
 
@@ -76,8 +80,8 @@ def driver():
         model_class = process_inputs(inputs);
 
         # Compute modes
-        calculate = toroidal_modes(model_class)
-        calculate.Tmodes_calculation()
+        calculate = mode_driver(model_class)
+        calculate.get_modes()
 
         # Returns output file name
         inputs.output_filename = "lnw.txt"

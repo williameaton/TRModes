@@ -1,8 +1,7 @@
 # toroidal_system.py
 #
-# default, coupled ODEs, but user will be able to make
-# their own equations
-# not sure exactly how to implement that yet
+# 2 coupled 1st-order ODEs for W and T
+# that govern toroidal oscillations
 #
 # Originally written by tschuh-at-princeton.edu, 12/4/2021
 
