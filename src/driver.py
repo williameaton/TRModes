@@ -1,20 +1,19 @@
 # driver.py
 #
-# this will be the main driver code that ties
-# input, calculation, and output together
+# main driver code that ties input,
+# calculation, and output together
 #
-# EXAMPLE:
-#
-# python driver.py -eqr '-2.8471e-7*(r**3)+3.84976e-3*(r**2)-17.6479*r+32447.9' -eqs sqrt(mu/rho) rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# EXAMPLES:
 #
 # python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
-# python driver.py -mf '/path/to/TRModes/src/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
-# Note: change path as needed
+# python driver.py -eqr '4380*r' -eqs '5930*r' -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
+# python driver.py -mf '/path/to/TRModes/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# Note: change path as needed, tilde (~) doesnt work
 #
 # Originally written by tschuh-at-princeton.edu, 12/03/2021
-# Last modified by tschuh-at-princeton.edu, 12/15/2021
+# Last modified by tschuh-at-princeton.edu, 12/16/2021
 
 import numpy as np
 import sys, argparse
@@ -26,44 +25,6 @@ from inputs.process_input_fig import process_input_fig
 from inputs.process_input_args import process_input_args
 from plotting.ps_figure import ps_figure
 from plotting.ps_axis import ps_axis
-'''
-class dummy_inputs():
-     def __init__(self):
-          # physical planet values
-          self.r_max = 6371000  # Earth radius [m]
-          self.r_min = 2891000 # CMB radius [m]
-          self.nr = 100 # number of nodes in the radial dimension
-          self.dr = np.empty((self.nr))
-          self.dr.fill((self.r_max - self.r_min)/(self.nr - 1))
-          for i in range(1,self.nr):
-              self.rr = self.r_min + np.dot((np.arange(0,self.nr)),self.dr[i]) # vector for Earth's radii [m]
-
-          # mode parameters
-          # cant compute n=0, l=1 mode
-          self.n = [0, 5] # n >= 0
-          self.l = [1, 3, 5] # l >= 1
-
-          # mode type
-          self.mtype = 'toroidal'
-          
-          # integration method
-          self.method = 'euler'
-
-          # create earth's density and shear profile for homogeneous spherical Earth model
-          self.rho = np.empty((self.nr))
-          self.rho.fill(4380) # mean density [kg/m^3]
-          self.mu = np.empty((self.nr))
-          self.mu.fill(4380*(5930**2)) # shear modulus [Pa] = rho0*(vs0)^2
-          self.kappa = np.empty((self.nr))
-          self.kappa.fill(4380*(6000**2) - ((4/3)*(4380*(5930**2)))) # bulk modulus [Pa] = rho*(vp)^2 - (4/3)*mu
-'''
-#inputs = dummy_inputs()
-
-# do calculations
-#calculate = mode_driver(inputs)
-#calculate.get_modes()
-# inputs = process_input_args()                                                                            
-
 
 def driver():
 
