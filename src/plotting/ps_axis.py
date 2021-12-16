@@ -66,7 +66,7 @@ class ps_axis():
         plottype = {
             "dispersion": True,
             "radial_2D_plot": True,
-            "radial_2D_surface": True,
+            "2D_surface": True,
             "3D_animated": True,
         }
 
