@@ -5,9 +5,14 @@
 #
 # EXAMPLES:
 #
+<<<<<<< HEAD
 # python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal 
 # example1: -fig 'test1: 121 2d_radial L4 N2 M4; 122 dispersion L[1,2,3] N[1][1,2][1,2,3]' 'test2: 111 3d_animated L2 N2 M4'
 # example2: -fig 'test3: 111 dispersion L[1,4,6] N_all[2-8]' 
+=======
+# python driver.py -eqr '4380' -eqs '5930' -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+#
+>>>>>>> 017948ba28ed05fc8788527b1e9975ddc756331c
 # python driver.py -eqr '4380*r' -eqs '5930*r' -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
 # python driver.py -mf '/path/to/TRModes/database/prem.200' -rmin 2891000 -rmax 6371000 -n 0,5 -l 1,3,5 -int euler -mtype toroidal

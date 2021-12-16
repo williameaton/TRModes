@@ -1,4 +1,5 @@
 from plotting.radial_2D_plot import radial_2D_plot
+from plotting.radial_2D_surface import radial_2D_surface
 from plotting.disp_curve import disp_curve
 from plotting.anim_plot_3D import anim_plot_3D
 import matplotlib.pyplot as plt
@@ -51,11 +52,13 @@ class ps_figure():
         axis_obj._set_ps_axis_figure(self.figure)
 
         # Determine correct type of NM_image subclass to generate and generate it
-        if axis_obj.type == "radial_2D_plot":
+        if axis_obj.type == "2d_radial":
             obj = radial_2D_plot(axis_obj)
         elif axis_obj.type == "dispersion":
             obj = disp_curve(axis_obj)
-        elif axis_obj.type == "3D_animated":
+        elif axis_obj.type == "2d_surface":
+            obj = radial_2D_surface(axis_obj)
+        elif axis_obj.type == "3d_animated":
             if _listlen != 1:
                raise ValueError("Input error - 3d plots must be assigned to their own ps_figure object")
             else:

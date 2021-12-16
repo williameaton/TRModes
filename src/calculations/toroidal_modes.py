@@ -105,4 +105,10 @@ def toroidal_modes(self):
             if (n+1) >= self.data.n[-1]+1:
                 break
 
+    # if we never found any eigenfrequencies bc
+    # they dont fall in the range of fmin and fmax
+    # then lnwfile will be empty so return error
+    if np.isnan(self.eigf).all() == True:
+        raise ValueError('No modes were found in the hard-coded frequency range')
+        
     lnwfile.close
