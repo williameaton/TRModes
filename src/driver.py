@@ -5,7 +5,8 @@
 #
 # EXAMPLES:
 #
-# python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
+# python driver.py -eqr 4380 -eqs 5930 -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal 
+# -fig 'test1: 121 2d_radial L4 N2 M4; 122 dispersion L[1,2,3] N[1][1,2][1,2,3]' 'test2: 111 3d_animate L2 N2 M4'
 #
 # python driver.py -eqr '4380*r' -eqs '5930*r' -rmin 2891000 -rmax 6371000 -Nr 100 -n 0,5 -l 1,3,5 -int euler -mtype toroidal
 #
@@ -55,38 +56,38 @@ def driver():
             assert os.path.exists(inputs.output_filename), \
                 'Output file does not exist. Must compute modes. \n'
 
-            #"test1we: 121 2D_radial_plot L[[ N2; 122 dispersion L1,2,3 N[1][1,2][1,2,3]"
+            for j in range(len(inputs.figure_output)):
+                fname_out, ax_locs, L, N, M, ptype = process_input_fig(inputs.figure_output[j])
 
+            # # SOME DUMMY EXAMPLE CASES:
+            # FNAME_OUT = ["test1we", "test2we"]
+            # AX_LOCS   = [[121, 122], [111]]
+            # PTYPES    = [["radial_2D_plot", "radial_2D_plot"], ["3D_animated"]]
+            # # In these cases I avoided a dispersion plot as wasnt sure how the n, l, m are put in, I assume they would go in
+            # # The first sublist so it was like this:
+            # #   n = [[[1,2,5], [5]], [[5]]]
+            # #   l = [[[1,2,3], [5]], [[5]]]
+            # #   m = [[[0,0,0], [0]], [[0]]]
+            # # Or something but I tried something like that and got an error so hoppefully Huda can fix it!
 
-            # SOME DUMMY EXAMPLE CASES:
-            FNAME_OUT = ["test1we", "test2we"]
-            AX_LOCS   = [[121, 122], [111]]
-            PTYPES    = [["radial_2D_plot", "radial_2D_plot"], ["3D_animated"]]
-            # In these cases I avoided a dispersion plot as wasnt sure how the n, l, m are put in, I assume they would go in
-            # The first sublist so it was like this:
-            #   n = [[[1,2,5], [5]], [[5]]]
-            #   l = [[[1,2,3], [5]], [[5]]]
-            #   m = [[[0,0,0], [0]], [[0]]]
-            # Or something but I tried something like that and got an error so hoppefully Huda can fix it!
+            # n         = [[[5], [5]], [[5]]]
+            # l         = [[[3], [5]], [[5]]]
+            # m         = [[[0], [0]], [[3]]]
 
-            n         = [[[5], [5]], [[5]]]
-            l         = [[[3], [5]], [[5]]]
-            m         = [[[0], [0]], [[3]]]
+                fig_list = []
+            # # If there are multiple figures to produce
+            # #for x in range(0,len(inputs.output_filename)):
+            # for j in range(2):
 
-            fig_list = []
-            # If there are multiple figures to produce
-            #for x in range(0,len(inputs.output_filename)):
-            for j in range(2):
-
-                # Convert input string
-                #fname_out, ax_locs, L, N, ptype = process_input_fig(inputs.output_filename[x])
-
-                fname_out = FNAME_OUT[j]
-                ax_locs = AX_LOCS[j]
-                ptype = PTYPES[j]
-                N = n[j]
-                L = l[j]
-                M = m[j]
+            #     # Convert input string
+            #     #fname_out, ax_locs, L, N, ptype = process_input_fig(inputs.output_filename[x])
+            
+                # fname_out = FNAME_OUT[j]
+                # ax_locs = AX_LOCS[j]
+                # ptype = PTYPES[j]
+                # N = n[j]
+                # L = l[j]
+                # M = m[j]
 
                 temp_axis_list = []
                 # Create axis class
