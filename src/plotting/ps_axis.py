@@ -65,16 +65,16 @@ class ps_axis():
         # Define possible plot_types
         plottype = {
             "dispersion": True,
-            "radial_2D_plot": True,
-            "2D_surface": True,
-            "3D_animated": True,
+            "2d_radial": True,
+            "2d_surface": True,
+            "3d_animated": True,
         }
 
         # Check string matches acceptable plot type and return
         if plottype.get(plot_str, False):
             return plot_str
         else:
-            raise ValueError(f"Plot type {plot_str} doesn't exist. Must be 'dispersion', 'radial_2D_plot' or '3D_animated")
+            raise ValueError(f"Plot type {plot_str} doesn't exist. Must be 'dispersion', '2d_radial', '2d_surface' or '3d_animated")
 
     # ------------------------------------------------------------------------------------------------------------------
 
