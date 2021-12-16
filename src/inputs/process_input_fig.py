@@ -42,13 +42,14 @@ def process_input_fig(str_in):
 
             # Remove N and L identifier
             l = new_axsep[2].replace('L','')
-            if len(l) > 1:
+            l_temp = n.replace('[','').replace(']','')
+            if len(l_temp) > 1:
                 # If there is more than one value                                                      
-                if '-' in l:
-                    l_array = str2array(l,'-')
+                if '-' in l_temp:
+                    l_array = str2array(l_temp,'-')
                     l_values = range(l_array[0], l_array[1]+1)
                 else:
-                    l_values = str2array(l,',')
+                    l_values = str2array(l_temp,',')
             else:
                 l_values = [float(l)]  
 
