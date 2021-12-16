@@ -1,4 +1,5 @@
 from plotting.radial_2D_plot import radial_2D_plot
+from plotting.radial_2D_surface import radial_2D_surface
 from plotting.disp_curve import disp_curve
 from plotting.anim_plot_3D import anim_plot_3D
 import matplotlib.pyplot as plt
@@ -55,6 +56,8 @@ class ps_figure():
             obj = radial_2D_plot(axis_obj)
         elif axis_obj.type == "dispersion":
             obj = disp_curve(axis_obj)
+        elif axis_obj.type == "2D_surface":
+            obj = radial_2D_surface(axis_obj)
         elif axis_obj.type == "3D_animated":
             if _listlen != 1:
                raise ValueError("Input error - 3d plots must be assigned to their own ps_figure object")
