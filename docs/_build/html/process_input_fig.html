@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Processes_input_fig Module &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -17,8 +17,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code documentation" href="code_doc.html" />
-    <link rel="prev" title="Welcome to TRModes’s documentation!" href="index.html" /> 
+    <link rel="next" title="Calculations" href="calculations.html" />
+    <link rel="prev" title="Model Class" href="Model.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,8 +38,19 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code_doc.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="command_line.html">Command Line Input Arguments</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="process_input_args.html">Processes_input_args Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_inputs.html">Processes_inputs Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Processes_input_fig Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="command_line.html#list-of-flags">List of Flags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calculations.html">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 
@@ -57,9 +68,11 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Installation</li>
+          <li><a href="code_doc.html">Code documentation</a> &raquo;</li>
+          <li><a href="command_line.html">Command Line Input Arguments</a> &raquo;</li>
+      <li>Processes_input_fig Module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/process_input_fig.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -67,34 +80,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>TRModes is a selection of python scripts which can be execute from the command line using the <code class="docutils literal notranslate"><span class="pre">driver.py</span></code> module.</p>
-<p>Installation is therefore pretty simple. All code is available from our <a class="reference external" href="https://github.com/willeaton101/TRModes">Github</a> and can be cloned using the usual commands.</p>
-<p>A number of python packages are required for running TRModes:</p>
-<ul class="simple">
-<li><p>NumPy</p></li>
-<li><p>SciPy</p></li>
-<li><p>Matplotlib</p></li>
-<li><p>PyVista</p></li>
-<li><p>Imageio-ffmpeg</p></li>
-</ul>
-<p>For this (lovely) documentation, we also use a theme that requires installing sphinx-rtd-theme-1.0.0:</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">sphinx-rtd-theme-1.0.0</span></code></p>
-</div></blockquote>
-<p>will do the trick! Alternatively, you can edit the <code class="docutils literal notranslate"><span class="pre">html_theme</span></code> in <code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code> and change to <em>“default”</em></p>
-<p>Once all the files and dependencies are downloaded, you can start running the program from your command line. In the
-absence of a GUI (under development) the syntax for command line arguments are quite specific and details can be found
-on the “Running the command line” page.</p>
+  <div class="section" id="module-process_input_fig">
+<span id="processes-input-fig-module"></span><h1>Processes_input_fig Module<a class="headerlink" href="#module-process_input_fig" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="process_input_fig.process_input_fig">
+<code class="sig-prename descclassname">process_input_fig.</code><code class="sig-name descname">process_input_fig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">str_in</span></em><span class="sig-paren">)</span><a class="headerlink" href="#process_input_fig.process_input_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the users inputs regarding the figure outputs and returns figure and axis specifications including figure name,               
+axes list, N and L values, and plot type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>str_in</strong> (<em>string</em>) – Figure output information. (e.g.”figure1: 121 2D_radial_plot L4 N2 M4; 122 dispersion L[1,2,3] N[1][1,2][1,2,3]”)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to TRModes’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="code_doc.html" class="btn btn-neutral float-right" title="Code documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Model.html" class="btn btn-neutral float-left" title="Model Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="calculations.html" class="btn btn-neutral float-right" title="Calculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

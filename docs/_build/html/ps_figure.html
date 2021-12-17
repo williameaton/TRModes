@@ -81,8 +81,69 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="ps-figure-class">
-<h1>Ps_figure class<a class="headerlink" href="#ps-figure-class" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-ps_figure">
+<span id="ps-figure-class"></span><h1>Ps_figure class<a class="headerlink" href="#module-ps_figure" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="ps_figure.ps_figure">
+<em class="property">class </em><code class="sig-prename descclassname">ps_figure.</code><code class="sig-name descname">ps_figure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axes_list</span></em>, <em class="sig-param"><span class="n">fname_out</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>ps_figure objects hold a matplotlib figure and data required to populate it with a number of axes.</p>
+<dl class="py method">
+<dt id="ps_figure.ps_figure.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axes_list</span></em>, <em class="sig-param"><span class="n">fname_out</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axes_list</strong> (<em>list</em>) – A list of ps_axis objects, each of which is used to generate an axis on the figure</p></li>
+<li><p><strong>fname_out</strong> (<em>string</em>) – Prefix for the output file of the figure. By default both a static (png) and moving (gif or mp4) image is generated</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ps_figure.ps_figure.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#ps_figure.ps_figure.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ps_figure.ps_figure._axis_factory">
+<code class="sig-name descname">_axis_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">axis_obj</span></em>, <em class="sig-param"><span class="n">_listlen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._axis_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory function that returns an object of the relevant subclass of NM_image, e.g. a 2D radial plot or a dispersion plot
+:param axis_obj: The ps_axis object dictates which subclass of NM_image object will be returned
+:type  axis_obj: ps_axis object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_listlen</strong> (<em>int</em>) – Internal counter that helps produce warning if 3D plot is part of a list of plots for a figure.</p>
+</dd>
+<dt class="field-even">Returns obj</dt>
+<dd class="field-even"><p>An object of the relevant subclass of NM_image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ps_figure.ps_figure._gen_NM_img_objects">
+<code class="sig-name descname">_gen_NM_img_objects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._gen_NM_img_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteratively generating a NM_image object and running obj.make(); this updates obj to its final form,i.e. actually creating the plot.
+Note that these objects are stored in self.NM_img_objs for use in producing animations</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ps_figure.ps_figure._gen_animations">
+<code class="sig-name descname">_gen_animations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure._gen_animations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes all of the axis objects stored in NM_img_objs and animates them if that is feasible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ps_figure.ps_figure.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ps_figure.ps_figure.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the different NM_image subclass objects (e.g. dispersion, 2D_radial) from the inputted PS_axis objs
+This also adds the plots from each of these subclasses to the overall figure</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

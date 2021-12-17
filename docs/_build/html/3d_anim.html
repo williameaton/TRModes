@@ -91,6 +91,192 @@
 <h1>3D Animation class<a class="headerlink" href="#d-animation-class" title="Permalink to this headline">¶</a></h1>
 <p>Note that this class only fits loosely into the API that is presently defined as these images originally used matplotlib.
 We endeavor to update our plotting API to make more flexibility for these 3D animations using PyVista.</p>
+<span class="target" id="module-anim_plot_3D"></span><dl class="py function">
+<dt id="anim_plot_3D._calc_ylm">
+<code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">_calc_ylm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">phi</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D._calc_ylm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the spherical harmonic Y_lm as a function of theta and phi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Angular degree of spherical harmonic</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Azimuthal order of spherical harmonic</p></li>
+<li><p><strong>theta</strong> (<em>1D array</em>) – Array of theta coordinates</p></li>
+<li><p><strong>phi</strong> (<em>1D array</em>) – Array of phi coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return ylm_im</dt>
+<dd class="field-even"><p>Imaginary component of Ylm</p>
+</dd>
+<dt class="field-odd">Return ylm_real</dt>
+<dd class="field-odd"><p>Real component of Ylm</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="anim_plot_3D._create_globe">
+<code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">_create_globe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">radial_data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D._create_globe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a (deformed) 3D spheroid of points based on radial steps given by user and time.
+:param l: Angular degree of spherical harmonic
+:type l: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> (<em>int</em>) – Azimuthal order of spherical harmonic</p></li>
+<li><p><strong>time</strong> (<em>float</em>) – Time value for frame. Should be between 0 and 2pi but will operate with any value.</p></li>
+<li><p><strong>radial_data</strong> (<em>2D array</em>) – Array of radial points and displacement at those points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return points</dt>
+<dd class="field-even"><p>Updated array of points/coordinates</p>
+</dd>
+<dt class="field-odd">Return colours</dt>
+<dd class="field-odd"><p>Updated array of colour values corresponding to each coordinate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="anim_plot_3D._get_colours">
+<code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">_get_colours</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">phi</span></em>, <em class="sig-param"><span class="n">npts</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D._get_colours" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Creates array of colour values for the shell with patterns designed for different l,m oscillations</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param r</dt>
+<dd class="field-odd"><p>Radius of shell</p>
+</dd>
+<dt class="field-even">type r</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param theta</dt>
+<dd class="field-odd"><p>Array of theta coordinates</p>
+</dd>
+<dt class="field-even">type theta</dt>
+<dd class="field-even"><p>1D array</p>
+</dd>
+<dt class="field-odd">param phi</dt>
+<dd class="field-odd"><p>Array of phi coordinates</p>
+</dd>
+<dt class="field-even">type phi</dt>
+<dd class="field-even"><p>1D array</p>
+</dd>
+<dt class="field-odd">param npts</dt>
+<dd class="field-odd"><p>Number of coordinate points</p>
+</dd>
+<dt class="field-even">type npts</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">param l</dt>
+<dd class="field-odd"><p>Angular degree of spherical harmonic</p>
+</dd>
+<dt class="field-even">type l</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">param m</dt>
+<dd class="field-odd"><p>Azimuthal order of spherical harmonic</p>
+</dd>
+<dt class="field-even">type m</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">return clr_add</dt>
+<dd class="field-odd"><p>Colour array to be added</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="anim_plot_3D._sphere_of_points">
+<code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">_sphere_of_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">radius</span></em>, <em class="sig-param"><span class="n">colours</span></em>, <em class="sig-param"><span class="n">pts_arr</span></em>, <em class="sig-param"><span class="n">radial_disp</span></em>, <em class="sig-param"><span class="n">pts_den</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D._sphere_of_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates coordinates for a quasi-spherical shell of points and appends them to a current array of points. Coordinates
+have a corresponding ‘colour’ value so the changes of those coordinates in time can be visualised. Coordinates may be
+changed through time (as sphere oscillates) but the colours do not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em>) – Angular degree of spherical harmonic</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Azimuthal order of spherical harmonic</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – Radius of the shell to be generated</p></li>
+<li><p><strong>colours</strong> (<em>1D array</em>) – Current array of colours associated with the coordinates</p></li>
+<li><p><strong>pts_arr</strong> (<em>3D array</em>) – Array of current cartesian coordinates to be updated</p></li>
+<li><p><strong>radial_disp</strong> (<em>1D array</em>) – Array of the strength of the oscillation with depth.</p></li>
+<li><p><strong>pts_den</strong> – Density of points per unit area. Defaults to 1000. We reccomend not changing this.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Time at which these coordinates exist. Time is used to oscillate the coordinates. Defaults to 0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="anim_plot_3D.anim_plot_3D">
+<em class="property">class </em><code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">anim_plot_3D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>A concrete subclass of NM_image that produces 3D animations for an individual mode’s oscillations.</p>
+<dl class="py method">
+<dt id="anim_plot_3D.anim_plot_3D.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ps_axis</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ps_axis</strong> (<em>ps_axis object</em>) – ps_axis object that holds specifications for the details of the plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="anim_plot_3D.anim_plot_3D._load_data">
+<code class="sig-name descname">_load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D._load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the displacement vs depth data using the data_fname provided. First 1 row of file is skipped.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="anim_plot_3D.anim_plot_3D._produce_plot">
+<code class="sig-name descname">_produce_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D._produce_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The actual plotting step for static images - should return fig and axis to the plot function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="anim_plot_3D.anim_plot_3D.init_anim_data">
+<code class="sig-name descname">init_anim_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D.init_anim_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises data values for first frame of an animation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="anim_plot_3D.anim_plot_3D.update_anim_data">
+<code class="sig-name descname">update_anim_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.anim_plot_3D.update_anim_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the next animation frame. Outputs a file to iteration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>string</em>) – The file directory for saving to. This, by default, is the name of the figure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="anim_plot_3D.deform_coords">
+<code class="sig-prename descclassname">anim_plot_3D.</code><code class="sig-name descname">deform_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">phi</span></em>, <em class="sig-param"><span class="n">npts</span></em>, <em class="sig-param"><span class="n">l</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">radial_disp</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#anim_plot_3D.deform_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deforms the original coordinates based on an oscillation of a Ylm pattern over 2*pi</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<em>1D array</em>) – Array of theta coordinates</p></li>
+<li><p><strong>phi</strong> (<em>1D array</em>) – Array of phi coordinates</p></li>
+<li><p><strong>npts</strong> (<em>int</em>) – Number of coordinate points</p></li>
+<li><p><strong>l</strong> (<em>int</em>) – Angular degree of spherical harmonic</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – Azimuthal order of spherical harmonic</p></li>
+<li><p><strong>radial_disp</strong> (<em>1D array</em>) – Array of the strength of the oscillation with depth.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Time at which these coordinates exist. Time is used to oscillate the coordinates. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return theta</dt>
+<dd class="field-even"><p>Updated, deformed array of theta coordinates</p>
+</dd>
+<dt class="field-odd">Return phi</dt>
+<dd class="field-odd"><p>Updated, deformed array of phi coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
