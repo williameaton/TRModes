@@ -1,18 +1,8 @@
 Calculations
 ============
-.. toctree::
-   :maxdepth: 4
-   :caption: Documentation:
 
-   toroidal_modes
-
-Currently we offer 2 types of mode calculations: Toroidal and Radial
-
-Toroidal Modes
---------------
-
-Overview
-~~~~~~~~
+Toroidal Modes Overview
+-----------------------
 
 The displacement vector **s** corresponding to toroidal modes can be written as
 
@@ -44,14 +34,11 @@ These two equations can be rearranged into a coupled system of first-order ODEs 
 This is essentially an eigenvalue problem. Our goal therefore is to solve this system subject to some boundary conditions at the lower and upper ends of the region of interest to deduce its non-trivial solutions :math:`{}_{n}\omega_{l}` and :math:`{}_{n}W_{l}`.
 
 Numerical Integration
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
-For low frequencies **w** and low angular degrees **l**, the system of ODEs above can be integrated numerically. With our TRModes software this can be performed using a simple forward Euler method, a fourth-order Runge-Kutta method, or a second-order Adams-Bashforth method. Regardless of user choice, we integrate the solution from known boundary condtions at the minimum r value up to the maximum r value. In an Earth model this would correspond to the Core-Mantle boundary (CMB) up to the surface.
+For low frequencies :math:`\omega` and low angular degrees **l**, the system of ODEs above can be integrated numerically. With our TRModes software this can be performed using a simple forward Euler method, a fourth-order Runge-Kutta method, or a second-order Adams-Bashforth method. Regardless of user choice, we integrate the solution from known boundary condtions at the minimum r value up to the maximum r value. In an Earth model this would correspond to the Core-Mantle boundary (CMB) up to the surface.
 
 Searching for Eigenfrequencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
-In general, for each value of **l**, there are an infinite number **n** of frequencies :math:`{}_{n}\omega_{l}` that satisfy the above ODE system and the boundary conditions. Therefore, a systematic seearch must be performed to identify all the eigenfrequencies in a given frequency range and for a particular value of **l**. This then becomes a root finding problem that can be solved by first identifying regions containing the roots (bracketing an eigenfrequency), and then refining the value of the eigenfrequency once an interval is known. This is done repeatedly until we are confident about landing on an eigenfrequency.
-
-Radial Modes
-------------
+In general, for each value of **l**, there are an infinite number **n** of frequencies :math:`{}_{n}\omega_{l}` that satisfy the above ODE system and the boundary conditions. Therefore, a systematic search must be performed to identify all the eigenfrequencies in a given frequency range and for a particular value of **l**. This then becomes a root finding problem that can be solved by first identifying regions containing the roots (bracketing an eigenfrequency), and then refining the value of the eigenfrequency once an interval is known. This is done repeatedly until we are confident about landing on an eigenfrequency and we have found all the eigenfrequencies in our interval.
