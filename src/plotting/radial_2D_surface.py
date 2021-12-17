@@ -1,4 +1,4 @@
-from NM_image import NM_image
+from plotting.NM_image import NM_image
 import numpy as np
 
 class radial_2D_surface(NM_image):

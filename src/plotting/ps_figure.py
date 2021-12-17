@@ -15,12 +15,12 @@ class ps_figure():
         :param fname_out: Prefix for the output file of the figure. By default both a static (png) and moving (gif or mp4) image is generated
         :type  fname_out: string
         """
-        self.axes_list = axes_list              # List of PS_axis objects to be used
-        self.fname_out = fname_out              # Figure output filename
-        self.figure = plt.Figure()              # Matplotlib figure to be used
-        self.animation = None                   # Funcanimate.animation object will end up here if animations used
-        self.NM_img_objs = []                   # List of NM_image objects generated from PS_axis inputs by
-                                                #  function _gen_NM_img_objects()
+        self.axes_list = axes_list                 # List of PS_axis objects to be used
+        self.fname_out = fname_out                 # Figure output filename
+        self.figure = plt.Figure(figsize=(10, 8))  # Matplotlib figure to be used
+        self.animation = None                      # Funcanimate.animation object will end up here if animations used
+        self.NM_img_objs = []                      # List of NM_image objects generated from PS_axis inputs by
+                                                   #  function _gen_NM_img_objects()
         self.fig_type = "MPL"
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -85,6 +85,8 @@ class ps_figure():
     def _output_plots(self):
         if self.fig_type == "MPL":
             """Output a static version of the figure."""
+            self.figure.set_tight_layout(True)
+
             out_str = "./" + self.fname_out + ".png"
             print(f"Saving static figure {out_str}")
             self.figure.savefig(out_str)
