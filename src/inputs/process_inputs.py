@@ -110,7 +110,7 @@ def process_inputs(inputs):
         n_values = str2array(inputs.nrange[0], ",")
 
         # Obtain n values
-        n = range(n_values[1], n_values[0])
+        n = [*range(n_values[1], n_values[0])]
     else:
         # Convert string to an array
         n = str2array(inputs.n[0],",")
@@ -121,7 +121,7 @@ def process_inputs(inputs):
         l_values = str2array(inputs.lrange[0],",")
             
 	# Obtain l values                                                                                  
-        l = range(l_values[1], l_values[0])
+        l = [*range(l_values[1], l_values[0])]
     else:
 	# Convert string to an array                                                                       
         l = str2array(inputs.l[0],",")
