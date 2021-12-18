@@ -1,5 +1,7 @@
-from plotting.NM_image import NM_image
+from NM_image import NM_image
 import numpy as np
+import math
+import scipy.special as ss
 
 class radial_2D_surface(NM_image):
     """A concrete subclass of NM_image that produces surface motion 2D plots for an individual mode. """
@@ -12,13 +14,8 @@ class radial_2D_surface(NM_image):
         """
 
         self.specs = ps_axis                                # All the data from the ps_axis including the figure
-        self.r_circle = None                                # Circle's radius
         self.anim_line = None                               # Storing the 2D line object for animation
         self.ax = None                                      # The axis of the figure
-        self.x = None                                       # Related to the circle
-        self.y = None                                       # Related to the circle
-        self.l_len = None                                   # Length vertical segments at x=0
-        self.y_pos = np.zeros(self.specs.N-1)               # To hold the y position of horizontal lines
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -34,68 +31,50 @@ class radial_2D_surface(NM_image):
         
         # The axis
         self.ax = self.specs.figure.add_subplot(self.specs.axis_loc)
-        # Plot the circle
-        self._plot_circle()
-        # Plot the horizontal lines
-        self._plot_hlines()
+        
+        # Define a coordinate system
+        theta = np.linspace(0, np.pi, 1000)
+        phi = np.linspace(0, np.pi*2, 1000)
 
-        x_data = np.zeros(self.specs.N)
-        y_min = np.zeros(self.specs.N)
-        y_max = np.zeros(self.specs.N)
+        # Define the 2D grid of theta and phi
+        theta, phi = np.meshgrid(theta, phi)
+        # Now convert from spherical to Cartesian coordinates
+        x, z = self._sph2cart(theta, phi)
 
-        plot, = self.ax.vlines(x=x_data, ymin=y_min, ymax=y_max, color='red', linewidth=2.5)
-        self.anim_line = plot 
-
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def _plot_circle(self):
-        self.r_circle = 30
-        # 360 degrees to plot full circle
-        theta = 360
-        # t is angle here changing the value of 360
-        t = np.linspace(0, theta, 360)
-
-        # Circumference-defining points
-        self.x = self.r_circle*np.sin(np.radians(t))
-        self.y = self.r_circle*np.cos(np.radians(t)) + self.r_circle    # Radius added to make the minimum point = 0
-        # Plot the circle now
-        self.ax.plot(self.x, self.y, color='black', linewidth=3)
+        # Calculate Ylm to generate the corresponding surface pattern
+        ylm_phi, ylm_th = self._calc_ylm(theta, phi)
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def _plot_hlines(self):
-        # Know at which positions we should put the horizontal lines
-        self.l_len = 2*self.r_circle/self.specs.N
-        y_start = 0
-        # Know their extension and plot them
-        for i in range(self.specs.N-1):
-            self.y_pos[i] = y_start + self.l_len
-            y_start = self.y_pos[i]
-            ind = np.where(self.y<=self.y_pos[i])
-            ind = ind[0][0]
-            if self.x[ind]<0:
-                self.ax.hlines(y=self.y_pos[i], xmin=self.x[ind], xmax=-self.x[ind], color='black', linewidth=2.5)
-            else:
-                self.ax.hlines(y=self.y_pos[i], xmin=-self.x[ind], xmax=self.x[ind], color='black', linewidth=2.5)
+    def _sph2cart(self, theta, phi):
+        # Convert to cartesian coordinates for plotting in plane perpendicular to y axis.
+        x = self.specs.radius*np.cos(phi)*np.sin(theta)
+        z = self.specs.radius*np.cos(theta)
 
-        self.y_pos = np.append(self.y_pos, 2*self.r_circle)
+        return x, z
+
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def _calc_ylm(self, theta, phi):
+        # Using equation: Ylm(theta, phi) = ((2l + 1)(l-m)/(4pi(l+m)!))**0.5 * Plm(cos(theta)) where Plm is the associated
+        # legendre polynomial.
+        prefactor = np.sqrt( ((2*self.specs.L[0] + 1)*math.factorial(self.specs.L[0]-self.specs.M[0]))/(4*np.pi*math.factorial(self.specs.L[0]+self.specs.M[0])))
+
+        # Create filled arrays of correct length for m, l:
+        M = np.zeros((len(theta),)) + self.specs.M[0]
+        L = np.zeros((len(theta),)) + self.specs.L[0]
+
+        # Get associated legrendre polynomial plm:
+        plm = ss.lpmv(M, L, np.cos(theta))
+        ylm_im = prefactor * plm * (np.cos(self.specs.M[0]*phi))    # Imaginary part
+        ylm_real  = prefactor * plm * (np.sin(self.specs.M[0]*phi)) # Real part
+        return ylm_im, ylm_real
 
     # ------------------------------------------------------------------------------------------------------------------
 
     def init_anim_data(self):
         """Initialises data values for first frame of an animation. """
-        y_start = 0
-        new_x = np.zeros(self.specs.N)
-        new_min = np.zeros(self.specs.N)
-        new_max = np.zeros(self.specs.N)
-
-        for i in range(self.specs.N):
-            new_min[i] = y_start+0.5
-            new_max[i] = self.y_pos[i]-0.5
-            y_start = self.y_pos[i]
         
-        return new_x, new_min, new_max
-
     # ------------------------------------------------------------------------------------------------------------------
 
     def update_anim_data(self, iteration):
