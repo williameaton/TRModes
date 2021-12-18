@@ -1,4 +1,4 @@
-from NM_image import NM_image
+from plotting.NM_image import NM_image
 import numpy as np
 import math
 import scipy.special as ss
