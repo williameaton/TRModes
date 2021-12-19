@@ -49,39 +49,48 @@ def driver():
         calculate = mode_driver(model_class)
         calculate.get_modes()
 
-        # Returns output file name
-        inputs.output_filename = "lnw.txt"
 
-        #--------------------------------------------------------------------------------------------
-        # PLOTTING:
+    #--------------------------------------------------------------------------------------------
+    # PLOTTING:
+    # To set up classes for plottting
+    if inputs.figure_output is not None:
         print("Entering plotting phase...")
-        # To set up classes for plottting
-        if hasattr(inputs, 'figure_output'):
-            # Check that an output file exists
-            assert os.path.exists(inputs.output_filename), \
-                'Output file does not exist. Must compute modes. \n'
 
-            fig_list = []
+        fig_list = []
 
-            for j in range(len(inputs.figure_output)):
-                fname_out, ax_locs, L, N, M, ptype = process_input_fig(inputs.figure_output[j])
+        for j in range(len(inputs.figure_output)):
+            fname_out, ax_locs, L, N, M, ptype = process_input_fig(inputs.figure_output[j])
 
 
-                temp_axis_list = []
-                # Create axis class
-                for i in range(len(ax_locs)):
-                    temp_axis_list.append(ps_axis(type=ptype[i], data_fname=inputs.output_filename, axis_loc=ax_locs[i],
-                                                  N=N[i], L=L[i], M=M[i], radius=inputs.r_max))
+            temp_axis_list = []
+            # Create axis class
+            for i in range(len(ax_locs)):
+                if ptype[i] == 'dispersion':
+                    inputs.output_filename = 'lnw.txt'
+                else:
+                    files = os.listdir('output/')
+                    substr_l = ''.join(['l',str(L[i][0])])
+                    substr_n = ''.join(['n',str(N[i][0])])
+                    file_substr_l = [string for string in files if substr_l in string]
+                    File = [string for string in file_substr_l if substr_n in string]
+                    inputs.output_filename = ''.join(['output/',File[0]])
+
+                # Check that an output file exists                                                           
+                assert os.path.exists(inputs.output_filename), \
+                    'Output file does not exist. Must compute modes. \n'
+            
+                temp_axis_list.append(ps_axis(type=ptype[i], data_fname=inputs.output_filename, axis_loc=ax_locs[i],
+                                              N=N[i], L=L[i], M=M[i], radius=inputs.r_max))
 
 
 
-                # Create figure class
-                fig_list.append(ps_figure(temp_axis_list, fname_out))
+            # Create figure class
+            fig_list.append(ps_figure(temp_axis_list, fname_out))
 
 
-            # Run plotting commands for each figure:
-            for fig in fig_list:
-                fig.plot()
+        # Run plotting commands for each figure:
+        for fig in fig_list:
+            fig.plot()
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------
