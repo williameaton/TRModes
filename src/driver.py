@@ -26,14 +26,20 @@ from inputs.Model import Model
 from inputs.process_inputs import process_inputs
 from inputs.process_input_fig import process_input_fig
 from inputs.process_input_args import process_input_args
+from inputs.input_log import input_log
 from plotting.ps_figure import ps_figure
 from plotting.ps_axis import ps_axis
 
 def driver():
-
+    #--------------------------------------------------------------------------------------------                                            
+    # INPUTS:
+    
     # Store command line arguments in a class called inputs
     inputs = process_input_args()
 
+    # Create a log of the inputs
+    input_log(inputs)
+    
     #--------------------------------------------------------------------------------------------
     # CALCULATIONS:
 
