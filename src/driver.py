@@ -65,21 +65,24 @@ def driver():
             temp_axis_list = []
             # Create axis class
             for i in range(len(ax_locs)):
-                if ptype[i] == 'dispersion':
-                    inputs.output_filename = 'lnw.txt'
+                if inputs.output_file is None:
+                    if ptype[i] == 'dispersion':
+                        inputs.output_file = 'lnw.txt'
+                    else:
+                        files = os.listdir('output/')
+                        substr_l = ''.join(['l',str(L[i][0])])
+                        substr_n = ''.join(['n',str(N[i][0])])
+                        file_substr_l = [string for string in files if substr_l in string]
+                        File = [string for string in file_substr_l if substr_n in string]
+                        inputs.output_file = ''.join(['output/',File[0]])
                 else:
-                    files = os.listdir('output/')
-                    substr_l = ''.join(['l',str(L[i][0])])
-                    substr_n = ''.join(['n',str(N[i][0])])
-                    file_substr_l = [string for string in files if substr_l in string]
-                    File = [string for string in file_substr_l if substr_n in string]
-                    inputs.output_filename = ''.join(['output/',File[0]])
-
-                # Check that an output file exists                                                           
-                assert os.path.exists(inputs.output_filename), \
-                    'Output file does not exist. Must compute modes. \n'
-            
-                temp_axis_list.append(ps_axis(type=ptype[i], data_fname=inputs.output_filename, axis_loc=ax_locs[i],
+                    # Check that an output file exists
+                    File = ''.join(['output/',inputs.output_file[0]])
+                    assert os.path.exists(File), 'Output file does not exist. Must compute modes. \n'
+                    # Set output_file with relative path
+                    inputs.output_file = File
+                        
+                temp_axis_list.append(ps_axis(type=ptype[i], data_fname=inputs.output_file, axis_loc=ax_locs[i],
                                               N=N[i], L=L[i], M=M[i], radius=inputs.r_max))
 
 
