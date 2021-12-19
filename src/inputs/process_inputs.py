@@ -1,9 +1,9 @@
 from inputs.Model import Model
 from inputs.input_log import add2log, add2log_break
-import os
 from os.path import exists as file_exists
 import numpy as np
-
+import pytest
+import os
 
 def process_inputs(inputs):
 
@@ -89,8 +89,9 @@ def process_inputs(inputs):
         ds = (r_max - r_min) / Nr
         
         # Compute vector for radius
-        rr = r_min + np.dot((np.arange(0,Nr)),ds)
-
+        rrv = r_min + np.dot((np.arange(0,Nr+1)),ds)
+        rr = rrv.tolist()
+        
         # Store as an array                                                             
         dr = [ds] * (len(rr)-1)
         
