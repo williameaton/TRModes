@@ -91,6 +91,8 @@ def driver():
                 temp_axis_list.append(ps_axis(type=ptype[i], data_fname=inputs.output_file, axis_loc=ax_locs[i],
                                               N=N[i], L=L[i], M=M[i], radius=inputs.r_max))
 
+                # Reset output_file to None for instances with mulitple axes
+                inputs.output_file = None
 
 
             # Create figure class
