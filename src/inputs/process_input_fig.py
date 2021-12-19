@@ -131,7 +131,7 @@ def process_input_fig(str_in):
     # Add figure specifications to the input log
     add2log("Figure Name", fname_out,1)                                                                                                      
     add2log_break("s")
-    for j in range(0,len(ax_list)):                                                                                                            
+    for j in range(0,len(ax_list)):                                                                                                          
         add2log("Axis", ax_list[j],1)                                                                                                        
         add2log("ptype", ptype[j],1)                                                                                                         
         add2log("L", L[j],1)                                                                                                                 
