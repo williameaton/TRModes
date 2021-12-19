@@ -31,27 +31,41 @@ def process_inputs(inputs):
         Vpf, Vsf, rhof, rrf, r_maxf, r_minf = extractfromfile(inputs.model_file[0])
 
         # Finds the closes value to the user specified maximum and minimum radius
-        r_min, min_idx = nearest(rrf,float(inputs.r_min[0]))
-        r_max, max_idx = nearest(rrf,float(inputs.r_max[0]))
+        rmin, min_idx = nearest(rrf,float(inputs.r_min[0]))
+        rmax, max_idx = nearest(rrf,float(inputs.r_max[0]))
 
+        idx = [min_idx, max_idx]
+        # Ensure the order of the indexes are increasing
+        idx.sort()
+        
         # Remove values outside of min and max radius range
-        rr = rrf[min_idx:max_idx]
-        Vs = Vsf[min_idx:max_idx]
-        Vp = Vpf[min_idx:max_idx]
-        rho = rhof[min_idx:max_idx]
-
-        # Check for any zero values
+        rr = rrf[idx[0]:idx[1]]
+        Vs = Vsf[idx[0]:idx[1]]
+        Vp = Vpf[idx[0]:idx[1]]
+        rho = rhof[idx[0]:idx[1]]
+        
+        
+        # Check for any zero values and update array
         if not np.all(Vs):
-            res = np.max(np.where(Vs == 0)[0])
-            rr = rr[res+1:len(rr)]
-            Vs = Vs[res+1:len(Vs)]
-            Vp = Vp[res+1:len(Vp)]
-            rho = rho[res+1:len(rho)]
-            r_min = rr[0]
-            print('**Minimum radius changed: ', r_min)
+            res = Vs != 0
+            id_min, id_max = res.argmax()-1, res.size - res[::-1].argmax()
+            rr = rr[id_min+1:id_max]
+            Vs = Vs[id_min+1:id_max]
+            Vp = Vp[id_min+1:id_max]
+            rho = rho[id_min+1:id_max]
             
+            # Let the user know that the radius has changed
+            if float(inputs.r_max[0]) != rr[-1]:
+                print('** Maximum radius changed: ', rr[-1])
+            if float(inputs.r_min[0]) != rr[0]:
+                print('** Minimum radius changed: ', rr[0])
+
+        # Get minimum and maximum radii
+        r_max = rr[-1]
+        r_min = rr[0]
+        
         # Compute a dr array (not evenly spaced)
-        dr = rr[1:len(rr)] - rr[0:len(rr)-1]
+        dr = rr[1:len(rr)+1] - rr[0:len(rr)-1]
         
         # Obtain Number of radial steps
         Nr = len(dr)
@@ -238,17 +252,12 @@ def extractfromfile(fname):
     f = np.loadtxt(open(fname), skiprows=0 + 1 + 2)
 
     # Extract Data Points
-    vp_pts = f[:, 2]  # Compressional wave velocity
-    vp = vp_pts[::-1]
-    vs_pts = f[:, 3]  # Shear wave velocity
-    vs = vs_pts[::-1]
-    rho_pts = f[:, 1]  # Density
-    rho = rho_pts[::-1]
-    d_pts = f[:, 0]   # Depth
-    r_max = d_pts[-1]  # Maximum radius
-    r_min = d_pts[0]  # Minimum radius
-    R_pts = r_max - d_pts
-    rr = R_pts[::-1]  
+    vp = f[:, 2]    # Compressional wave velocity
+    vs = f[:, 3]    # Shear wave velocity
+    rho = f[:, 1]   # Density
+    rr = f[:, 0]    # radius
+    r_min = rr[-1]  # Maximum radius
+    r_max = rr[0]   # Minimum radius
 
     return vp, vs, rho, rr, r_max, r_min
 
