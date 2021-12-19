@@ -30,7 +30,7 @@ def process_input_args():
 
     # Flags related to output
     parser.add_argument("-fig", "--figure", dest="figure_output", nargs="*", help="Figure output details")
-    parser.add_argument("-ofile", "--output_file", dest="output_file", nargs=1, help="File containing the computation outputs")
+    parser.add_argument("-ofile", "--output_file", dest="output_file", nargs="*", help="File containing the computation outputs")
     
     return(parser.parse_args())
 
