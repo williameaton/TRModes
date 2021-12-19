@@ -1,5 +1,5 @@
 from inputs.process_inputs import str2array, add2log, add2log_break
-
+import pytest
 
 def process_input_fig(str_in):
     """                                                                                                                                      
@@ -13,12 +13,12 @@ def process_input_fig(str_in):
     """  
 
      # If there is a filename inputed, separate the output file name and store
-    if str_in.find(":") != 1:
+    if str_in.find(":") != -1:
         fname_sep = str_in.split(":")
         fname_out = fname_sep[0]
         start = 1
     else:
-        fname_sep = str_in
+        fname_sep = [str_in]
         fname_out = None
         start = 0
 
