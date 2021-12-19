@@ -72,6 +72,19 @@ class radial_2D_surface(NM_image):
 
     # ------------------------------------------------------------------------------------------------------------------
 
+    def _dif_matrix(x):
+        # Diagonal elements are 1
+        dif_now = np.diag(np.ones(len(x)))
+        
+        # Left elements of diagonal are -1.
+        dif_pre_ones = np.ones(len(x)-1) * - 1        # -1 vector
+        dif_pre = np.diag(dif_pre_ones, k=-1)         # Diagonal matrix shifted to left
+        
+        dif = dif_now + dif_pre
+        return dif
+
+    # ------------------------------------------------------------------------------------------------------------------
+
     def init_anim_data(self):
         """Initialises data values for first frame of an animation. """
         
