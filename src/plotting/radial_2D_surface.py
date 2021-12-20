@@ -65,7 +65,7 @@ class radial_2D_surface(NM_image):
         diff_ylm = np.gradient(ylm, dphi, dth)
         tlm = (1/np.sqrt(self.specs.L[0]*(self.specs.L[0]+1))) * (((1/np.sin(theta))*diff_ylm[0]) - diff_ylm[1])
 
-        # Create the initial plot object/artist (i cant remmeber which it is but the terminology is irrelevant, its an object...)
+        # Create the initial plot object/artist
         plot = self.specs.ax.pcolormesh(x, z, tlm, shading='flat')
 
 
