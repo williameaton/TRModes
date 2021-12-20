@@ -1,3 +1,3 @@
 # TRModes
 
-Welcome to TRModes! This is an open-source software. Feel free to git clone this main repository to your local machine. To learn how to use the code, generate the documentation by going to the docs directory and typing at the command line ``make html``. Then type <open _build/html/index.html>. You will also need to make sure you install all the software listed in environment.yml. We recommend doing this in a Conda environment.
+Welcome to TRModes! This is an open-source software. Feel free to git clone this main repository to your local machine. To learn how to use the code, generate the documentation by going to the docs directory and typing at the command line ``make html``. Then type ``open _build/html/index.html``. You will also need to make sure you install all the software listed in environment.yml. We recommend doing this in a Conda environment.
