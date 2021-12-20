@@ -104,7 +104,7 @@ below. In the future, the user will be able to run the code using a Graphical Us
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 21%" />
-<col style="width: 15%" />
+<col style="width: 14%" />
 <col style="width: 64%" />
 </colgroup>
 <thead>
@@ -182,14 +182,20 @@ Adams-Bashforth (“ab2”) or Forward Euler method
 <td><p>Specifications for output figures. Must include
 axis, figure type, angular order (L), radial
 order (N), and azimuthal order (M). Optional
-figure name for output. Available options for
-figure type include “dispersion”, “3D_anim”,
-“radial_2D_plot” or “radial_2D_surface”.</p></td>
+figure name for output. Note: The number of N
+and L values must be equal. Available options
+fof figure type include “dispersion”, “3D_anim”,
+“radial_2D_plot” or “radial_2D_surface”. For
+dispersion plots, a range of values can be used
+with a dash (e.g. N[2-6] -&gt; N = [2,3,4,5,6]).
+To plot the same N values for each L, “N_all”
+can be used (e.g. L[1,2] N_all[3,5] -&gt; N =
+[[3,5],[3,5]]).</p></td>
 </tr>
 <tr class="row-odd"><td><p>-ofile</p></td>
 <td><p>string</p></td>
-<td><p>File name of preexisting output data. If no
-file exists, must compute mode frequencies.</p></td>
+<td><p>File name of preexisting output data. If no file
+exists, must compute mode frequencies.</p></td>
 </tr>
 </tbody>
 </table>
@@ -204,6 +210,16 @@ file exists, must compute mode frequencies.</p></td>
 </ul>
 <div class="section" id="example-inputs">
 <h3>Example Inputs<a class="headerlink" href="#example-inputs" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -eqr 4380 -eqs &#39;5930*r&#39; -rmin 2891000 -rmax 6371000 -Nr 100 -nrange 2,10 -lrange 2,10 -int euler</span>
+<span class="go">-mtype toroidal -fig &#39;test1: 111 dispersion L[2-10] N_all[2-10]&#39; &#39;test2: 121 2d_radial L2 N4 M4; 122 2d_radial L4 N2 M4</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -mf &#39;../database/prem.200&#39; -rmin 2891000 -rmax 6371000 -n 2,6,10 -l 2,3,10 -int euler -mtype toroidal</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -ofile &#39;lnw.txt&#39; -fig &#39;test3: 111 dispersion L[2,3,4] N[2-10][4-10][2,4,10]&#39;</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
