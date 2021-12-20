@@ -21,9 +21,6 @@ List of Flags
 +----------------+-----------+-------------------------------------------------+
 |      Flags     |   Type    |                   Description                   |
 +================+===========+=================================================+
-| -gui           |           | Launches the GUI (any other flags implemented   |
-|                |           | will be ignored)                                |
-+----------------+-----------+-------------------------------------------------+
 | -mf            | string    | File name of input model, full path included.   |   
 +----------------+-----------+-------------------------------------------------+
 | -eqr           | string    | Density equation           	      	       |
@@ -39,7 +36,7 @@ List of Flags
 | -nr            | float     | Number of radial steps                          |
 +----------------+-----------+-------------------------------------------------+
 | -mtype         | string    | Type of mode to compute. Available options are  |
-|                |           | "toroidal" or "radial"                          |
+|                |           | "toroidal"                                      |
 +----------------+-----------+-------------------------------------------------+
 | -n             | integer(s)| Radial order value(s). For more than one value, |
 |                |           | must be comma separated.                        |
@@ -62,12 +59,13 @@ List of Flags
 |                |    	     | figure name for output. Note: The number of N   |
 |                |           | and L values must be equal. Available options   |
 |                |           | fof figure type include "dispersion", "3D_anim",| 
-|                |           | "radial_2D_plot" or "radial_2D_surface". For    |
-|                |           | dispersion plots, a range of values can be used |
-|                |           | with a dash (e.g. N[2-6] -> N = [2,3,4,5,6]).   |
-|                |           | To plot the same N values for each L, "N_all"   |
-|                |           | can be used (e.g. L[1,2] N_all[3,5] -> N =      |
-|                |           | [[3,5],[3,5]]).                                 |
+|                |           | "2d_radial" or "2d_surface". For dispersion     |
+|                |           | plots, a range of values can be used with a     |
+|                |           | dash (e.g. N[2-6] -> N = [2,3,4,5,6]). To plot  |
+|                |           | the same N values for each L, "N_all" is used   |
+|                |           | (e.g. L[1,2] N_all[3,5] -> N = [[3,5],[3,5]]).  |
+|                |           | For all other plots, a singe value for N, M, and|
+|                |           | L is required.
 +----------------+-----------+-------------------------------------------------+
 | -ofile         | string    | File name of preexisting output data. If no file|
 |                |           | exists, must compute mode frequencies.          |
@@ -77,11 +75,14 @@ List of Flags
 If the user wants to use a model file:
 
 - Model equations (density, shear and compressional velocity) are not require and will be ignored if inputted.
+- Number of radial steps is not required
+- If the users' maximum and minimum radius input includes regions where the shear velocity is zero, the radius
+  will be changed to ensure the all shear velocity values are nonzero because there are no toroidal modes where
+  the shear velocity is zero (This will change when other mode calculations will be included).
 
 If the user wants to use model equations:
 
 - Torodial: Requires density and shear velocity equations.
-- Radial: Required density and compressional velocity equations.
 
 
 Example Inputs
