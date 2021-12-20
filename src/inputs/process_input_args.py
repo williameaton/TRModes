@@ -11,8 +11,6 @@ def process_input_args():
     parser = argparse.ArgumentParser()
 
     # Include all command line flags
-    parser.add_argument("-gui", "--gui_launch", action="store_true", dest="gui", default=False, help="Launch GUI")
-    
     parser.add_argument("-eqr", "--equation_rho", dest="eq_rho", nargs=1, help="Equation for density")
     parser.add_argument("-eqs", "--equation_vs", dest="eq_vs", nargs=1, help="Equation for shear velocity")
     parser.add_argument("-eqp", "--equation_vp", dest="eq_vp", nargs=1, help="Equation for compressional velocity")
@@ -25,7 +23,7 @@ def process_input_args():
     parser.add_argument("-l", "--l_values", dest="l", nargs=1, help="Angular degree value(s)")
     parser.add_argument("-lrange", "--lrange", dest="lrange", nargs=1, help="Range of angular degree values")
     parser.add_argument("-int", "--integrator", dest="int_method", nargs=1, help="Integration method")
-    parser.add_argument("-mtype", "--mode_type", dest="mode_type", nargs=1, help="Type of mode: toroidal or radial")
+    parser.add_argument("-mtype", "--mode_type", dest="mode_type", nargs=1, help="Type of mode: toroidal ")
 
 
     # Flags related to output
