@@ -1,0 +1,7 @@
+This will be the file for writing down ideas for tests, and maybe designating them
+
+(1) Inputs and GUI
+
+(2) Calculations 
+
+(3) Plotting

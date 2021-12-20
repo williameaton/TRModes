@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Line Input Arguments &mdash; TRModes 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Processes_input_args Module" href="process_input_args.html" />
+    <link rel="prev" title="Code documentation" href="code_doc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> TRModes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="code_doc.html">Code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command Line Input Arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_input_args.html">Processes_input_args Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_inputs.html">Processes_inputs Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_input_fig.html">Processes_input_fig Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-flags">List of Flags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-inputs">Example Inputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calculations.html">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TRModes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="code_doc.html">Code documentation</a> &raquo;</li>
+      <li>Command Line Input Arguments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/command_line.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="command-line-input-arguments">
+<h1>Command Line Input Arguments<a class="headerlink" href="#command-line-input-arguments" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process_input_args.html">Processes_input_args Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process_inputs.html">Processes_inputs Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Model.html">Model Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_input_fig.html">Processes_input_fig Module</a></li>
+</ul>
+</div>
+<p>Currently the program is run using command line arguments. The inputs are specified using
+flags, therefore the order of arguments does not matter. The inputs and flags are described
+below. In the future, the user will be able to run the code using a Graphical User Interface
+(GUI).</p>
+<div class="section" id="list-of-flags">
+<h2>List of Flags<a class="headerlink" href="#list-of-flags" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 14%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Flags</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-gui</p></td>
+<td></td>
+<td><p>Launches the GUI (any other flags implemented
+will be ignored)</p></td>
+</tr>
+<tr class="row-odd"><td><p>-mf</p></td>
+<td><p>string</p></td>
+<td><p>File name of input model, full path included.</p></td>
+</tr>
+<tr class="row-even"><td><p>-eqr</p></td>
+<td><p>string</p></td>
+<td><p>Density equation</p></td>
+</tr>
+<tr class="row-odd"><td><p>-eqp</p></td>
+<td><p>string</p></td>
+<td><p>Compressional velocity equation</p></td>
+</tr>
+<tr class="row-even"><td><p>-eqs</p></td>
+<td><p>string</p></td>
+<td><p>Shear velocity equation</p></td>
+</tr>
+<tr class="row-odd"><td><p>-rmin</p></td>
+<td><p>float</p></td>
+<td><p>Minimum Radius</p></td>
+</tr>
+<tr class="row-even"><td><p>-rmax</p></td>
+<td><p>float</p></td>
+<td><p>Maximum Radius</p></td>
+</tr>
+<tr class="row-odd"><td><p>-nr</p></td>
+<td><p>float</p></td>
+<td><p>Number of radial steps</p></td>
+</tr>
+<tr class="row-even"><td><p>-mtype</p></td>
+<td><p>string</p></td>
+<td><p>Type of mode to compute. Available options are
+“toroidal” or “radial”</p></td>
+</tr>
+<tr class="row-odd"><td><p>-n</p></td>
+<td><p>integer(s)</p></td>
+<td><p>Radial order value(s). For more than one value,
+must be comma separated.</p></td>
+</tr>
+<tr class="row-even"><td><p>-l</p></td>
+<td><p>integer(s)</p></td>
+<td><p>Angular order value(s). For more than one
+value, must be comma separated.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-nrange</p></td>
+<td><p>integer(s)</p></td>
+<td><p>Range of radial order values, comma separated.</p></td>
+</tr>
+<tr class="row-even"><td><p>-lrange</p></td>
+<td><p>integer(s)</p></td>
+<td><p>Range of angular order values, comma separated.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-int</p></td>
+<td><p>string</p></td>
+<td><p>Type of integration method. Available options
+are 4th-order Runge-Kutta (“rk4”), 2nd-order
+Adams-Bashforth (“ab2”) or Forward Euler method
+(“euler”).</p></td>
+</tr>
+<tr class="row-even"><td><p>-fig</p></td>
+<td><p>string</p></td>
+<td><p>Specifications for output figures. Must include
+axis, figure type, angular order (L), radial
+order (N), and azimuthal order (M). Optional
+figure name for output. Note: The number of N
+and L values must be equal. Available options
+fof figure type include “dispersion”, “3D_anim”,
+“radial_2D_plot” or “radial_2D_surface”. For
+dispersion plots, a range of values can be used
+with a dash (e.g. N[2-6] -&gt; N = [2,3,4,5,6]).
+To plot the same N values for each L, “N_all”
+can be used (e.g. L[1,2] N_all[3,5] -&gt; N =
+[[3,5],[3,5]]).</p></td>
+</tr>
+<tr class="row-odd"><td><p>-ofile</p></td>
+<td><p>string</p></td>
+<td><p>File name of preexisting output data. If no file
+exists, must compute mode frequencies.</p></td>
+</tr>
+</tbody>
+</table>
+<p>If the user wants to use a model file:</p>
+<ul class="simple">
+<li><p>Model equations (density, shear and compressional velocity) are not require and will be ignored if inputted.</p></li>
+</ul>
+<p>If the user wants to use model equations:</p>
+<ul class="simple">
+<li><p>Torodial: Requires density and shear velocity equations.</p></li>
+<li><p>Radial: Required density and compressional velocity equations.</p></li>
+</ul>
+<div class="section" id="example-inputs">
+<h3>Example Inputs<a class="headerlink" href="#example-inputs" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -eqr 4380 -eqs &#39;5930*r&#39; -rmin 2891000 -rmax 6371000 -Nr 100 -nrange 2,10 -lrange 2,10 -int euler</span>
+<span class="go">-mtype toroidal -fig &#39;test1: 111 dispersion L[2-10] N_all[2-10]&#39; &#39;test2: 121 2d_radial L2 N4 M4; 122 2d_radial L4 N2 M4</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -mf &#39;../database/prem.200&#39; -rmin 2891000 -rmax 6371000 -n 2,6,10 -l 2,3,10 -int euler -mtype toroidal</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python driver.py -ofile &#39;lnw.txt&#39; -fig &#39;test3: 111 dispersion L[2,3,4] N[2-10][4-10][2,4,10]&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="code_doc.html" class="btn btn-neutral float-left" title="Code documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="process_input_args.html" class="btn btn-neutral float-right" title="Processes_input_args Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Huda Al Alawi, Page Dabney, Will Eaton and Terry Schuh.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
