@@ -1,5 +1,8 @@
 # integration.py
 #
+# integrator factory where depending on the integration
+# method specified by the user at runtime, it is chosen and
+# implemented here
 #
 # Originally written by tschuh-at-princeton.edu, 12/15/2021
 

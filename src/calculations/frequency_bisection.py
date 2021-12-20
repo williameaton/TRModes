@@ -1,7 +1,10 @@
 # frequency_bisection.py
 #
-# frequency bisection method used
-# to calculate toroidal modes 
+# frequency bisection method used to calculate eigenfrequencies
+# roots of eigenfunctions are found by guessing a root and then checking
+# its sign to see if it actually is a root. If not, the value is used
+# as a boundary when refining the root search and the process is done
+# again until a root is found (this is a bottleneck in the calculations)
 #
 # Originally written by tschuh-at-princeton.edu, 12/15/2021
 

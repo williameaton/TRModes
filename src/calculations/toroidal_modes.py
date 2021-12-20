@@ -1,26 +1,17 @@
 # toroidal_modes.py
 #
-# driver code for the Tmode calculations
+# driver code for the toroidal mode calculations
+# for each l and n pair, use frequency bisection method
+# to calculate the corresponding eigenfrequency
+# also solve coupled ODE toroidal system
 #
 # Originally written by tschuh-at-princeton.edu, 11/15/2021
-# Last modified by tschuh-at-princeton.edu, 12/15/2021
+# Last modified by tschuh-at-princeton.edu, 12/20/2021
 
 import os
 import numpy as np
 from calculations.integration import get_integrator
 from calculations.frequency_bisection import frequency_bisection
-
-"""
-toroidal_modes objects are created from the user's input and
-perform the actual calculation of the desired toroidal modes
-outputting eigenfrequencies corresponding to specified l and n
-pairs. These objects take in explictly what the user specifies at
-the command line which includes the minimum and maximum radii of
-interest,number of integration points between those two values,
-method of integration, desired l and pairs, relationship between
-density and depth, and relationship between shear velocity and
-depth.
-""" 
 
 # actual calculation
 def toroidal_modes(self):
@@ -70,9 +61,6 @@ def toroidal_modes(self):
                     # save eigenperiod
                     T0 = (2*np.pi)/wc/60 # eigenperiod [min]
                     self.Tmat[l-1,n] = T0*60 # write eigenperiod matrix [sec]
-
-                    # print information
-                    # print('Found eigenfrequency w =','%.2f'%eigf[n,l-1],'mHz for n =',n,'l =',l)
 
                     # save information (l,n,w) to txt file
                     # only if it was requested by user

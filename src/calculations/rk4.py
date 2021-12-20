@@ -1,5 +1,7 @@
 # rk4.py
 #
+# Runge-Kutta 4th order integration method
+#
 # Originally written by tschuh-at-princeton.edu, 12/04/2021
 # Last modified by tschuh-at-princeton.edu, 12/15/2021
 
@@ -16,7 +18,7 @@ def rk4(mtype,w,dr,rr,rho,mu,l):
     W = np.zeros((nr,1))
     T = np.zeros((nr,1))
 
-    # prescribe boundary conditions at CMB
+    # prescribe boundary conditions at lower end of calculation region
     W[0] = 1
     T[0] = 0
 
