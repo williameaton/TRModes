@@ -1,3 +1,13 @@
+"""
+This type of plot is still under construction. 
+At this time, generating a plot of this type will give a stationary solid-color spherical surface that 
+does not represent the toroidal modes.
+We ran into an issue of needing to transform the scalar Ylm into vector Ylm to fully represent the 
+surface spherical harmonics of toroidal modes. Which is something that we realized very recently.
+Given the mathematical complexity, the algorithm we developed still needs some enhancement that is 
+more related to understanding the mathematical aspect.
+"""
+
 from plotting.NM_image import NM_image
 import numpy as np
 import math
@@ -35,6 +45,9 @@ class radial_2D_surface(NM_image):
         # Define a coordinate system
         theta = np.linspace(0, np.pi, 1000)
         phi = np.linspace(0, np.pi*2, 1000)
+        # Will need the difference
+        dth = theta[1] - theta[0]                  # horizontal change
+        dphi = phi[1] - phi[0]                     # vertical change
 
         # Define the 2D grid of theta and phi
         theta, phi = np.meshgrid(theta, phi)
@@ -42,11 +55,19 @@ class radial_2D_surface(NM_image):
         x, z = self._sph2cart(theta, phi)
 
         # Calculate Ylm to generate the corresponding surface pattern
-        ylm_phi, ylm_th = self._calc_ylm(theta, phi)
+        ylm_phi, ylm_th = self._calc_ylm(theta=theta, phi=phi)
+        ylm = ylm_phi + ylm_th
+        ylm = ylm[:-1, :-1]
 
-        # Toroidal modes equation
+        # Get the toroidal mode pattern
+        # gradient(matrix, change in axis=0(vertical), change in axis=1(horizontal))
+        # First array stands for the gradient in rows and the second one in columns direction
+        diff_ylm = np.gradient(ylm, dphi, dth)
+        tlm = (1/np.sqrt(self.specs.L[0]*(self.specs.L[0]+1))) * (((1/np.sin(theta))*diff_ylm[0]) - diff_ylm[1])
 
-        
+        # Create the initial plot object/artist (i cant remmeber which it is but the terminology is irrelevant, its an object...)
+        plot = self.specs.ax.pcolormesh(x, z, tlm, shading='flat')
+
 
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -94,6 +115,7 @@ class radial_2D_surface(NM_image):
 
     def init_anim_data(self):
         """Initialises data values for first frame of an animation. """
+        pass
         
     # ------------------------------------------------------------------------------------------------------------------
 
@@ -104,3 +126,4 @@ class radial_2D_surface(NM_image):
         :type iteration: int
         :param iteration: Iteration step for animations
         """
+        pass
